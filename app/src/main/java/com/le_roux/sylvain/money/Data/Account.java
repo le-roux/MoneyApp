@@ -16,6 +16,7 @@ public class Account {
     private String name;
     private double balance;
     private ArrayList<Operation> operationsList;
+    // TODO stores it in a database
     public static ArrayList<String> categoriesList = new ArrayList<>();
 
     // Keys used for storage
@@ -45,6 +46,29 @@ public class Account {
         } catch (JSONException e) {
             Logger.d("Error when creating account from json string");
         }
+    }
+
+    /*
+     * Getters and Setters
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public double getBalance() {
+        return this.balance;
+    }
+
+    public void addOperation(Operation operation) {
+        this.operationsList.add(operation);
+    }
+
+    public void deleteOperation(int index) {
+        this.operationsList.remove(index);
     }
 
     /*
