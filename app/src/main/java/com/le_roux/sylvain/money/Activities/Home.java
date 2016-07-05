@@ -1,7 +1,9 @@
-package com.le_roux.sylvain.money;
+package com.le_roux.sylvain.money.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.le_roux.sylvain.money.R;
 
 public class Home extends AppCompatActivity {
 
