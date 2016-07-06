@@ -44,6 +44,7 @@ public class PriceView extends TextView {
 
     public void setValue(double value) {
         this.value = value;
+        this.update();
     }
 
     public double getValue() {
