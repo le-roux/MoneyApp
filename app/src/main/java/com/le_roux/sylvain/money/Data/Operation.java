@@ -187,7 +187,7 @@ public class Operation {
         values.put(OperationContract.Table.COLUMN_NAME_YEAR, this.date.get(Calendar.YEAR));
         values.put(OperationContract.Table.COLUMN_NAME_MONTH, this.date.get(Calendar.MONTH));
         values.put(OperationContract.Table.COLUMN_NAME_DAY, this.date.get(Calendar.DAY_OF_MONTH));
-        this.id = db.insert(tableName, OperationContract.Table.COLUMN_NAME_ENTRY_ID, values);
+        this.id = db.insert(tableName, null, values);
         return this.id != -1;
     }
 

@@ -10,7 +10,6 @@ public class OperationContract {
 
     public static abstract class Table implements BaseColumns {
         public static final String TABLE_NAME = "operation";
-        public static final String COLUMN_NAME_ENTRY_ID = "entryid";
         public static final String COLUMN_NAME_PAYEE = "payee";
         public static final String COLUMN_NAME_VALUE = "value";
         public static final String COLUMN_NAME_CATEGORY = "category";

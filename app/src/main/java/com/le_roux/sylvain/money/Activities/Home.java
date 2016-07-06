@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.R;
@@ -42,26 +43,39 @@ public class Home extends AppCompatActivity {
         String accountName = sharedPreferences.getString(CURRENT_ACCOUNT_NAME, "");
         if (accountName.equals("")) {
             //TODO display popup create account
+            this.account = new Account("account");
         } else {
             this.account = new Account(accountName);
         }
 
-        AccountOpenHelper databaseHelper = new AccountOpenHelper(this, "account");
+        AccountOpenHelper databaseHelper = new AccountOpenHelper(this, this.account.getName());
         SQLiteDatabase dbWrite = databaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(OperationContract.Table.COLUMN_NAME_PAYEE, "foo");
         values.put(OperationContract.Table.COLUMN_NAME_VALUE, 10);
+        values.put(OperationContract.Table.COLUMN_NAME_CATEGORY, "food");
         values.put(OperationContract.Table.COLUMN_NAME_DESCRIPTION, "");
         values.put(OperationContract.Table.COLUMN_NAME_VALIDATED, 0);
         values.put(OperationContract.Table.COLUMN_NAME_DAY, 20);
+        values.put(OperationContract.Table.COLUMN_NAME_MONTH, 5);
+        values.put(OperationContract.Table.COLUMN_NAME_YEAR, 2016);
         long newRowId;
-        newRowId = dbWrite.insert(OperationContract.Table.TABLE_NAME,
-                OperationContract.Table.COLUMN_NAME_ENTRY_ID, values);
+        newRowId = dbWrite.insert(this.account.getName(),
+                null, values);
 
         SQLiteDatabase dbRead = databaseHelper.getReadableDatabase();
-        String[] projection = {OperationContract.Table.COLUMN_NAME_VALUE};
-        Cursor c = dbRead.query(true, OperationContract.Table.TABLE_NAME, projection, null, null, null, null, null, null);
-        c.moveToFirst();
-        this.balanceAccount.setValue(c.getDouble(c.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE)));
+        String[] selection = {OperationContract.Table._ID,
+                OperationContract.Table.COLUMN_NAME_DAY,
+                OperationContract.Table.COLUMN_NAME_MONTH,
+                OperationContract.Table.COLUMN_NAME_YEAR,
+                OperationContract.Table.COLUMN_NAME_PAYEE,
+                OperationContract.Table.COLUMN_NAME_VALUE,
+                OperationContract.Table.COLUMN_NAME_CATEGORY,
+                OperationContract.Table.COLUMN_NAME_VALIDATED};
+        Cursor c = dbRead.query(true, this.account.getName(), selection, null, null, null, null, null, null);
+
+        int[] to = {R.id.day, R.id.month, R.id.year, R.id.payee, R.id.value, R.id.category, R.id.validated};
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.item_operation, c, selection, to, 0);
+        this.operationsListView.setAdapter(adapter);
     }
 }

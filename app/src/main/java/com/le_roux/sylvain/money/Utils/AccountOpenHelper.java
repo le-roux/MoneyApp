@@ -29,9 +29,8 @@ public class AccountOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Logger.d("table name = " + this.name);
         String SQL_CREATE_TABLE =
-                "CREATE TABLE " + this.name + " (" +
-                        OperationContract.Table._ID + " INTEGER PRIMARY KEY," +
-                        OperationContract.Table.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
+                "CREATE TABLE " + this.name + " ( " +
+                        "_id" + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                         OperationContract.Table.COLUMN_NAME_PAYEE + TEXT_TYPE + COMMA_SEP +
                         OperationContract.Table.COLUMN_NAME_VALUE + REAL_TYPE + COMMA_SEP +
                         OperationContract.Table.COLUMN_NAME_CATEGORY + TEXT_TYPE + COMMA_SEP +
