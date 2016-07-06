@@ -13,6 +13,7 @@ public class OperationContract {
         public static final String COLUMN_NAME_ENTRY_ID = "entryid";
         public static final String COLUMN_NAME_PAYEE = "payee";
         public static final String COLUMN_NAME_VALUE = "value";
+        public static final String COLUMN_NAME_CATEGORY = "category";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_VALIDATED = "validated";
         public static final String COLUMN_NAME_YEAR = "year";

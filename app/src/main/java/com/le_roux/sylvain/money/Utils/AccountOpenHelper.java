@@ -34,6 +34,7 @@ public class AccountOpenHelper extends SQLiteOpenHelper {
                         OperationContract.Table.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
                         OperationContract.Table.COLUMN_NAME_PAYEE + TEXT_TYPE + COMMA_SEP +
                         OperationContract.Table.COLUMN_NAME_VALUE + REAL_TYPE + COMMA_SEP +
+                        OperationContract.Table.COLUMN_NAME_CATEGORY + TEXT_TYPE + COMMA_SEP +
                         OperationContract.Table.COLUMN_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
                         OperationContract.Table.COLUMN_NAME_VALIDATED + INTEGER_TYPE + COMMA_SEP +
                         OperationContract.Table.COLUMN_NAME_YEAR + INTEGER_TYPE + COMMA_SEP +

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.R;
@@ -20,6 +21,7 @@ public class Home extends AppCompatActivity {
     private Account account;
 
     private Button coursesButton;
+    private ListView operationsListView;
     private PriceView balanceAccount;
 
     private static final String CURRENT_ACCOUNT_NAME = "home.currentAccountName";
@@ -30,6 +32,7 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         this.coursesButton = (Button)findViewById(R.id.coursesButton);
+        this.operationsListView = (ListView)findViewById(R.id.operationsListView);
         this.balanceAccount = (PriceView)findViewById(R.id.balanceAccount);
 
         if (this.balanceAccount != null)

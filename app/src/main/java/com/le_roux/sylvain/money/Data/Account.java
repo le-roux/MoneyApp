@@ -1,11 +1,12 @@
 package com.le_roux.sylvain.money.Data;
 
-import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.le_roux.sylvain.money.Utils.AccountOpenHelper;
 import com.le_roux.sylvain.money.Utils.Logger;
+import com.le_roux.sylvain.money.Utils.OperationContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +21,7 @@ public class Account {
 
     private String name;
     private double balance;
+    private AccountOpenHelper databaseHelper;
     private ArrayList<Operation> operationsList;
     // TODO stores it in a database
     public static ArrayList<String> categoriesList = new ArrayList<>();
@@ -105,8 +107,28 @@ public class Account {
     /*
      *  Other functions
      */
-    public boolean createTable(Context context) {
-        AccountOpenHelper databaseHelper = new AccountOpenHelper(context, this.name);
-        return false;
+    public void setTable(Context context) {
+        this.databaseHelper = new AccountOpenHelper(context, this.name);
+    }
+
+    /**
+     * Reads all the operations and compute the balance.
+     * @return false is the actual balance is different from the one previously saved, true otherwise
+     */
+    public boolean checkBalance() {
+        SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
+        double balance = 0.0;
+        String[] projection = {OperationContract.Table.COLUMN_NAME_VALUE};
+        Cursor c = db.query(false, this.name, projection, null, null, null, null, null, null);
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            balance += c.getDouble(c.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE));
+            c.moveToNext();
+        }
+        if (this.balance != balance) {
+            this.balance = balance;
+            return false;
+        }
+        return true;
     }
 }
