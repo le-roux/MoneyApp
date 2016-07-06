@@ -1,6 +1,10 @@
 package com.le_roux.sylvain.money.Data;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.le_roux.sylvain.money.Utils.Logger;
+import com.le_roux.sylvain.money.Utils.OperationContract;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +27,7 @@ public class Operation {
     private String category;
     private Calendar date;
     private boolean validated;
+    private long id;
 
     // Keys used for storage
     private static final String PAYEE = "operation.payee";
@@ -54,6 +59,7 @@ public class Operation {
         this.category = "";
         this.date = GregorianCalendar.getInstance();
         this.validated = false;
+        this.id = -1;
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
             this.value = jsonObject.getDouble(VALUE);
@@ -78,6 +84,7 @@ public class Operation {
         this.category = "";
         this.date = GregorianCalendar.getInstance();
         this.validated = false;
+        this.id = -1;
         try {
             this.value = jsonObject.getDouble(VALUE);
             this.payee = jsonObject.getString(PAYEE);
@@ -101,6 +108,7 @@ public class Operation {
         this.description = description;
         this.date = GregorianCalendar.getInstance();
         this.validated = false;
+        this.id = -1;
     }
 
     /*
@@ -162,5 +170,40 @@ public class Operation {
         if (jsonObject == null)
             return null;
         return jsonObject.toString();
+    }
+
+    /**
+     * Save the operation in the specified table
+     * @param db the database containing the table
+     * @param tableName the name of the table where to save the operation
+     * @return true on success, false otherwise
+     */
+    public boolean save(SQLiteDatabase db, String tableName) {
+        ContentValues values = new ContentValues();
+        values.put(OperationContract.Table.COLUMN_NAME_PAYEE, this.payee);
+        values.put(OperationContract.Table.COLUMN_NAME_VALUE, this.value);
+        values.put(OperationContract.Table.COLUMN_NAME_DESCRIPTION, this.description);
+        values.put(OperationContract.Table.COLUMN_NAME_VALIDATED, this.validated);
+        values.put(OperationContract.Table.COLUMN_NAME_YEAR, this.date.get(Calendar.YEAR));
+        values.put(OperationContract.Table.COLUMN_NAME_MONTH, this.date.get(Calendar.MONTH));
+        values.put(OperationContract.Table.COLUMN_NAME_DAY, this.date.get(Calendar.DAY_OF_MONTH));
+        this.id = db.insert(tableName, OperationContract.Table.COLUMN_NAME_ENTRY_ID, values);
+        return this.id != -1;
+    }
+
+    /**
+     * Delete the operation from the specified table
+     * @param db the database containing the table
+     * @param tableName the name of the table from where to delete the operation
+     * @return true on success, false otherwise.
+     */
+    public boolean delete(SQLiteDatabase db, String tableName) {
+        if (this.id == -1) // operation not saved in a table
+            return true;
+        String selection = OperationContract.Table._ID + " LIKE ?";
+        String[] selectionArg = {String.valueOf(this.id)};
+        int ret;
+        ret = db.delete(tableName, selection, selectionArg);
+        return ret != 0;
     }
 }

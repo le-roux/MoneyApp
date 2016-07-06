@@ -1,5 +1,8 @@
 package com.le_roux.sylvain.money.Data;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.le_roux.sylvain.money.Utils.Logger;
 
 import org.json.JSONArray;

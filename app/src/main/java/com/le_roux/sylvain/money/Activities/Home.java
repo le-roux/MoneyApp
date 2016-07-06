@@ -1,23 +1,17 @@
 package com.le_roux.sylvain.money.Activities;
 
 import android.content.ContentValues;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.AccountOpenHelper;
-import com.le_roux.sylvain.money.Utils.Logger;
 import com.le_roux.sylvain.money.Utils.OperationContract;
 import com.le_roux.sylvain.money.Utils.PriceView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class Home extends AppCompatActivity {
 
