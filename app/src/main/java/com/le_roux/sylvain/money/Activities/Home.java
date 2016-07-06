@@ -26,33 +26,22 @@ public class Home extends AppCompatActivity {
     private Button coursesButton;
     private PriceView balanceAccount;
 
-    private SharedPreferences sharedPreferences;
-
-    private static final String ACCOUNT = "home.account";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        JSONObject jsonAccount;
-        try {
-            jsonAccount = new JSONObject(this.sharedPreferences.getString(ACCOUNT, ""));
-            this.account = new Account(jsonAccount);
-        } catch (JSONException e) {
-            Logger.d("Error when retrieving account JSON in Home activity");
-            this.account = new Account("default");
-        }
-
         this.coursesButton = (Button)findViewById(R.id.coursesButton);
         this.balanceAccount = (PriceView)findViewById(R.id.balanceAccount);
+
+        if (this.balanceAccount != null)
+            this.balanceAccount.setName(getString(R.string.Solde));
 
         AccountOpenHelper databaseHelper = new AccountOpenHelper(this);
         SQLiteDatabase dbWrite = databaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(OperationContract.Table.COLUMN_NAME_PAYEE, "foo");
-        values.put(OperationContract.Table.COLUMN_NAME_VALUE, 5);
+        values.put(OperationContract.Table.COLUMN_NAME_VALUE, 10);
         values.put(OperationContract.Table.COLUMN_NAME_DESCRIPTION, "");
         values.put(OperationContract.Table.COLUMN_NAME_VALIDATED, 0);
         values.put(OperationContract.Table.COLUMN_NAME_DAY, 20);
@@ -64,7 +53,6 @@ public class Home extends AppCompatActivity {
         String[] projection = {OperationContract.Table.COLUMN_NAME_VALUE};
         Cursor c = dbRead.query(true, OperationContract.Table.TABLE_NAME, projection, null, null, null, null, null, null);
         c.moveToFirst();
-        this.balanceAccount.setName("Balance");
         this.balanceAccount.setValue(c.getDouble(c.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE)));
     }
 }
