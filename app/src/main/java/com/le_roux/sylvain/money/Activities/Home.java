@@ -1,9 +1,11 @@
 package com.le_roux.sylvain.money.Activities;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
@@ -20,6 +22,8 @@ public class Home extends AppCompatActivity {
     private Button coursesButton;
     private PriceView balanceAccount;
 
+    private static final String CURRENT_ACCOUNT_NAME = "home.currentAccountName";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +35,15 @@ public class Home extends AppCompatActivity {
         if (this.balanceAccount != null)
             this.balanceAccount.setName(getString(R.string.Solde));
 
-        AccountOpenHelper databaseHelper = new AccountOpenHelper(this);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String accountName = sharedPreferences.getString(CURRENT_ACCOUNT_NAME, "");
+        if (accountName.equals("")) {
+            //TODO display popup create account
+        } else {
+            this.account = new Account(accountName);
+        }
+
+        AccountOpenHelper databaseHelper = new AccountOpenHelper(this, "account");
         SQLiteDatabase dbWrite = databaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(OperationContract.Table.COLUMN_NAME_PAYEE, "foo");

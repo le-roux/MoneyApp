@@ -1,8 +1,10 @@
 package com.le_roux.sylvain.money.Data;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.le_roux.sylvain.money.Utils.AccountOpenHelper;
 import com.le_roux.sylvain.money.Utils.Logger;
 
 import org.json.JSONArray;
@@ -98,5 +100,13 @@ public class Account {
         if (jsonObject == null)
             return null;
         return jsonObject.toString();
+    }
+
+    /*
+     *  Other functions
+     */
+    public boolean createTable(Context context) {
+        AccountOpenHelper databaseHelper = new AccountOpenHelper(context, this.name);
+        return false;
     }
 }
