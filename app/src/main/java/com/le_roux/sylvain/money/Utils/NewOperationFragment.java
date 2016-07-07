@@ -58,6 +58,7 @@ public class NewOperationFragment extends DialogFragment {
                         operation.setValue(Double.parseDouble(valueView.getText().toString()));
                         operation.setDescription(descriptionView.getText().toString());
                         ((AccountContainer)getActivity()).getAccount().addOperation(operation);
+                        // TODO update the list view
                     }
                 });
         return builder.create();

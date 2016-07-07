@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -20,6 +21,7 @@ import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.AccountOpenHelper;
 import com.le_roux.sylvain.money.Utils.Logger;
 import com.le_roux.sylvain.money.Utils.NewAccountFragment;
+import com.le_roux.sylvain.money.Utils.NewOperationFragment;
 import com.le_roux.sylvain.money.Utils.OperationContract;
 import com.le_roux.sylvain.money.Utils.PriceView;
 
@@ -31,6 +33,7 @@ public class Home extends AppCompatActivity implements AccountContainer {
     private Account account;
 
     private Button coursesButton;
+    private Button newOperationButton;
     private ListView operationsListView;
     private PriceView balanceAccount;
 
@@ -44,6 +47,7 @@ public class Home extends AppCompatActivity implements AccountContainer {
         LayoutInflater inflater = (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
         this.operationsListView.addHeaderView(inflater.inflate(R.layout.header_operation, null));
         this.balanceAccount = (PriceView)findViewById(R.id.balanceAccount);
+        this.newOperationButton = (Button)findViewById(R.id.addOperation);
 
         if (this.balanceAccount != null)
             this.balanceAccount.setName(getString(R.string.Solde));
@@ -60,11 +64,20 @@ public class Home extends AppCompatActivity implements AccountContainer {
             DialogFragment fragment = new NewAccountFragment();
             fragment.show(getSupportFragmentManager(), "New account");
         }
+
+        this.newOperationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment fragment = new NewOperationFragment();
+                fragment.show(getSupportFragmentManager(), "New operation");
+            }
+        });
     }
 
     @Override
     public void setAccount(Account account) {
         this.account = account;
+        this.account.setTable(this);
         AccountOpenHelper databaseHelper = new AccountOpenHelper(this, this.account.getName());
         SQLiteDatabase dbWrite = databaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();

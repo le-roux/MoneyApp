@@ -48,7 +48,7 @@ public class AccountOpenHelper extends SQLiteOpenHelper {
 
     public void createTable(String name) {
         String SQL_CREATE_TABLE =
-                "CREATE TABLE " + name + " ( " +
+                "CREATE TABLE IF NOT EXISTS " + name + " ( " +
                         "_id" + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                         OperationContract.Table.COLUMN_NAME_PAYEE + TEXT_TYPE + COMMA_SEP +
                         OperationContract.Table.COLUMN_NAME_VALUE + REAL_TYPE + COMMA_SEP +

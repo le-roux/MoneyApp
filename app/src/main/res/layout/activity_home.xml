@@ -28,6 +28,14 @@
         android:layout_centerHorizontal="true"
         android:background="@color/mid_grey"/>
 
+    <Button
+        android:id="@+id/addOperation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/mid_grey"
+        android:text="@string/New"/>
+
     <ListView
         android:id="@+id/operationsListView"
         android:layout_width="match_parent"
