@@ -33,7 +33,7 @@ public class NewAccountFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String accountName = accountNameField.getText().toString();
-                        //TODO check that this name doesn't already exists + work with several tables
+                        //TODO check that this name doesn't already exists
                         Account account = new Account(accountName);
                         account.setTable(getActivity());
                         ((AccountContainer)getActivity()).setAccount(account);

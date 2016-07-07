@@ -87,9 +87,6 @@ public class Home extends AppCompatActivity implements AccountContainer {
                 OperationContract.Table.COLUMN_NAME_VALIDATED};
         Cursor c = dbRead.query(true, this.account.getName(), selection, null, null, null, null, null, null);
 
-        int[] to = {R.id.day, R.id.month, R.id.year, R.id.payee, R.id.value, R.id.category, R.id.validated};
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.item_operation, c, selection, to, 0);
-        this.operationsListView.setAdapter(adapter);
     }
 
     @Override
