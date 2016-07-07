@@ -2,14 +2,17 @@ package com.le_roux.sylvain.money.Utils;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.le_roux.sylvain.money.Data.Account;
+import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.R;
 
 /**
@@ -19,7 +22,8 @@ public class NewAccountFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        ViewGroup layout = (ViewGroup)getResources().getLayout(R.layout.new_account_fragment);
+        LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewGroup layout = (ViewGroup)inflater.inflate(R.layout.new_account_fragment, null);
         final EditText accountNameField = (EditText)layout.findViewById(R.id.name);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(layout)
@@ -29,6 +33,7 @@ public class NewAccountFragment extends DialogFragment {
                         String accountName = accountNameField.getText().toString();
                         Account account = new Account(accountName);
                         account.setTable(getActivity());
+                        ((AccountContainer)getActivity()).setAccount(account);
                     }
                 });
         return builder.create();

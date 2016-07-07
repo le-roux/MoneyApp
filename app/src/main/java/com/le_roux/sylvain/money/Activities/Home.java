@@ -6,18 +6,21 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import com.le_roux.sylvain.money.Data.Account;
+import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.AccountOpenHelper;
+import com.le_roux.sylvain.money.Utils.NewAccountFragment;
 import com.le_roux.sylvain.money.Utils.OperationContract;
 import com.le_roux.sylvain.money.Utils.PriceView;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements AccountContainer {
 
     private Account account;
 
@@ -42,16 +45,22 @@ public class Home extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String accountName = sharedPreferences.getString(CURRENT_ACCOUNT_NAME, "");
         if (accountName.equals("")) {
-            //TODO display popup create account
-            this.account = new Account("account");
+            DialogFragment fragment = new NewAccountFragment();
+            fragment.show(getSupportFragmentManager(), "New account");
         } else {
-            this.account = new Account(accountName);
+            this.setAccount(new Account(accountName));
         }
 
+
+    }
+
+    @Override
+    public void setAccount(Account account) {
+        this.account = account;
         AccountOpenHelper databaseHelper = new AccountOpenHelper(this, this.account.getName());
         SQLiteDatabase dbWrite = databaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(OperationContract.Table.COLUMN_NAME_PAYEE, "foo");
+        values.put(OperationContract.Table.COLUMN_NAME_PAYEE, this.account.getName());
         values.put(OperationContract.Table.COLUMN_NAME_VALUE, 10);
         values.put(OperationContract.Table.COLUMN_NAME_CATEGORY, "food");
         values.put(OperationContract.Table.COLUMN_NAME_DESCRIPTION, "");
@@ -77,5 +86,10 @@ public class Home extends AppCompatActivity {
         int[] to = {R.id.day, R.id.month, R.id.year, R.id.payee, R.id.value, R.id.category, R.id.validated};
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.item_operation, c, selection, to, 0);
         this.operationsListView.setAdapter(adapter);
+    }
+
+    @Override
+    public Account getAccount() {
+        return this.account;
     }
 }
