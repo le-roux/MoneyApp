@@ -2,4 +2,8 @@
     <string name="app_name">Money</string>
     <string name="Solde">Solde</string>
     <string name="Courses">Courses</string>
+    <string name="AccountName">Nom du compte</string>
+    <string name="Password">Mot de passe</string>
+    <string name="InitialValue">Solde initial</string>
+    <string name="Create">Créer</string>
 </resources>
