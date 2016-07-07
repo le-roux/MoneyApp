@@ -28,8 +28,6 @@ public class Home extends AppCompatActivity implements AccountContainer {
     private ListView operationsListView;
     private PriceView balanceAccount;
 
-    private static final String CURRENT_ACCOUNT_NAME = "home.currentAccountName";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,15 +41,12 @@ public class Home extends AppCompatActivity implements AccountContainer {
             this.balanceAccount.setName(getString(R.string.Solde));
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String accountName = sharedPreferences.getString(CURRENT_ACCOUNT_NAME, "");
-        if (accountName.equals("")) {
+        if (sharedPreferences.contains(Account.CURRENT_ACCOUNT))
+            this.setAccount(new Account(sharedPreferences.getString(Account.CURRENT_ACCOUNT, "")));
+        else {
             DialogFragment fragment = new NewAccountFragment();
             fragment.show(getSupportFragmentManager(), "New account");
-        } else {
-            this.setAccount(new Account(accountName));
         }
-
-
     }
 
     @Override

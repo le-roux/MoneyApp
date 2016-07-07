@@ -31,6 +31,8 @@ public class Account {
     private static final String BALANCE = "account.balance";
     private static final String OPERATIONS_LIST = "account.operationsList";
 
+    public static final String CURRENT_ACCOUNT = "account.current";
+
     /*
      *  Constructors
      */
@@ -70,8 +72,12 @@ public class Account {
         return this.balance;
     }
 
-    public void addOperation(Operation operation) {
-        this.operationsList.add(operation);
+    public boolean addOperation(Operation operation) {
+        //this.operationsList.add(operation);
+        SQLiteDatabase dbWrite = this.databaseHelper.getWritableDatabase();
+        long rowId;
+        rowId = dbWrite.insert(this.name, null, operation.getContentValues());
+        return rowId != -1;
     }
 
     public void deleteOperation(int index) {
@@ -106,6 +112,11 @@ public class Account {
 
     /*
      *  Other functions
+     */
+
+    /**
+     * Open or create a table for this account
+     * @param context
      */
     public void setTable(Context context) {
         this.databaseHelper = new AccountOpenHelper(context, this.name);

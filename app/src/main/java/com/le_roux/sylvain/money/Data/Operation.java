@@ -206,4 +206,17 @@ public class Operation {
         ret = db.delete(tableName, selection, selectionArg);
         return ret != 0;
     }
+
+    public ContentValues getContentValues() {
+        ContentValues values = new ContentValues();
+        values.put(OperationContract.Table.COLUMN_NAME_PAYEE, this.payee);
+        values.put(OperationContract.Table.COLUMN_NAME_VALUE, this.value);
+        values.put(OperationContract.Table.COLUMN_NAME_CATEGORY, this.category);
+        values.put(OperationContract.Table.COLUMN_NAME_DESCRIPTION, this.description);
+        values.put(OperationContract.Table.COLUMN_NAME_VALIDATED, this.validated);
+        values.put(OperationContract.Table.COLUMN_NAME_DAY, this.date.get(Calendar.DAY_OF_MONTH));
+        values.put(OperationContract.Table.COLUMN_NAME_MONTH, this.date.get(Calendar.MONTH));
+        values.put(OperationContract.Table.COLUMN_NAME_YEAR, this.date.get(Calendar.YEAR));
+        return values;
+    }
 }

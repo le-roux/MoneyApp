@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -31,9 +33,15 @@ public class NewAccountFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String accountName = accountNameField.getText().toString();
+                        //TODO check that this name doesn't already exists + work with several tables
                         Account account = new Account(accountName);
                         account.setTable(getActivity());
                         ((AccountContainer)getActivity()).setAccount(account);
+                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString(Account.CURRENT_ACCOUNT, account.toString());
+                        editor.putString(accountName, account.toString());
+                        editor.apply();
                     }
                 });
         return builder.create();
