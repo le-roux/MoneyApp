@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import com.le_roux.sylvain.money.Adapter.OperationAdapter;
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.R;
@@ -86,7 +87,8 @@ public class Home extends AppCompatActivity implements AccountContainer {
                 OperationContract.Table.COLUMN_NAME_CATEGORY,
                 OperationContract.Table.COLUMN_NAME_VALIDATED};
         Cursor c = dbRead.query(true, this.account.getName(), selection, null, null, null, null, null, null);
-
+        OperationAdapter adapter = new OperationAdapter(this, c, 0);
+        operationsListView.setAdapter(adapter);
     }
 
     @Override

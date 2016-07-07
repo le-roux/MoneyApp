@@ -12,4 +12,6 @@
     <color name="dark_grey">#5D5D5D</color>
     <color name="mid_grey">#888888</color>
     <color name="light_grey">#F5F5F5</color>
+    <color name="alice_blue">#F0F8FF</color>
+    <color name="aero">#7CB9E8</color>
 </resources>

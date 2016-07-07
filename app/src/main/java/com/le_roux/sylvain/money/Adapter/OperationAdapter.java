@@ -6,9 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.TextView;
+
+import com.le_roux.sylvain.money.R;
+import com.le_roux.sylvain.money.Utils.DateView;
+import com.le_roux.sylvain.money.Utils.OperationContract;
 
 /**
- * Created by sylva on 07/07/2016.
+ * Created by Sylvain LE ROUX on 07/07/2016.
  */
 public class OperationAdapter extends CursorAdapter {
     public OperationAdapter(Context context, Cursor c, boolean autoRequery) {
@@ -22,11 +27,32 @@ public class OperationAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return null;
+        ViewGroup layout = (ViewGroup)inflater.inflate(R.layout.item_operation, null);
+        bindView(layout, context, cursor);
+        return layout;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+        // Get the views
+        DateView dateView = (DateView)view.findViewById(R.id.date);
+        TextView payee = (TextView)view.findViewById(R.id.payee);
+        TextView category = (TextView)view.findViewById(R.id.category);
+        TextView value = (TextView)view.findViewById(R.id.value);
+        TextView validated = (TextView)view.findViewById(R.id.validated);
 
+        // Fill the views
+        dateView.setDay(cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_DAY)));
+        dateView.setMonth(cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_MONTH)));
+        dateView.setYear(cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_YEAR)));
+
+        payee.setText(cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_PAYEE)));
+        category.setText(cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_CATEGORY)));
+        value.setText(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE))));
+        int v = cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALIDATED));
+        if (v == 1)
+            validated.setText("V");
+        else
+            validated.setText(" ");
     }
 }
