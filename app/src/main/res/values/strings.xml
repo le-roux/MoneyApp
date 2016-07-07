@@ -11,4 +11,8 @@
     <string name="Category">Catégorie</string>
     <string name="Value">Montant</string>
     <string name="V">V</string>
+    <string name="Debit">Débit</string>
+    <string name="Credit">Crédit</string>
+    <string name="Cancel">Annuler</string>
+    <string name="Description">Description</string>
 </resources>

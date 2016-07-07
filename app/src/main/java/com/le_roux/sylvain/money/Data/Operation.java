@@ -122,6 +122,22 @@ public class Operation {
         return this.value;
     }
 
+    public void setPayee(String payee) {
+        this.payee = payee;
+    }
+
+    public String getPayee() {
+        return this.payee;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getCategory() {
+        return this.category;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }

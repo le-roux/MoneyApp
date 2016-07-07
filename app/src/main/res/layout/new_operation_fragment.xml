@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.le_roux.sylvain.money.Utils.DateView
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RadioGroup
+        android:id="@+id/Type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/Debit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/Debit"
+            android:layout_weight="1"/>
+
+        <RadioButton
+            android:id="@+id/Credit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/Credit"
+            android:layout_weight="1"/>
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/payee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/Payee"/>
+
+    <EditText
+        android:id="@+id/category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/Category"/>
+
+    <EditText
+        android:id="@+id/value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/Value"
+        android:inputType="numberSigned"/>
+
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/Description"
+        android:inputType="textMultiLine"/>
+</LinearLayout>
