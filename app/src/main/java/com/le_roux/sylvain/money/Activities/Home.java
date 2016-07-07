@@ -16,9 +16,13 @@ import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.AccountOpenHelper;
+import com.le_roux.sylvain.money.Utils.Logger;
 import com.le_roux.sylvain.money.Utils.NewAccountFragment;
 import com.le_roux.sylvain.money.Utils.OperationContract;
 import com.le_roux.sylvain.money.Utils.PriceView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Home extends AppCompatActivity implements AccountContainer {
 
@@ -41,8 +45,13 @@ public class Home extends AppCompatActivity implements AccountContainer {
             this.balanceAccount.setName(getString(R.string.Solde));
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.contains(Account.CURRENT_ACCOUNT))
-            this.setAccount(new Account(sharedPreferences.getString(Account.CURRENT_ACCOUNT, "")));
+        if (sharedPreferences.contains(Account.CURRENT_ACCOUNT)) {
+            try {
+                this.setAccount(new Account(new JSONObject(sharedPreferences.getString(Account.CURRENT_ACCOUNT, ""))));
+            } catch (JSONException e) {
+                Logger.d("Error when recreating account JSON from string");
+            }
+        }
         else {
             DialogFragment fragment = new NewAccountFragment();
             fragment.show(getSupportFragmentManager(), "New account");

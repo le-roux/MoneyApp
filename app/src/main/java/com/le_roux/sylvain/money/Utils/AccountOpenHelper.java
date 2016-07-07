@@ -27,8 +27,7 @@ public class AccountOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Logger.d("table name = " + this.name);
-        String SQL_CREATE_TABLE =
+        /*String SQL_CREATE_TABLE =
                 "CREATE TABLE " + this.name + " ( " +
                         "_id" + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                         OperationContract.Table.COLUMN_NAME_PAYEE + TEXT_TYPE + COMMA_SEP +
@@ -39,11 +38,26 @@ public class AccountOpenHelper extends SQLiteOpenHelper {
                         OperationContract.Table.COLUMN_NAME_YEAR + INTEGER_TYPE + COMMA_SEP +
                         OperationContract.Table.COLUMN_NAME_MONTH + INTEGER_TYPE + COMMA_SEP +
                         OperationContract.Table.COLUMN_NAME_DAY + INTEGER_TYPE + ')';
-        db.execSQL(SQL_CREATE_TABLE);
+        db.execSQL(SQL_CREATE_TABLE);*/
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public void createTable(String name) {
+        String SQL_CREATE_TABLE =
+                "CREATE TABLE " + name + " ( " +
+                        "_id" + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        OperationContract.Table.COLUMN_NAME_PAYEE + TEXT_TYPE + COMMA_SEP +
+                        OperationContract.Table.COLUMN_NAME_VALUE + REAL_TYPE + COMMA_SEP +
+                        OperationContract.Table.COLUMN_NAME_CATEGORY + TEXT_TYPE + COMMA_SEP +
+                        OperationContract.Table.COLUMN_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
+                        OperationContract.Table.COLUMN_NAME_VALIDATED + INTEGER_TYPE + COMMA_SEP +
+                        OperationContract.Table.COLUMN_NAME_YEAR + INTEGER_TYPE + COMMA_SEP +
+                        OperationContract.Table.COLUMN_NAME_MONTH + INTEGER_TYPE + COMMA_SEP +
+                        OperationContract.Table.COLUMN_NAME_DAY + INTEGER_TYPE + ')';
+        this.getWritableDatabase().execSQL(SQL_CREATE_TABLE);
     }
 }

@@ -120,6 +120,7 @@ public class Account {
      */
     public void setTable(Context context) {
         this.databaseHelper = new AccountOpenHelper(context, this.name);
+        this.databaseHelper.createTable(this.name);
     }
 
     /**
