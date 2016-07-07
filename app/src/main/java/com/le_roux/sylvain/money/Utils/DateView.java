@@ -28,14 +28,23 @@ public class DateView extends TextView {
         this.day = 1;
         this.month = 1;
         this.year = 1970;
+        update();
     }
 
     public DateView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.day = 1;
+        this.month = 1;
+        this.year = 1970;
+        update();
     }
 
     public DateView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.day = 1;
+        this.month = 1;
+        this.year = 1970;
+        update();
     }
 
     /*

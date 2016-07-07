@@ -10,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 
 import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
@@ -19,7 +20,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
- * Created by sylva on 07/07/2016.
+ * Created by Sylvain LE ROUX on 07/07/2016.
  */
 public class NewOperationFragment extends DialogFragment {
 
@@ -39,8 +40,10 @@ public class NewOperationFragment extends DialogFragment {
                 .setPositiveButton(R.string.Create, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // TODO check the validity of all the fields
                         // Get the views
                         DateView dateView =(DateView)layout.findViewById(R.id.date);
+                        RadioGroup radioGroup = (RadioGroup)layout.findViewById(R.id.Type);
                         EditText payeeView = (EditText)layout.findViewById(R.id.payee);
                         EditText categoryView = (EditText)layout.findViewById(R.id.category);
                         EditText valueView = (EditText)layout.findViewById(R.id.value);
@@ -48,14 +51,23 @@ public class NewOperationFragment extends DialogFragment {
 
                         // Create the operation object
                         Operation operation = new Operation();
+                        // TODO allow to change the date
                         Calendar calendar = GregorianCalendar.getInstance();
                         calendar.set(Calendar.DAY_OF_MONTH, dateView.getDay());
                         calendar.set(Calendar.MONTH, dateView.getMonth());
                         calendar.set(Calendar.YEAR, dateView.getYear());
                         operation.setDate(calendar);
+
                         operation.setPayee(payeeView.getText().toString());
                         operation.setCategory(categoryView.getText().toString());
-                        operation.setValue(Double.parseDouble(valueView.getText().toString()));
+                        double value = Double.parseDouble(valueView.getText().toString());
+                        if (radioGroup.getCheckedRadioButtonId() == R.id.Debit)
+                            if (value > 0)
+                                value = -value;
+                        else
+                            if(value < 0)
+                                value = -value;
+                        operation.setValue(value);
                         operation.setDescription(descriptionView.getText().toString());
                         ((AccountContainer)getActivity()).getAccount().addOperation(operation);
                         // TODO update the list view

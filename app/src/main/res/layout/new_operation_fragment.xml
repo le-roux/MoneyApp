@@ -8,7 +8,9 @@
     <com.le_roux.sylvain.money.Utils.DateView
         android:id="@+id/date"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/formSize"
+        android:layout_margin="@dimen/activity_horizontal_margin"/>
 
     <RadioGroup
         android:id="@+id/Type"
@@ -48,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/Value"
-        android:inputType="numberSigned"/>
+        android:inputType="number"/>
 
     <EditText
         android:id="@+id/description"

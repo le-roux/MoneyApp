@@ -4,5 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="contentSize">30dp</dimen>
+    <dimen name="formSize">20dp</dimen>
     <dimen name="operation_padding">5dp</dimen>
 </resources>
