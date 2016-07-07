@@ -6,4 +6,9 @@
     <string name="Password">Mot de passe</string>
     <string name="InitialValue">Solde initial</string>
     <string name="Create">Créer</string>
+    <string name="Date">Date</string>
+    <string name="Payee">Destinataire</string>
+    <string name="Category">Catégorie</string>
+    <string name="Value">Montant</string>
+    <string name="V">V</string>
 </resources>

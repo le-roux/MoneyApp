@@ -5,13 +5,14 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <com.le_roux.sylvain.money.Utils.DateView
+    <TextView
         android:id="@+id/date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingEnd="@dimen/operation_padding"
         android:paddingRight="@dimen/operation_padding"
-        android:layout_weight="25"/>
+        android:layout_weight="25"
+        android:text="@string/Date"/>
 
     <TextView
         android:id="@+id/payee"
@@ -20,7 +21,8 @@
         android:paddingEnd="@dimen/operation_padding"
         android:paddingRight="@dimen/operation_padding"
         android:background="@drawable/operation_item_color_2"
-        android:layout_weight="25"/>
+        android:layout_weight="25"
+        android:text="@string/Payee"/>
 
     <TextView
         android:id="@+id/category"
@@ -28,7 +30,8 @@
         android:layout_height="wrap_content"
         android:paddingEnd="@dimen/operation_padding"
         android:paddingRight="@dimen/operation_padding"
-        android:layout_weight="27"/>
+        android:layout_weight="27"
+        android:text="@string/Category"/>
 
     <TextView
         android:id="@+id/value"
@@ -38,12 +41,14 @@
         android:textAlignment="textEnd"
         android:layout_gravity="end"
         android:background="@drawable/operation_item_color_2"
-        android:layout_weight="20"/>
+        android:layout_weight="20"
+        android:text="@string/Value"/>
 
     <TextView
         android:id="@+id/validated"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="3" />
+        android:layout_weight="3"
+        android:text="@string/V"/>
 
 </LinearLayout>

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -40,6 +41,8 @@ public class Home extends AppCompatActivity implements AccountContainer {
 
         this.coursesButton = (Button)findViewById(R.id.coursesButton);
         this.operationsListView = (ListView)findViewById(R.id.operationsListView);
+        LayoutInflater inflater = (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        this.operationsListView.addHeaderView(inflater.inflate(R.layout.header_operation, null));
         this.balanceAccount = (PriceView)findViewById(R.id.balanceAccount);
 
         if (this.balanceAccount != null)
