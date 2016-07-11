@@ -16,6 +16,7 @@ import android.widget.SimpleCursorAdapter;
 
 import com.le_roux.sylvain.money.Adapter.OperationAdapter;
 import com.le_roux.sylvain.money.Data.Account;
+import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.Interfaces.DateViewContainer;
 import com.le_roux.sylvain.money.R;
@@ -29,6 +30,9 @@ import com.le_roux.sylvain.money.Utils.PriceView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class Home extends AppCompatActivity implements AccountContainer, DateViewContainer {
 
@@ -73,6 +77,16 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
             public void onClick(View v) {
                 NewOperationFragment fragment = new NewOperationFragment();
                 container = fragment;
+                Bundle info = new Bundle();
+                Calendar c = GregorianCalendar.getInstance();
+                info.putInt(DateView.YEAR, c.get(Calendar.YEAR));
+                info.putInt(DateView.MONTH, c.get(Calendar.MONTH));
+                info.putInt(DateView.DAY, c.get(Calendar.DAY_OF_MONTH));
+                info.putString(Operation.PAYEE, "");
+                info.putString(Operation.CATEGORY, "");
+                info.putDouble(Operation.VALUE, -0);
+                info.putString(Operation.DESCRIPTION, "");
+                fragment.setArguments(info);
                 fragment.show(getSupportFragmentManager(), "New operation");
             }
         });

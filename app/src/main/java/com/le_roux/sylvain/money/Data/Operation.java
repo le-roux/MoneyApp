@@ -30,16 +30,16 @@ public class Operation {
     private long id;
 
     // Keys used for storage
-    private static final String PAYEE = "operation.payee";
-    private static final String VALUE = "operation.value";
-    private static final String CATEGORY = "operation.category";
-    private static final String YEAR = "operation.date.year";
-    private static final String MONTH = "operation.date.month";
-    private static final String DAY = "operation.date.day";
-    private static final String HOUR = "operation.date.hour";
-    private static final String MINUTE = "operation.date.hour";
-    private static final String DESCRIPTION = "operation.description";
-    private static final String VALIDATED = "operation.validated";
+    public static final String PAYEE = "operation.payee";
+    public static final String VALUE = "operation.value";
+    public static final String CATEGORY = "operation.category";
+    public static final String YEAR = "operation.date.year";
+    public static final String MONTH = "operation.date.month";
+    public static final String DAY = "operation.date.day";
+    public static final String HOUR = "operation.date.hour";
+    public static final String MINUTE = "operation.date.hour";
+    public static final String DESCRIPTION = "operation.description";
+    public static final String VALIDATED = "operation.validated";
 
     /*
      *  Constructors

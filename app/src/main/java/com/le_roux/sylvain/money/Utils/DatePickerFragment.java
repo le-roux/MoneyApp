@@ -19,10 +19,18 @@ public class DatePickerFragment extends DialogFragment{
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Calendar c = GregorianCalendar.getInstance();
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        int month = c.get(Calendar.MONTH);
-        int year = c.get(Calendar.YEAR);
+        int day, month, year;
+        Bundle info = getArguments();
+        if (info != null) {
+            day = info.getInt(DateView.DAY);
+            month = info.getInt(DateView.MONTH);
+            year = info.getInt(DateView.YEAR);
+        } else {
+            final Calendar c = GregorianCalendar.getInstance();
+            day = c.get(Calendar.DAY_OF_MONTH);
+            month = c.get(Calendar.MONTH);
+            year = c.get(Calendar.YEAR);
+        }
         return new DatePickerDialog(getActivity(), ((DateViewContainer)getActivity()).getDateView(), year, month, day);
     }
 }

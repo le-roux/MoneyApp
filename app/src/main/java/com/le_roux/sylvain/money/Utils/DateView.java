@@ -23,6 +23,13 @@ public class DateView extends TextView implements DatePickerDialog.OnDateSetList
     private int year;
 
     /*
+     *  Keys related with date
+     */
+    public static final String DAY = "date.day";
+    public static final String MONTH = "date.month";
+    public static final String YEAR = "date.year";
+
+    /*
      *  Constructors
      */
     public DateView(Context context) {

@@ -16,4 +16,8 @@
     <string name="Cancel">Annuler</string>
     <string name="Description">Description</string>
     <string name="New">Nouveau</string>
+
+    <string name="InvalidPayee">Destinataire invalide</string>
+    <string name="InvalidCategory">Catégorie invalide</string>
+    <string name="InvalidValue">Valeur invalide</string>
 </resources>
