@@ -10,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -26,6 +27,7 @@ import com.le_roux.sylvain.money.Utils.Logger;
 import com.le_roux.sylvain.money.Utils.NewAccountFragment;
 import com.le_roux.sylvain.money.Utils.NewOperationFragment;
 import com.le_roux.sylvain.money.Utils.OperationContract;
+import com.le_roux.sylvain.money.Utils.OperationListView;
 import com.le_roux.sylvain.money.Utils.PriceView;
 
 import org.json.JSONException;
@@ -40,7 +42,7 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
 
     private Button coursesButton;
     private Button newOperationButton;
-    private ListView operationsListView;
+    private OperationListView operationsListView;
     private PriceView balanceAccount;
     private DateViewContainer container;
     private OperationAdapter adapter;
@@ -51,7 +53,7 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
         setContentView(R.layout.activity_home);
 
         this.coursesButton = (Button)findViewById(R.id.coursesButton);
-        this.operationsListView = (ListView)findViewById(R.id.operationsListView);
+        this.operationsListView = (OperationListView)findViewById(R.id.operationsListView);
         LayoutInflater inflater = (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
         this.operationsListView.addHeaderView(inflater.inflate(R.layout.header_operation, null));
         this.balanceAccount = (PriceView)findViewById(R.id.balanceAccount);
@@ -107,10 +109,31 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
                 OperationContract.Table.COLUMN_NAME_PAYEE,
                 OperationContract.Table.COLUMN_NAME_VALUE,
                 OperationContract.Table.COLUMN_NAME_CATEGORY,
+                OperationContract.Table.COLUMN_NAME_DESCRIPTION,
                 OperationContract.Table.COLUMN_NAME_VALIDATED};
         Cursor c = dbRead.query(true, this.account.getName(), selection, null, null, null, null, null, null);
         this.adapter = new OperationAdapter(this, c, 0);
-        operationsListView.setAdapter(this.adapter);
+        this.operationsListView.setCursor(c);
+        this.operationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DialogFragment fragment = new NewOperationFragment();
+                Cursor cursor = operationsListView.getCursor();
+                cursor.moveToFirst();
+                cursor.move(position - 1);
+                Bundle info = new Bundle();
+                info.putInt(DateView.YEAR, cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_YEAR)));
+                info.putInt(DateView.MONTH, cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_MONTH)));
+                info.putInt(DateView.DAY, cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_DAY)));
+                info.putString(Operation.PAYEE, cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_PAYEE)));
+                info.putString(Operation.CATEGORY, cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_CATEGORY)));
+                info.putDouble(Operation.VALUE, cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE)));
+                info.putString(Operation.DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_DESCRIPTION)));
+                fragment.setArguments(info);
+                fragment.show(getSupportFragmentManager(), "New operation");
+            }
+        });
+        this.operationsListView.setAdapter(this.adapter);
     }
 
     @Override

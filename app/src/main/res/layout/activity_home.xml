@@ -36,7 +36,7 @@
         android:background="@color/mid_grey"
         android:text="@string/New"/>
 
-    <ListView
+    <com.le_roux.sylvain.money.Utils.OperationListView
         android:id="@+id/operationsListView"
         android:layout_width="match_parent"
         android:layout_height="0dp"

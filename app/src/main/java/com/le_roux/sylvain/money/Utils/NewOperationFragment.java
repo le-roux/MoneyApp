@@ -153,6 +153,7 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
 
                             ((AccountContainer)getActivity()).getAccount().addOperation(operation);
                             // TODO update the list view
+                            // TODO allow to update an existing operation
                         } else {
                             DialogFragment fragment = new NewOperationFragment();
                             Bundle info = new Bundle();
