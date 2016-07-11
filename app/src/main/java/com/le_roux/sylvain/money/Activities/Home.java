@@ -17,8 +17,10 @@ import android.widget.SimpleCursorAdapter;
 import com.le_roux.sylvain.money.Adapter.OperationAdapter;
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
+import com.le_roux.sylvain.money.Interfaces.DateViewContainer;
 import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.AccountOpenHelper;
+import com.le_roux.sylvain.money.Utils.DateView;
 import com.le_roux.sylvain.money.Utils.Logger;
 import com.le_roux.sylvain.money.Utils.NewAccountFragment;
 import com.le_roux.sylvain.money.Utils.NewOperationFragment;
@@ -28,7 +30,7 @@ import com.le_roux.sylvain.money.Utils.PriceView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Home extends AppCompatActivity implements AccountContainer {
+public class Home extends AppCompatActivity implements AccountContainer, DateViewContainer {
 
     private Account account;
 
@@ -36,6 +38,7 @@ public class Home extends AppCompatActivity implements AccountContainer {
     private Button newOperationButton;
     private ListView operationsListView;
     private PriceView balanceAccount;
+    private DateViewContainer container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +71,8 @@ public class Home extends AppCompatActivity implements AccountContainer {
         this.newOperationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment fragment = new NewOperationFragment();
+                NewOperationFragment fragment = new NewOperationFragment();
+                container = fragment;
                 fragment.show(getSupportFragmentManager(), "New operation");
             }
         });
@@ -110,5 +114,12 @@ public class Home extends AppCompatActivity implements AccountContainer {
     @Override
     public Account getAccount() {
         return this.account;
+    }
+
+    @Override
+    public DateView getDateView() {
+        if (container != null)
+            return container.getDateView();
+        return null;
     }
 }

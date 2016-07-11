@@ -8,12 +8,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
+import com.le_roux.sylvain.money.Interfaces.DateViewContainer;
 import com.le_roux.sylvain.money.R;
 
 import java.util.Calendar;
@@ -22,7 +25,9 @@ import java.util.GregorianCalendar;
 /**
  * Created by Sylvain LE ROUX on 07/07/2016.
  */
-public class NewOperationFragment extends DialogFragment {
+public class NewOperationFragment extends DialogFragment implements DateViewContainer {
+
+    private DateView dateView = null;
 
     @NonNull
     @Override
@@ -30,6 +35,14 @@ public class NewOperationFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final ViewGroup layout = (ViewGroup)inflater.inflate(R.layout.new_operation_fragment, null);
+        this.dateView = (DateView)layout.findViewById(R.id.date);
+        this.dateView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment datePickerFragment = new DatePickerFragment();
+                datePickerFragment.show(getFragmentManager(), "Date picker");
+            }
+        });
         builder.setView(layout)
                 .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -74,5 +87,10 @@ public class NewOperationFragment extends DialogFragment {
                     }
                 });
         return builder.create();
+    }
+
+    @Override
+    public DateView getDateView() {
+        return this.dateView;
     }
 }

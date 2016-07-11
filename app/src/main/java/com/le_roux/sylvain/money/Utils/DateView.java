@@ -1,7 +1,9 @@
 package com.le_roux.sylvain.money.Utils;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 /**
@@ -11,7 +13,7 @@ import android.widget.TextView;
 /**
  * Allows to display a date in format dd/mm/yyyy
  */
-public class DateView extends TextView {
+public class DateView extends TextView implements DatePickerDialog.OnDateSetListener{
 
     /*
      *  Attributes
@@ -94,4 +96,10 @@ public class DateView extends TextView {
         this.setText(builder.toString());
     }
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        this.setYear(year);
+        this.setMonth(monthOfYear + 1);
+        this.setDay(dayOfMonth);
+    }
 }
