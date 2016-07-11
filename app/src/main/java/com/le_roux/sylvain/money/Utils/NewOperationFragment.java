@@ -152,21 +152,20 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
                             operation.setValue(value);
 
                             ((AccountContainer)getActivity()).getAccount().addOperation(operation);
+                            // TODO update the list view
                         } else {
                             DialogFragment fragment = new NewOperationFragment();
                             Bundle info = new Bundle();
-                            Calendar c = GregorianCalendar.getInstance();
-                            info.putInt(DateView.YEAR, c.get(Calendar.YEAR));
-                            info.putInt(DateView.MONTH, c.get(Calendar.MONTH));
-                            info.putInt(DateView.DAY, c.get(Calendar.DAY_OF_MONTH));
-                            info.putString(Operation.PAYEE, "");
-                            info.putString(Operation.CATEGORY, "");
-                            info.putDouble(Operation.VALUE, -0);
-                            info.putString(Operation.DESCRIPTION, "");
+                            info.putInt(DateView.YEAR, dateView.getYear());
+                            info.putInt(DateView.MONTH, dateView.getMonth());
+                            info.putInt(DateView.DAY, dateView.getDay());
+                            info.putString(Operation.PAYEE, payee);
+                            info.putString(Operation.CATEGORY, category);
+                            info.putDouble(Operation.VALUE, value);
+                            info.putString(Operation.DESCRIPTION, description);
                             fragment.setArguments(info);
                             fragment.show(getFragmentManager(), "New Operation");
                         }
-                        // TODO update the list view
                     }
                 });
         return builder.create();

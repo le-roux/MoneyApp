@@ -1,5 +1,8 @@
 package com.le_roux.sylvain.money.Interfaces;
 
+import android.widget.ListView;
+
+import com.le_roux.sylvain.money.Adapter.OperationAdapter;
 import com.le_roux.sylvain.money.Data.Account;
 
 /**
@@ -8,4 +11,5 @@ import com.le_roux.sylvain.money.Data.Account;
 public interface AccountContainer {
     void setAccount(Account account);
     Account getAccount();
+    OperationAdapter getOperationAdapter();
 }

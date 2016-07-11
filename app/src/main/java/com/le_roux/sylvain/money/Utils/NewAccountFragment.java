@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.le_roux.sylvain.money.Data.Account;
+import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.R;
 
@@ -25,13 +26,14 @@ public class NewAccountFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ViewGroup layout = (ViewGroup)inflater.inflate(R.layout.new_account_fragment, null);
-        final EditText accountNameField = (EditText)layout.findViewById(R.id.name);
+        final ViewGroup layout = (ViewGroup)inflater.inflate(R.layout.new_account_fragment, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(layout)
                 .setPositiveButton(R.string.Create, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        EditText accountNameField = (EditText)layout.findViewById(R.id.name);
+                        EditText initialBalanceField = (EditText)layout.findViewById(R.id.initialValue);
                         String accountName = accountNameField.getText().toString();
                         //TODO check that this name doesn't already exists
                         Account account = new Account(accountName);
@@ -42,6 +44,17 @@ public class NewAccountFragment extends DialogFragment {
                         editor.putString(Account.CURRENT_ACCOUNT, account.toString());
                         editor.putString(accountName, account.toString());
                         editor.apply();
+
+                        String initialBalanceString = initialBalanceField.getText().toString();
+                        if (!initialBalanceString.equals("")) {
+                            double initialBalance = Double.parseDouble(initialBalanceString);
+                            Operation operation = new Operation();
+                            operation.setPayee(accountName);
+                            operation.setValue(initialBalance);
+                            operation.setCategory(getString(R.string.InitialValue));
+                            operation.setDescription(getString(R.string.InitialValue));
+                            account.addOperation(operation);
+                        }
                     }
                 });
         return builder.create();

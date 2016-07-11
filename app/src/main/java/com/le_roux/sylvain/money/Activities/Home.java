@@ -43,6 +43,7 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
     private ListView operationsListView;
     private PriceView balanceAccount;
     private DateViewContainer container;
+    private OperationAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,19 +98,6 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
         this.account = account;
         this.account.setTable(this);
         AccountOpenHelper databaseHelper = new AccountOpenHelper(this, this.account.getName());
-        SQLiteDatabase dbWrite = databaseHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(OperationContract.Table.COLUMN_NAME_PAYEE, this.account.getName());
-        values.put(OperationContract.Table.COLUMN_NAME_VALUE, 10);
-        values.put(OperationContract.Table.COLUMN_NAME_CATEGORY, "food");
-        values.put(OperationContract.Table.COLUMN_NAME_DESCRIPTION, "");
-        values.put(OperationContract.Table.COLUMN_NAME_VALIDATED, 0);
-        values.put(OperationContract.Table.COLUMN_NAME_DAY, 20);
-        values.put(OperationContract.Table.COLUMN_NAME_MONTH, 5);
-        values.put(OperationContract.Table.COLUMN_NAME_YEAR, 2016);
-        long newRowId;
-        newRowId = dbWrite.insert(this.account.getName(),
-                null, values);
 
         SQLiteDatabase dbRead = databaseHelper.getReadableDatabase();
         String[] selection = {OperationContract.Table._ID,
@@ -121,13 +109,18 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
                 OperationContract.Table.COLUMN_NAME_CATEGORY,
                 OperationContract.Table.COLUMN_NAME_VALIDATED};
         Cursor c = dbRead.query(true, this.account.getName(), selection, null, null, null, null, null, null);
-        OperationAdapter adapter = new OperationAdapter(this, c, 0);
-        operationsListView.setAdapter(adapter);
+        this.adapter = new OperationAdapter(this, c, 0);
+        operationsListView.setAdapter(this.adapter);
     }
 
     @Override
     public Account getAccount() {
         return this.account;
+    }
+
+    @Override
+    public OperationAdapter getOperationAdapter() {
+        return this.adapter;
     }
 
     @Override
