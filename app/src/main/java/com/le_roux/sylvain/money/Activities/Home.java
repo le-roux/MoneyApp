@@ -10,8 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.le_roux.sylvain.money.Adapter.OperationAdapter;
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Dialog.NewAccountFragment;
+import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.Logger;
@@ -20,7 +22,7 @@ import com.le_roux.sylvain.money.Utils.PriceView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Home extends AppCompatActivity implements Updatable {
+public class Home extends AppCompatActivity implements Updatable, AccountContainer {
 
     private Account account;
     private Button coursesButton;
@@ -63,13 +65,20 @@ public class Home extends AppCompatActivity implements Updatable {
                 startActivity(intent);
             }
         });
-        this.accountNameView.setText(this.account.getName());
+        if (this.account != null)
+            this.accountNameView.setText(this.account.getName());
         this.update();
     }
 
     public void setAccount(Account account) {
         this.account = account;
         this.account.setTable(this);
+        this.accountNameView.setText(this.account.getName());
+    }
+
+    @Override
+    public Account getAccount() {
+        return this.account;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.le_roux.sylvain.money.Activities;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 import com.le_roux.sylvain.money.Adapter.OperationAdapter;
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Data.Operation;
+import com.le_roux.sylvain.money.Dialog.NewCategoryFragment;
 import com.le_roux.sylvain.money.Dialog.NewOperationFragment;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
@@ -39,6 +41,7 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         operationsListView.addHeaderView(inflater.inflate(R.layout.header_operation, null));
         Button addOperationButton = (Button)findViewById(R.id.addOperation);
+        Button addCategoryButton = (Button)findViewById(R.id.newCategory);
 
         // Create the account
         Account account = null;
@@ -52,6 +55,8 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
             }
             account = new Account(accountJSON, sharedPreferences, this);
         }
+
+        Account.retrieveCategories(sharedPreferences);
 
         this.controller = new OperationListController(account, operationsListView, this);
         this.update();
@@ -76,6 +81,15 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
                 }
             });
         }
+
+        if (addCategoryButton != null)
+            addCategoryButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogFragment fragment = new NewCategoryFragment();
+                    fragment.show(getSupportFragmentManager(), "New category");
+                }
+            });
     }
 
     @Override
@@ -86,16 +100,6 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
     @Override
     public Account getAccount() {
         return this.controller.getAccount();
-    }
-
-    @Override
-    public OperationAdapter getOperationAdapter() {
-        return this.controller.getAdapter();
-    }
-
-    @Override
-    public SharedPreferences getSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @Override

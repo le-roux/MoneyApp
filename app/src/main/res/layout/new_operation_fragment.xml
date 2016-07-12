@@ -39,11 +39,10 @@
         android:layout_height="wrap_content"
         android:hint="@string/Payee"/>
 
-    <EditText
+    <Spinner
         android:id="@+id/category"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/Category"/>
+        android:layout_height="wrap_content"/>
 
     <EditText
         android:id="@+id/value"

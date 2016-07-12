@@ -23,4 +23,7 @@
     <string name="InvalidValue">Valeur invalide</string>
 
     <string name="Account">Compte</string>
+
+    <string name="NewCategory">Nouvelle catégorie</string>
+    <string name="CategoryName">Nom de la catégorie</string>
 </resources>

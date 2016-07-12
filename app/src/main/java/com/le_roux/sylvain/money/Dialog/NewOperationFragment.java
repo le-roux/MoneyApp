@@ -4,17 +4,22 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Path;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.Interfaces.DateViewContainer;
@@ -35,7 +40,7 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
     private RadioButton debitButton;
     private RadioButton creditButton;
     private EditText payeeView;
-    private EditText categoryView;
+    private Spinner categoryView;
     private EditText valueView;
     private EditText descriptionView;
 
@@ -55,11 +60,15 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
         this.debitButton = (RadioButton)layout.findViewById(R.id.Debit);
         this.creditButton = (RadioButton)layout.findViewById(R.id.Credit);
         this.payeeView = (EditText)layout.findViewById(R.id.payee);
-        this.categoryView = (EditText)layout.findViewById(R.id.category);
+        this.categoryView = (Spinner) layout.findViewById(R.id.category);
         this.valueView = (EditText)layout.findViewById(R.id.value);
         this.descriptionView = (EditText)layout.findViewById(R.id.description);
         String positiveButtonText;
         final int id;
+
+        ArrayAdapter spinnerAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getCategoriesList());
+        this.categoryView.setAdapter(spinnerAdapter);
+
         // Set initial values
         Bundle info = getArguments();
         if (info == null)
@@ -68,7 +77,15 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
         this.dateView.setMonth(info.getInt(DateView.MONTH));
         this.dateView.setDay(info.getInt(DateView.DAY));
         this.payeeView.setText(info.getString(Operation.PAYEE));
-        this.categoryView.setText(info.getString(Operation.CATEGORY));
+        String categoryName = info.getString(Operation.CATEGORY);
+        int categoryIndex = Account.getCategoriesList().indexOf(categoryName);
+        if (categoryIndex != -1)
+            this.categoryView.setSelection(categoryIndex);
+        else if (categoryName != "") {
+            Account.getCategoriesList().add(categoryName);
+            Account.saveCategories(PreferenceManager.getDefaultSharedPreferences(getActivity()));
+            this.categoryView.setSelection(Account.getCategoriesList().size() - 1);
+        }
         double value = info.getDouble(Operation.VALUE);
         if (value > 0)
             this.creditButton.setChecked(true);
@@ -108,17 +125,11 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
 
                         boolean dataValidated = true;
                         // TODO check the validity of all the fields
-                        // Get the views
-                        DateView dateView =(DateView)layout.findViewById(R.id.date);
-                        RadioGroup radioGroup = (RadioGroup)layout.findViewById(R.id.Type);
-                        EditText payeeView = (EditText)layout.findViewById(R.id.payee);
-                        EditText categoryView = (EditText)layout.findViewById(R.id.category);
-                        EditText valueView = (EditText)layout.findViewById(R.id.value);
-                        EditText descriptionView = (EditText)layout.findViewById(R.id.description);
 
                         // Get the values
                         String payee = payeeView.getText().toString();
-                        String category = categoryView.getText().toString();
+                        int categoryIndex = categoryView.getSelectedItemPosition();
+                        String category = Account.getCategoriesList().get(categoryIndex);
                         String valueString = valueView.getText().toString();
                         String description = descriptionView.getText().toString();
 

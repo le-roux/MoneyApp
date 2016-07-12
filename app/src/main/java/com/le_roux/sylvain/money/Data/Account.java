@@ -25,13 +25,14 @@ public class Account {
     private SharedPreferences sharedPreferences;
     private AccountOpenHelper databaseHelper;
     private Context context;
-    public static ArrayList<String> categoriesList = new ArrayList<>();
+    private static ArrayList<String> categoriesList = new ArrayList<>();
 
     // Keys used for storage
     private static final String NAME = "account.name";
     private static final String BALANCE = "account.balance";
 
     public static final String CURRENT_ACCOUNT = "account.current";
+    public static final String CATEGORIES = "account.categories";
 
     /*
      *  Constructors
@@ -78,6 +79,9 @@ public class Account {
     public SQLiteDatabase getWritableDatabase() {
         return this.databaseHelper.getWritableDatabase();
     }
+    public static ArrayList<String> getCategoriesList() {
+        return categoriesList;
+    }
 
     /*
      * Storage methods
@@ -105,6 +109,29 @@ public class Account {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         editor.putString(this.name, this.toString());
         editor.apply();
+    }
+
+    public static void saveCategories(SharedPreferences sharedPreferences) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        JSONArray array = new JSONArray();
+        for (String category : categoriesList) {
+            array.put(category);
+        }
+        editor.putString(CATEGORIES, array.toString());
+        editor.apply();
+    }
+
+    public static void retrieveCategories(SharedPreferences sharedPreferences) {
+        try {
+            if (sharedPreferences.contains(CATEGORIES)) {
+                JSONArray array = new JSONArray(sharedPreferences.getString(CATEGORIES, null));
+                categoriesList.clear();
+                for (int i = 0; i < array.length(); i++)
+                    categoriesList.add(array.getString(i));
+            }
+        } catch (JSONException e) {
+            Logger.d("Impossible to read the categories list");
+        }
     }
 
     /*
