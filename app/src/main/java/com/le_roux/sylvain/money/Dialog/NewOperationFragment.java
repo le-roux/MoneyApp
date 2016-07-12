@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -39,10 +41,12 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
     private RadioGroup radioGroup;
     private RadioButton debitButton;
     private RadioButton creditButton;
-    private EditText payeeView;
+    private Spinner payeeView;
     private Spinner categoryView;
     private EditText valueView;
     private EditText descriptionView;
+    private Button addPayeeButton;
+    private Button addCategoryButton;
 
     public static final String STATUS = "operation.fragment.status";
     public static final int NEW = 0;
@@ -59,15 +63,22 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
         this.radioGroup = (RadioGroup)layout.findViewById(R.id.Type);
         this.debitButton = (RadioButton)layout.findViewById(R.id.Debit);
         this.creditButton = (RadioButton)layout.findViewById(R.id.Credit);
-        this.payeeView = (EditText)layout.findViewById(R.id.payee);
+        this.payeeView = (Spinner)layout.findViewById(R.id.payee);
         this.categoryView = (Spinner) layout.findViewById(R.id.category);
         this.valueView = (EditText)layout.findViewById(R.id.value);
         this.descriptionView = (EditText)layout.findViewById(R.id.description);
+        this.addPayeeButton = (Button)layout.findViewById(R.id.addPayee);
+        this.addCategoryButton = (Button)layout.findViewById(R.id.addCategory);
+
+        // Local variables
         String positiveButtonText;
         final int id;
 
-        ArrayAdapter spinnerAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getCategoriesList());
-        this.categoryView.setAdapter(spinnerAdapter);
+        // Initialization of the spinners
+        ArrayAdapter categoryAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getCategoriesList());
+        this.categoryView.setAdapter(categoryAdapter);
+        final ArrayAdapter payeeAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getPayeesList());
+        this.payeeView.setAdapter(payeeAdapter);
 
         // Set initial values
         Bundle info = getArguments();
@@ -76,7 +87,18 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
         this.dateView.setYear(info.getInt(DateView.YEAR));
         this.dateView.setMonth(info.getInt(DateView.MONTH));
         this.dateView.setDay(info.getInt(DateView.DAY));
-        this.payeeView.setText(info.getString(Operation.PAYEE));
+
+        String payeeName = info.getString(Operation.PAYEE);
+        int payeeIndex = Account.getPayeesList().indexOf(payeeName);
+        if (payeeIndex != -1)
+            this.payeeView.setSelection(payeeIndex);
+        else if (payeeName != "") {
+            Account.getPayeesList().add(payeeName);
+            Account.savePayees(PreferenceManager.getDefaultSharedPreferences(getActivity()));
+            this.payeeView.setSelection(Account.getPayeesList().size() - 1);
+            payeeAdapter.notifyDataSetChanged();
+        }
+
         String categoryName = info.getString(Operation.CATEGORY);
         int categoryIndex = Account.getCategoriesList().indexOf(categoryName);
         if (categoryIndex != -1)
@@ -85,7 +107,9 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
             Account.getCategoriesList().add(categoryName);
             Account.saveCategories(PreferenceManager.getDefaultSharedPreferences(getActivity()));
             this.categoryView.setSelection(Account.getCategoriesList().size() - 1);
+            categoryAdapter.notifyDataSetChanged();
         }
+
         double value = info.getDouble(Operation.VALUE);
         if (value > 0)
             this.creditButton.setChecked(true);
@@ -99,6 +123,7 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
         else
             positiveButtonText = getString(R.string.Update);
 
+        // Listeners
         this.dateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,6 +136,24 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
                 datePickerFragment.show(getFragmentManager(), "Date picker");
             }
         });
+
+        this.addPayeeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment fragment = new NewPayeeFragment();
+                fragment.show(getActivity().getSupportFragmentManager(), "New category");
+            }
+        });
+
+        this.addCategoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment fragment = new NewCategoryFragment();
+                fragment.show(getActivity().getSupportFragmentManager(), "New category");
+            }
+        });
+
+        // Create the dialog
         builder.setView(layout)
                 .setCancelable(false)
                 .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
@@ -127,7 +170,8 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
                         // TODO check the validity of all the fields
 
                         // Get the values
-                        String payee = payeeView.getText().toString();
+                        int payeeIndex = payeeView.getSelectedItemPosition();
+                        String payee = Account.getPayeesList().get(payeeIndex);
                         int categoryIndex = categoryView.getSelectedItemPosition();
                         String category = Account.getCategoriesList().get(categoryIndex);
                         String valueString = valueView.getText().toString();
@@ -178,7 +222,6 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
                                 ((AccountContainer)getActivity()).getAccount().updateOperation(id, operation);
                             }
                             ((Updatable)getActivity()).update();
-                            // TODO update the list view
                         } else {
                             DialogFragment fragment = new NewOperationFragment();
                             Bundle info = new Bundle();

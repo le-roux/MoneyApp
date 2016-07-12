@@ -18,7 +18,7 @@ import com.le_roux.sylvain.money.R;
 /**
  * Created by Sylvain LE ROUX on 12/07/2016.
  */
-public class NewCategoryFragment extends DialogFragment{
+public class NewPayeeFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -31,11 +31,11 @@ public class NewCategoryFragment extends DialogFragment{
                 .setPositiveButton(R.string.Create, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EditText categoryView = (EditText)layout.findViewById(R.id.categoryName);
-                        String category = categoryView.getText().toString();
-                        if (Account.getCategoriesList().indexOf(category) == -1) {
-                            Account.getCategoriesList().add(category);
-                            Account.saveCategories(PreferenceManager.getDefaultSharedPreferences(getActivity()));
+                        EditText payeeView = (EditText)layout.findViewById(R.id.categoryName);
+                        String newPayee = payeeView.getText().toString();
+                        if (Account.getPayeesList().indexOf(newPayee) == -1) {
+                            Account.getPayeesList().add(newPayee);
+                            Account.savePayees(PreferenceManager.getDefaultSharedPreferences(getActivity()));
                         }
                     }
                 });

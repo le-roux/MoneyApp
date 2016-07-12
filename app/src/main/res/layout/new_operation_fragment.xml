@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,7 +15,8 @@
         android:id="@+id/Type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_below="@id/date">
 
         <RadioButton
             android:id="@+id/Debit"
@@ -33,28 +33,83 @@
             android:layout_weight="1"/>
     </RadioGroup>
 
-    <EditText
-        android:id="@+id/payee"
+    <TextView
+        android:id="@+id/PayeeTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/Payee"/>
+        android:text="@string/Payee"
+        android:textSize="@dimen/formSize"
+        android:layout_below="@id/Type"
+        android:layout_marginTop="@dimen/activity_vertical_margin"/>
+
+    <Button
+        android:id="@+id/addPayee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/New"
+        android:layout_below="@id/PayeeTitle"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin"/>
+
+    <Spinner
+        android:id="@+id/payee"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/Type"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toStartOf="@id/addPayee"
+        android:layout_toLeftOf="@id/addPayee"
+        android:layout_alignBottom="@id/addPayee"
+        android:layout_alignTop="@id/addPayee"/>
+
+    <TextView
+        android:id="@+id/CategoryTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/Category"
+        android:textSize="@dimen/formSize"
+        android:layout_below="@id/payee"
+        android:layout_marginTop="@dimen/activity_vertical_margin"/>
+
+    <Button
+        android:id="@+id/addCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/New"
+        android:layout_below="@id/CategoryTitle"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin"/>
 
     <Spinner
         android:id="@+id/category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/payee"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toStartOf="@id/addCategory"
+        android:layout_toLeftOf="@id/addCategory"
+        android:layout_alignBottom="@id/addCategory"
+        android:layout_alignTop="@id/addCategory"/>
 
     <EditText
         android:id="@+id/value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/Value"
-        android:inputType="number"/>
+        android:inputType="number"
+        android:layout_below="@id/category"
+        android:layout_marginTop="@dimen/activity_vertical_margin"/>
 
     <EditText
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/Description"
-        android:inputType="textMultiLine"/>
-</LinearLayout>
+        android:inputType="textMultiLine"
+        android:layout_below="@id/value"
+        android:layout_marginTop="@dimen/activity_vertical_margin"/>
+</RelativeLayout>

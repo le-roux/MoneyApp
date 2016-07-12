@@ -26,6 +26,7 @@ public class Account {
     private AccountOpenHelper databaseHelper;
     private Context context;
     private static ArrayList<String> categoriesList = new ArrayList<>();
+    private static ArrayList<String> payeesList = new ArrayList<>();
 
     // Keys used for storage
     private static final String NAME = "account.name";
@@ -33,6 +34,7 @@ public class Account {
 
     public static final String CURRENT_ACCOUNT = "account.current";
     public static final String CATEGORIES = "account.categories";
+    public static final String PAYEES = "account.payees";
 
     /*
      *  Constructors
@@ -83,6 +85,10 @@ public class Account {
         return categoriesList;
     }
 
+    public static ArrayList<String> getPayeesList() {
+        return payeesList;
+    }
+
     /*
      * Storage methods
      */
@@ -128,6 +134,29 @@ public class Account {
                 categoriesList.clear();
                 for (int i = 0; i < array.length(); i++)
                     categoriesList.add(array.getString(i));
+            }
+        } catch (JSONException e) {
+            Logger.d("Impossible to read the categories list");
+        }
+    }
+
+    public static void savePayees(SharedPreferences sharedPreferences) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        JSONArray array = new JSONArray();
+        for (String category : payeesList) {
+            array.put(category);
+        }
+        editor.putString(PAYEES, array.toString());
+        editor.apply();
+    }
+
+    public static void retrievePayees(SharedPreferences sharedPreferences) {
+        try {
+            if (sharedPreferences.contains(PAYEES)) {
+                JSONArray array = new JSONArray(sharedPreferences.getString(PAYEES, null));
+                payeesList.clear();
+                for (int i = 0; i < array.length(); i++)
+                    payeesList.add(array.getString(i));
             }
         } catch (JSONException e) {
             Logger.d("Impossible to read the categories list");
