@@ -17,7 +17,17 @@
         android:layout_height="wrap_content"
         android:text="@string/Solde"
         android:textSize="@dimen/contentSize"
-        android:textColor="@color/mid_grey"/>
+        android:textColor="@color/mid_grey"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/accountPageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Account"
+        android:background="@color/mid_grey"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:id="@+id/coursesButton"
@@ -25,7 +35,8 @@
         android:layout_height="wrap_content"
         android:text="@string/Courses"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:background="@color/mid_grey"/>
 
     <Button

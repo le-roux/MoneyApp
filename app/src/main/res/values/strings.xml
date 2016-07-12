@@ -21,4 +21,6 @@
     <string name="InvalidPayee">Destinataire invalide</string>
     <string name="InvalidCategory">Catégorie invalide</string>
     <string name="InvalidValue">Valeur invalide</string>
+
+    <string name="Account">Compte</string>
 </resources>

@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.le_roux.sylvain.money.Adapter.OperationAdapter;
 import com.le_roux.sylvain.money.Data.Account;
@@ -25,7 +26,7 @@ import com.le_roux.sylvain.money.Dialog.NewOperationFragment;
 public class OperationListController {
 
     private Account account; // Model
-    private OperationListView view; // View
+    private ListView view; // View
     private Cursor cursor;
     private OperationAdapter adapter;
     private AppCompatActivity activity;
@@ -43,7 +44,7 @@ public class OperationListController {
     /*
      *  Constructors
      */
-    public OperationListController(Account account, OperationListView view, final AppCompatActivity activity) {
+    public OperationListController(Account account, ListView view, final AppCompatActivity activity) {
         this.account = account;
         this.view = view;
         this.activity = activity;

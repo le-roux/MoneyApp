@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.le_roux.sylvain.money.Adapter.OperationAdapter;
 import com.le_roux.sylvain.money.Data.Account;
@@ -21,7 +22,6 @@ import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.DateView;
 import com.le_roux.sylvain.money.Utils.Logger;
 import com.le_roux.sylvain.money.Utils.OperationListController;
-import com.le_roux.sylvain.money.Utils.OperationListView;
 import com.le_roux.sylvain.money.Utils.PriceView;
 
 import org.json.JSONException;
@@ -34,7 +34,7 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
 
     private Button coursesButton;
     private Button newOperationButton;
-    private OperationListView operationsListView;
+    private ListView operationsListView;
     private PriceView balanceAccount;
     private DateViewContainer container;
     private SharedPreferences sharedPreferences;
@@ -46,7 +46,7 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
         setContentView(R.layout.activity_home);
 
         this.coursesButton = (Button)findViewById(R.id.coursesButton);
-        this.operationsListView = (OperationListView)findViewById(R.id.operationsListView);
+        this.operationsListView = (ListView)findViewById(R.id.operationsListView);
         LayoutInflater inflater = (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
         this.operationsListView.addHeaderView(inflater.inflate(R.layout.header_operation, null));
         this.balanceAccount = (PriceView)findViewById(R.id.balanceAccount);
