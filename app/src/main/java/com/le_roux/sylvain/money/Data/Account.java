@@ -66,7 +66,13 @@ public class Account {
         return this.balance;
     }
 
+    public SQLiteDatabase getReadableDatabase() {
+        return this.databaseHelper.getReadableDatabase();
+    }
 
+    public SQLiteDatabase getWritableDatabase() {
+        return this.databaseHelper.getWritableDatabase();
+    }
 
     /*
      * Storage methods

@@ -5,13 +5,16 @@ import android.database.Cursor;
 import android.util.AttributeSet;
 import android.widget.ListView;
 
+import com.le_roux.sylvain.money.Data.Account;
+
 /**
  * Created by Sylvain LE ROUX on 11/07/2016.
  */
 public class OperationListView extends ListView {
 
-    private Cursor cursor;
-
+    /*
+     *  Constructors
+     */
     public OperationListView(Context context) {
         super(context);
     }
@@ -24,11 +27,10 @@ public class OperationListView extends ListView {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setCursor(Cursor cursor) {
-        this.cursor = cursor;
-    }
+    /*
+     *  Other functions
+     */
+    public void update() {
 
-    public Cursor getCursor() {
-        return this.cursor;
     }
 }

@@ -25,6 +25,7 @@ import com.le_roux.sylvain.money.Utils.Logger;
 import com.le_roux.sylvain.money.Dialog.NewAccountFragment;
 import com.le_roux.sylvain.money.Dialog.NewOperationFragment;
 import com.le_roux.sylvain.money.Utils.OperationContract;
+import com.le_roux.sylvain.money.Utils.OperationListController;
 import com.le_roux.sylvain.money.Utils.OperationListView;
 import com.le_roux.sylvain.money.Utils.PriceView;
 
@@ -45,6 +46,7 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
     private DateViewContainer container;
     private OperationAdapter adapter;
     private SharedPreferences sharedPreferences;
+    private OperationListController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
 
         if (this.balanceAccount != null)
             this.balanceAccount.setName(getString(R.string.Solde));
+
+        this.controller = new OperationListController(this.account, this.operationsListView, this);
 
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (sharedPreferences.contains(Account.CURRENT_ACCOUNT)) {
@@ -106,45 +110,9 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
     @Override
     public void setAccount(Account account) {
         this.account = account;
+        this.controller.setAccount(account);
         this.account.setTable(this);
-        AccountOpenHelper databaseHelper = new AccountOpenHelper(this, this.account.getName());
-
-        SQLiteDatabase dbRead = databaseHelper.getReadableDatabase();
-        String[] selection = {OperationContract.Table._ID,
-                OperationContract.Table.COLUMN_NAME_DAY,
-                OperationContract.Table.COLUMN_NAME_MONTH,
-                OperationContract.Table.COLUMN_NAME_YEAR,
-                OperationContract.Table.COLUMN_NAME_PAYEE,
-                OperationContract.Table.COLUMN_NAME_VALUE,
-                OperationContract.Table.COLUMN_NAME_CATEGORY,
-                OperationContract.Table.COLUMN_NAME_DESCRIPTION,
-                OperationContract.Table.COLUMN_NAME_VALIDATED};
-        Cursor c = dbRead.query(true, this.account.getName(), selection, null, null, null, null, null, null);
-        this.adapter = new OperationAdapter(this, c, 0);
-        this.operationsListView.setCursor(c);
-        this.operationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position != 0) {
-                    DialogFragment fragment = new NewOperationFragment();
-                    Cursor cursor = operationsListView.getCursor();
-                    cursor.moveToFirst();
-                    cursor.move(position - 1);
-                    Bundle info = new Bundle();
-                    info.putInt(DateView.YEAR, cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_YEAR)));
-                    info.putInt(DateView.MONTH, cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_MONTH)));
-                    info.putInt(DateView.DAY, cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_DAY)));
-                    info.putString(Operation.PAYEE, cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_PAYEE)));
-                    info.putString(Operation.CATEGORY, cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_CATEGORY)));
-                    info.putDouble(Operation.VALUE, cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE)));
-                    info.putString(Operation.DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_DESCRIPTION)));
-                    info.putInt(NewOperationFragment.STATUS, cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table._ID)));
-                    fragment.setArguments(info);
-                    fragment.show(getSupportFragmentManager(), "New operation");
-                }
-            }
-        });
-        this.operationsListView.setAdapter(this.adapter);
+        this.controller.displayOperationsForYear(GregorianCalendar.getInstance().get(Calendar.YEAR));
     }
 
     @Override
