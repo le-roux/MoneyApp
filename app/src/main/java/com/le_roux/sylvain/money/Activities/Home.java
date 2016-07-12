@@ -20,6 +20,7 @@ import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.Interfaces.DateViewContainer;
+import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.AccountOpenHelper;
 import com.le_roux.sylvain.money.Utils.DateView;
@@ -36,7 +37,7 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class Home extends AppCompatActivity implements AccountContainer, DateViewContainer {
+public class Home extends AppCompatActivity implements AccountContainer, DateViewContainer, Updatable {
 
     private Account account;
 
@@ -46,6 +47,7 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
     private PriceView balanceAccount;
     private DateViewContainer container;
     private OperationAdapter adapter;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +64,11 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
         if (this.balanceAccount != null)
             this.balanceAccount.setName(getString(R.string.Solde));
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (sharedPreferences.contains(Account.CURRENT_ACCOUNT)) {
             try {
-                this.setAccount(new Account(new JSONObject(sharedPreferences.getString(Account.CURRENT_ACCOUNT, ""))));
+                String accountName = sharedPreferences.getString(Account.CURRENT_ACCOUNT, "");
+                this.setAccount(new Account(new JSONObject(sharedPreferences.getString(accountName, "")), this.sharedPreferences));
             } catch (JSONException e) {
                 Logger.d("Error when recreating account JSON from string");
             }
@@ -73,6 +76,13 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
         else {
             DialogFragment fragment = new NewAccountFragment();
             fragment.show(getSupportFragmentManager(), "New account");
+        }
+
+        if (this.balanceAccount != null) {
+            if (this.account != null)
+                this.balanceAccount.setValue(this.account.getBalance());
+            else
+                this.balanceAccount.setValue(0);
         }
 
         this.newOperationButton.setOnClickListener(new View.OnClickListener() {
@@ -151,9 +161,23 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
     }
 
     @Override
+    public SharedPreferences getSharedPreferences() {
+        return this.sharedPreferences;
+    }
+
+    @Override
     public DateView getDateView() {
         if (container != null)
             return container.getDateView();
         return null;
+    }
+
+    @Override
+    public void update() {
+        if (this.balanceAccount != null)
+            if (this.account != null)
+                this.balanceAccount.setValue(this.account.getBalance());
+            else
+                this.balanceAccount.setValue(0);
     }
 }

@@ -1,6 +1,7 @@
 package com.le_roux.sylvain.money.Data;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -21,40 +22,33 @@ public class Account {
 
     private String name;
     private double balance;
+    private SharedPreferences sharedPreferences;
     private AccountOpenHelper databaseHelper;
-    private ArrayList<Operation> operationsList;
-    // TODO stores it in a database
     public static ArrayList<String> categoriesList = new ArrayList<>();
 
     // Keys used for storage
     private static final String NAME = "account.name";
     private static final String BALANCE = "account.balance";
-    private static final String OPERATIONS_LIST = "account.operationsList";
 
     public static final String CURRENT_ACCOUNT = "account.current";
 
     /*
      *  Constructors
      */
-    public Account(String name) {
+    public Account(String name, SharedPreferences sharedPreferences) {
         this.name = name;
         this.balance = 0;
-        this.operationsList = new ArrayList<>();
+        this.sharedPreferences = sharedPreferences;
     }
 
-    public Account(JSONObject jsonObject) {
-        this.operationsList = new ArrayList<>();
+    public Account(JSONObject jsonObject, SharedPreferences sharedPreferences) {
         try {
             this.name = jsonObject.getString(NAME);
             this.balance = jsonObject.getDouble(BALANCE);
-            JSONArray operations = jsonObject.getJSONArray(OPERATIONS_LIST);
-            for (int i = 0; i < operations.length(); i++) {
-                Operation operation = new Operation(operations.getJSONObject(i));
-                this.operationsList.add(operation);
-            }
         } catch (JSONException e) {
             Logger.d("Error when creating account from json string");
         }
+        this.sharedPreferences = sharedPreferences;
     }
 
     /*
@@ -72,26 +66,7 @@ public class Account {
         return this.balance;
     }
 
-    public boolean addOperation(Operation operation) {
-        //this.operationsList.add(operation);
-        SQLiteDatabase dbWrite = this.databaseHelper.getWritableDatabase();
-        long rowId;
-        rowId = dbWrite.insert(this.name, null, operation.getContentValues());
-        return rowId != -1;
-    }
 
-    public boolean updateOperation(int id, Operation operation) {
-        SQLiteDatabase dbWrite = this.databaseHelper.getWritableDatabase();
-        String where = OperationContract.Table._ID + " LIKE ? ";
-        String[] args = {String.valueOf(id)};
-        int nbRows;
-        nbRows = dbWrite.update(this.name, operation.getContentValues(), where, args);
-        return (nbRows == 1);
-    }
-
-    public void deleteOperation(int index) {
-        this.operationsList.remove(index);
-    }
 
     /*
      * Storage methods
@@ -101,10 +76,6 @@ public class Account {
         try {
             jsonObject.put(NAME, this.name);
             jsonObject.put(BALANCE, this.balance);
-            JSONArray jsonArray = new JSONArray();
-            for (Operation operation : this.operationsList)
-                jsonArray.put(operation.toJSONObject());
-            jsonObject.put(OPERATIONS_LIST, jsonArray);
             return jsonObject;
         } catch (JSONException e) {
             Logger.d("Error when converting account to JSONObject");
@@ -117,6 +88,12 @@ public class Account {
         if (jsonObject == null)
             return null;
         return jsonObject.toString();
+    }
+
+    public void save() {
+        SharedPreferences.Editor editor = this.sharedPreferences.edit();
+        editor.putString(this.name, this.toString());
+        editor.apply();
     }
 
     /*
@@ -151,5 +128,38 @@ public class Account {
             return false;
         }
         return true;
+    }
+
+    public boolean addOperation(Operation operation) {
+        SQLiteDatabase dbWrite = this.databaseHelper.getWritableDatabase();
+        long rowId;
+        rowId = dbWrite.insert(this.name, null, operation.getContentValues());
+        this.balance += operation.getValue();
+        this.save();
+        return rowId != -1;
+    }
+
+    public boolean updateOperation(int id, Operation operation) {
+        String where = OperationContract.Table._ID + " LIKE ? ";
+        String[] args = {String.valueOf(id)};
+
+        // Get previous value to update the account balance
+        String[] columns = {OperationContract.Table.COLUMN_NAME_VALUE};
+        SQLiteDatabase dbRead = this.databaseHelper.getReadableDatabase();
+        Cursor cursor = dbRead.query(this.name, columns, where, args, null, null, null);
+        cursor.moveToFirst();
+        balance -= cursor.getDouble(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE));
+
+        // Update the record
+        SQLiteDatabase dbWrite = this.databaseHelper.getWritableDatabase();
+        int nbRows;
+        nbRows = dbWrite.update(this.name, operation.getContentValues(), where, args);
+        balance += operation.getValue();
+        this.save();
+        return nbRows == 1;
+    }
+
+    public void deleteOperation(int id) {
+        // TODO
     }
 }

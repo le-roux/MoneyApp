@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.Interfaces.DateViewContainer;
+import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
 
 import java.util.Calendar;
@@ -165,6 +166,7 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
                             else {
                                 ((AccountContainer)getActivity()).getAccount().updateOperation(id, operation);
                             }
+                            ((Updatable)getActivity()).update();
                             // TODO update the list view
                             // TODO allow to update an existing operation
                         } else {

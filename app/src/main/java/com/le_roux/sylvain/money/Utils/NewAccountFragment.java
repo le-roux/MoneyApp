@@ -16,6 +16,7 @@ import android.widget.EditText;
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
+import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
 
 /**
@@ -29,6 +30,7 @@ public class NewAccountFragment extends DialogFragment {
         final ViewGroup layout = (ViewGroup)inflater.inflate(R.layout.new_account_fragment, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(layout)
+                .setCancelable(false)
                 .setPositiveButton(R.string.Create, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -36,12 +38,12 @@ public class NewAccountFragment extends DialogFragment {
                         EditText initialBalanceField = (EditText)layout.findViewById(R.id.initialValue);
                         String accountName = accountNameField.getText().toString();
                         //TODO check that this name doesn't already exists
-                        Account account = new Account(accountName);
+                        Account account = new Account(accountName, ((AccountContainer)getActivity()).getSharedPreferences());
                         account.setTable(getActivity());
                         ((AccountContainer)getActivity()).setAccount(account);
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString(Account.CURRENT_ACCOUNT, account.toString());
+                        editor.putString(Account.CURRENT_ACCOUNT, account.getName());
                         editor.putString(accountName, account.toString());
                         editor.apply();
 
@@ -55,6 +57,7 @@ public class NewAccountFragment extends DialogFragment {
                             operation.setDescription(getString(R.string.InitialValue));
                             account.addOperation(operation);
                         }
+                        ((Updatable)getActivity()).update();
                     }
                 });
         return builder.create();

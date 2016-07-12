@@ -1,5 +1,6 @@
 package com.le_roux.sylvain.money.Interfaces;
 
+import android.content.SharedPreferences;
 import android.widget.ListView;
 
 import com.le_roux.sylvain.money.Adapter.OperationAdapter;
@@ -12,4 +13,5 @@ public interface AccountContainer {
     void setAccount(Account account);
     Account getAccount();
     OperationAdapter getOperationAdapter();
+    SharedPreferences getSharedPreferences();
 }
