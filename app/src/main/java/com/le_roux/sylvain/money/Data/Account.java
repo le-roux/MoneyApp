@@ -24,6 +24,7 @@ public class Account {
     private double balance;
     private SharedPreferences sharedPreferences;
     private AccountOpenHelper databaseHelper;
+    private Context context;
     public static ArrayList<String> categoriesList = new ArrayList<>();
 
     // Keys used for storage
@@ -35,13 +36,15 @@ public class Account {
     /*
      *  Constructors
      */
-    public Account(String name, SharedPreferences sharedPreferences) {
+    public Account(String name, SharedPreferences sharedPreferences, Context context) {
         this.name = name;
         this.balance = 0;
         this.sharedPreferences = sharedPreferences;
+        this.context = context;
+        this.setTable(this.context);
     }
 
-    public Account(JSONObject jsonObject, SharedPreferences sharedPreferences) {
+    public Account(JSONObject jsonObject, SharedPreferences sharedPreferences, Context context) {
         try {
             this.name = jsonObject.getString(NAME);
             this.balance = jsonObject.getDouble(BALANCE);
@@ -49,6 +52,8 @@ public class Account {
             Logger.d("Error when creating account from json string");
         }
         this.sharedPreferences = sharedPreferences;
+        this.context = context;
+        this.setTable(this.context);
     }
 
     /*

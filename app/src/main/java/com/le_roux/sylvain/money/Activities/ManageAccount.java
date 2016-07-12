@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -35,6 +36,8 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
 
         // Get the views
         ListView operationsListView = (ListView)findViewById(R.id.operationsListView);
+        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+        operationsListView.addHeaderView(inflater.inflate(R.layout.header_operation, null));
         Button addOperationButton = (Button)findViewById(R.id.addOperation);
 
         // Create the account
@@ -47,10 +50,11 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
             } catch (JSONException e) {
                 accountJSON = null;
             }
-            account = new Account(accountJSON, sharedPreferences);
+            account = new Account(accountJSON, sharedPreferences, this);
         }
 
         this.controller = new OperationListController(account, operationsListView, this);
+        this.update();
 
         if (addOperationButton != null) {
             addOperationButton.setOnClickListener(new View.OnClickListener() {
