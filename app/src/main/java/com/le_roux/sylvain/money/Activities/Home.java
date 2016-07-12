@@ -1,6 +1,5 @@
 package com.le_roux.sylvain.money.Activities;
 
-import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import com.le_roux.sylvain.money.Adapter.OperationAdapter;
 import com.le_roux.sylvain.money.Data.Account;
@@ -25,8 +22,8 @@ import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.AccountOpenHelper;
 import com.le_roux.sylvain.money.Utils.DateView;
 import com.le_roux.sylvain.money.Utils.Logger;
-import com.le_roux.sylvain.money.Utils.NewAccountFragment;
-import com.le_roux.sylvain.money.Utils.NewOperationFragment;
+import com.le_roux.sylvain.money.Dialog.NewAccountFragment;
+import com.le_roux.sylvain.money.Dialog.NewOperationFragment;
 import com.le_roux.sylvain.money.Utils.OperationContract;
 import com.le_roux.sylvain.money.Utils.OperationListView;
 import com.le_roux.sylvain.money.Utils.PriceView;

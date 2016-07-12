@@ -1,10 +1,9 @@
-package com.le_roux.sylvain.money.Utils;
+package com.le_roux.sylvain.money.Dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Path;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -21,6 +20,7 @@ import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.Interfaces.DateViewContainer;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
+import com.le_roux.sylvain.money.Utils.DateView;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -126,7 +126,7 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
                         Operation operation = new Operation();
                         Calendar calendar = GregorianCalendar.getInstance();
                         calendar.set(Calendar.DAY_OF_MONTH, dateView.getDay());
-                        calendar.set(Calendar.MONTH, dateView.getMonth());
+                        calendar.set(Calendar.MONTH, dateView.getMonth() - 1);
                         calendar.set(Calendar.YEAR, dateView.getYear());
                         operation.setDate(calendar);
 
@@ -168,12 +168,11 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
                             }
                             ((Updatable)getActivity()).update();
                             // TODO update the list view
-                            // TODO allow to update an existing operation
                         } else {
                             DialogFragment fragment = new NewOperationFragment();
                             Bundle info = new Bundle();
                             info.putInt(DateView.YEAR, dateView.getYear());
-                            info.putInt(DateView.MONTH, dateView.getMonth());
+                            info.putInt(DateView.MONTH, dateView.getMonth() - 1);
                             info.putInt(DateView.DAY, dateView.getDay());
                             info.putString(Operation.PAYEE, payee);
                             info.putString(Operation.CATEGORY, category);

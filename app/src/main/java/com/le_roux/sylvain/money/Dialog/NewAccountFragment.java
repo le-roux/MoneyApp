@@ -1,4 +1,4 @@
-package com.le_roux.sylvain.money.Utils;
+package com.le_roux.sylvain.money.Dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

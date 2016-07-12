@@ -3,8 +3,6 @@ package com.le_roux.sylvain.money.Utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 /**

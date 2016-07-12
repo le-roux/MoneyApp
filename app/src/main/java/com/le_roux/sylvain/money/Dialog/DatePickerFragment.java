@@ -1,4 +1,4 @@
-package com.le_roux.sylvain.money.Utils;
+package com.le_roux.sylvain.money.Dialog;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
 import com.le_roux.sylvain.money.Interfaces.DateViewContainer;
+import com.le_roux.sylvain.money.Utils.DateView;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
