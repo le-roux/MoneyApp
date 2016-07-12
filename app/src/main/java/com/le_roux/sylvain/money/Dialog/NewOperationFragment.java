@@ -30,6 +30,7 @@ import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.DateView;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 
 /**
@@ -94,6 +95,7 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
             this.payeeView.setSelection(payeeIndex);
         else if (payeeName != "") {
             Account.getPayeesList().add(payeeName);
+            Collections.sort(Account.getPayeesList());
             Account.savePayees(PreferenceManager.getDefaultSharedPreferences(getActivity()));
             this.payeeView.setSelection(Account.getPayeesList().size() - 1);
             payeeAdapter.notifyDataSetChanged();
@@ -105,6 +107,7 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
             this.categoryView.setSelection(categoryIndex);
         else if (categoryName != "") {
             Account.getCategoriesList().add(categoryName);
+            Collections.sort(Account.getCategoriesList());
             Account.saveCategories(PreferenceManager.getDefaultSharedPreferences(getActivity()));
             this.categoryView.setSelection(Account.getCategoriesList().size() - 1);
             categoryAdapter.notifyDataSetChanged();

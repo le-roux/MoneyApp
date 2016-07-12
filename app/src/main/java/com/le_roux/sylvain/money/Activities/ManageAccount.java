@@ -41,7 +41,6 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         operationsListView.addHeaderView(inflater.inflate(R.layout.header_operation, null));
         Button addOperationButton = (Button)findViewById(R.id.addOperation);
-        Button addCategoryButton = (Button)findViewById(R.id.newCategory);
 
         // Create the account
         Account account = null;
@@ -57,6 +56,7 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
         }
 
         Account.retrieveCategories(sharedPreferences);
+        Account.retrievePayees(sharedPreferences);
 
         this.controller = new OperationListController(account, operationsListView, this);
         this.update();
@@ -81,15 +81,6 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
                 }
             });
         }
-
-        if (addCategoryButton != null)
-            addCategoryButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DialogFragment fragment = new NewCategoryFragment();
-                    fragment.show(getSupportFragmentManager(), "New category");
-                }
-            });
     }
 
     @Override
