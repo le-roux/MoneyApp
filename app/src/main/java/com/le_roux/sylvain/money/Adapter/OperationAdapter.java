@@ -38,7 +38,7 @@ public class OperationAdapter extends CursorAdapter {
         DateView dateView = (DateView)view.findViewById(R.id.date);
         TextView payee = (TextView)view.findViewById(R.id.payee);
         TextView category = (TextView)view.findViewById(R.id.category);
-        TextView value = (TextView)view.findViewById(R.id.value);
+        TextView valueView = (TextView)view.findViewById(R.id.value);
         TextView validated = (TextView)view.findViewById(R.id.validated);
 
         // Fill the views
@@ -48,7 +48,13 @@ public class OperationAdapter extends CursorAdapter {
 
         payee.setText(cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_PAYEE)));
         category.setText(cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_CATEGORY)));
-        value.setText(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE))));
+        double value = cursor.getDouble(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE));
+        valueView.setText(String.valueOf(value));
+        if (value >= 0)
+            valueView.setBackgroundResource(R.color.green);
+        else
+            valueView.setBackgroundResource(R.color.red);
+
         int v = cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALIDATED));
         if (v == 1)
             validated.setText("V");

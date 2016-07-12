@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import com.le_roux.sylvain.money.R;
+
 /**
  * Created by Sylvain LE ROUX on 05/07/2016.
  */
@@ -57,7 +59,10 @@ public class PriceView extends TextView {
     public void update() {
         String text = this.name
                 + " : "
-                + String.valueOf(this.value);
+                + String.valueOf(this.value)
+                + " €";
+        if (this.value < 0)
+            this.setTextColor(getResources().getColor(R.color.red));
         setText(text);
     }
 
