@@ -83,12 +83,13 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
                 Bundle info = new Bundle();
                 Calendar c = GregorianCalendar.getInstance();
                 info.putInt(DateView.YEAR, c.get(Calendar.YEAR));
-                info.putInt(DateView.MONTH, c.get(Calendar.MONTH));
+                info.putInt(DateView.MONTH, c.get(Calendar.MONTH) + 1);
                 info.putInt(DateView.DAY, c.get(Calendar.DAY_OF_MONTH));
                 info.putString(Operation.PAYEE, "");
                 info.putString(Operation.CATEGORY, "");
                 info.putDouble(Operation.VALUE, -0);
                 info.putString(Operation.DESCRIPTION, "");
+                info.putInt(NewOperationFragment.STATUS, NewOperationFragment.NEW);
                 fragment.setArguments(info);
                 fragment.show(getSupportFragmentManager(), "New operation");
             }
@@ -130,6 +131,7 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
                     info.putString(Operation.CATEGORY, cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_CATEGORY)));
                     info.putDouble(Operation.VALUE, cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE)));
                     info.putString(Operation.DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_DESCRIPTION)));
+                    info.putInt(NewOperationFragment.STATUS, cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table._ID)));
                     fragment.setArguments(info);
                     fragment.show(getSupportFragmentManager(), "New operation");
                 }

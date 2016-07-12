@@ -38,6 +38,9 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
     private EditText valueView;
     private EditText descriptionView;
 
+    public static final String STATUS = "operation.fragment.status";
+    public static final int NEW = 0;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -54,23 +57,29 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
         this.categoryView = (EditText)layout.findViewById(R.id.category);
         this.valueView = (EditText)layout.findViewById(R.id.value);
         this.descriptionView = (EditText)layout.findViewById(R.id.description);
-
+        String positiveButtonText;
+        final int id;
         // Set initial values
         Bundle info = getArguments();
-        if (info != null) {
-            this.dateView.setYear(info.getInt(DateView.YEAR));
-            this.dateView.setMonth(info.getInt(DateView.MONTH));
-            this.dateView.setDay(info.getInt(DateView.DAY));
-            this.payeeView.setText(info.getString(Operation.PAYEE));
-            this.categoryView.setText(info.getString(Operation.CATEGORY));
-            double value = info.getDouble(Operation.VALUE);
-            if (value > 0)
-                this.creditButton.setChecked(true);
-            else
-                this.debitButton.setChecked(true);
+        if (info == null)
+            return null;
+        this.dateView.setYear(info.getInt(DateView.YEAR));
+        this.dateView.setMonth(info.getInt(DateView.MONTH));
+        this.dateView.setDay(info.getInt(DateView.DAY));
+        this.payeeView.setText(info.getString(Operation.PAYEE));
+        this.categoryView.setText(info.getString(Operation.CATEGORY));
+        double value = info.getDouble(Operation.VALUE);
+        if (value > 0)
+            this.creditButton.setChecked(true);
+        else
+            this.debitButton.setChecked(true);
+        if (value != 0)
             this.valueView.setText(String.valueOf(value));
-            this.descriptionView.setText(info.getString(Operation.DESCRIPTION));
-        }
+        this.descriptionView.setText(info.getString(Operation.DESCRIPTION));
+        if ((id = info.getInt(STATUS)) == 0)
+            positiveButtonText = getString(R.string.Create);
+        else
+            positiveButtonText = getString(R.string.Update);
 
         this.dateView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,10 +98,10 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
                 .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+
                     }
                 })
-                .setPositiveButton(R.string.Create, new DialogInterface.OnClickListener() {
+                .setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -151,7 +160,11 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
                                 value = -value;
                             operation.setValue(value);
 
-                            ((AccountContainer)getActivity()).getAccount().addOperation(operation);
+                            if (id == 0)
+                                ((AccountContainer)getActivity()).getAccount().addOperation(operation);
+                            else {
+                                ((AccountContainer)getActivity()).getAccount().updateOperation(id, operation);
+                            }
                             // TODO update the list view
                             // TODO allow to update an existing operation
                         } else {

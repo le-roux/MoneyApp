@@ -80,6 +80,15 @@ public class Account {
         return rowId != -1;
     }
 
+    public boolean updateOperation(int id, Operation operation) {
+        SQLiteDatabase dbWrite = this.databaseHelper.getWritableDatabase();
+        String where = OperationContract.Table._ID + " LIKE ? ";
+        String[] args = {String.valueOf(id)};
+        int nbRows;
+        nbRows = dbWrite.update(this.name, operation.getContentValues(), where, args);
+        return (nbRows == 1);
+    }
+
     public void deleteOperation(int index) {
         this.operationsList.remove(index);
     }
