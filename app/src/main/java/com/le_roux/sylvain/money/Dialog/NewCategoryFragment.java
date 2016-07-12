@@ -15,6 +15,8 @@ import android.widget.EditText;
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.R;
 
+import java.util.Collections;
+
 /**
  * Created by Sylvain LE ROUX on 12/07/2016.
  */
@@ -35,7 +37,9 @@ public class NewCategoryFragment extends DialogFragment{
                         String category = categoryView.getText().toString();
                         if (Account.getCategoriesList().indexOf(category) == -1) {
                             Account.getCategoriesList().add(category);
+                            Collections.sort(Account.getCategoriesList());
                             Account.saveCategories(PreferenceManager.getDefaultSharedPreferences(getActivity()));
+                            // TODO auto select the newly created category
                         }
                     }
                 });

@@ -15,6 +15,8 @@ import android.widget.EditText;
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.R;
 
+import java.util.Collections;
+
 /**
  * Created by Sylvain LE ROUX on 12/07/2016.
  */
@@ -35,7 +37,9 @@ public class NewPayeeFragment extends DialogFragment {
                         String newPayee = payeeView.getText().toString();
                         if (Account.getPayeesList().indexOf(newPayee) == -1) {
                             Account.getPayeesList().add(newPayee);
+                            Collections.sort(Account.getPayeesList());
                             Account.savePayees(PreferenceManager.getDefaultSharedPreferences(getActivity()));
+                            // TODO auto select the newly created payee
                         }
                     }
                 });
