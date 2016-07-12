@@ -79,6 +79,14 @@ public class OperationListController {
         this.account = account;
     }
 
+    public Account getAccount() {
+        return this.account;
+    }
+
+    public OperationAdapter getAdapter() {
+        return this.adapter;
+    }
+
     /*
      *  Other functions
      */
@@ -87,13 +95,16 @@ public class OperationListController {
      * Get all the operations done on the account during the specified year and display them.
      * @param year the year we are interested in
      */
-    public void displayOperationsForYear(int year) {
+    public boolean displayOperationsForYear(int year) {
+        if (this.account == null)
+            return false;
         SQLiteDatabase dbRead = this.account.getReadableDatabase();
         String where = OperationContract.Table.COLUMN_NAME_YEAR + " LIKE ? ";
         String[] args = {String.valueOf(year)};
         this.cursor = dbRead.query(this.account.getName(), columns, where, args, null, null, null);
         this.adapter = new OperationAdapter(this.activity, this.cursor, 0);
         this.view.setAdapter(this.adapter);
+        return true;
     }
 
 

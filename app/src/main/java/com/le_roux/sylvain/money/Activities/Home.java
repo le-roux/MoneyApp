@@ -1,30 +1,25 @@
 package com.le_roux.sylvain.money.Activities;
 
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 
 import com.le_roux.sylvain.money.Adapter.OperationAdapter;
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Data.Operation;
+import com.le_roux.sylvain.money.Dialog.NewAccountFragment;
+import com.le_roux.sylvain.money.Dialog.NewOperationFragment;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.Interfaces.DateViewContainer;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
-import com.le_roux.sylvain.money.Utils.AccountOpenHelper;
 import com.le_roux.sylvain.money.Utils.DateView;
 import com.le_roux.sylvain.money.Utils.Logger;
-import com.le_roux.sylvain.money.Dialog.NewAccountFragment;
-import com.le_roux.sylvain.money.Dialog.NewOperationFragment;
-import com.le_roux.sylvain.money.Utils.OperationContract;
 import com.le_roux.sylvain.money.Utils.OperationListController;
 import com.le_roux.sylvain.money.Utils.OperationListView;
 import com.le_roux.sylvain.money.Utils.PriceView;
@@ -37,14 +32,11 @@ import java.util.GregorianCalendar;
 
 public class Home extends AppCompatActivity implements AccountContainer, DateViewContainer, Updatable {
 
-    private Account account;
-
     private Button coursesButton;
     private Button newOperationButton;
     private OperationListView operationsListView;
     private PriceView balanceAccount;
     private DateViewContainer container;
-    private OperationAdapter adapter;
     private SharedPreferences sharedPreferences;
     private OperationListController controller;
 
@@ -63,7 +55,7 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
         if (this.balanceAccount != null)
             this.balanceAccount.setName(getString(R.string.Solde));
 
-        this.controller = new OperationListController(this.account, this.operationsListView, this);
+        this.controller = new OperationListController(null, this.operationsListView, this);
 
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (sharedPreferences.contains(Account.CURRENT_ACCOUNT)) {
@@ -80,8 +72,8 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
         }
 
         if (this.balanceAccount != null) {
-            if (this.account != null)
-                this.balanceAccount.setValue(this.account.getBalance());
+            if (this.controller.getAccount() != null)
+                this.balanceAccount.setValue(this.controller.getAccount().getBalance());
             else
                 this.balanceAccount.setValue(0);
         }
@@ -109,20 +101,19 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
 
     @Override
     public void setAccount(Account account) {
-        this.account = account;
         this.controller.setAccount(account);
-        this.account.setTable(this);
+        this.controller.getAccount().setTable(this);
         this.controller.displayOperationsForYear(GregorianCalendar.getInstance().get(Calendar.YEAR));
     }
 
     @Override
     public Account getAccount() {
-        return this.account;
+        return this.controller.getAccount();
     }
 
     @Override
     public OperationAdapter getOperationAdapter() {
-        return this.adapter;
+        return this.controller.getAdapter();
     }
 
     @Override
@@ -139,9 +130,10 @@ public class Home extends AppCompatActivity implements AccountContainer, DateVie
 
     @Override
     public void update() {
+        this.controller.displayOperationsForYear(GregorianCalendar.getInstance().get(Calendar.YEAR));
         if (this.balanceAccount != null)
-            if (this.account != null)
-                this.balanceAccount.setValue(this.account.getBalance());
+            if (this.controller.getAccount() != null)
+                this.balanceAccount.setValue(this.controller.getAccount().getBalance());
             else
                 this.balanceAccount.setValue(0);
     }
