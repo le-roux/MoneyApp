@@ -37,6 +37,7 @@ public class NewAccountFragment extends DialogFragment {
                         EditText accountNameField = (EditText)layout.findViewById(R.id.name);
                         EditText initialBalanceField = (EditText)layout.findViewById(R.id.initialValue);
                         String accountName = accountNameField.getText().toString();
+                        accountName = accountName.replaceAll(" ", "_");
                         //TODO check that this name doesn't already exists
                         Account account = new Account(accountName, PreferenceManager.getDefaultSharedPreferences(getActivity()), getActivity());
                         account.setTable(getActivity());

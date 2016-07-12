@@ -34,10 +34,11 @@
         android:id="@+id/accountPageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Account"
+        android:text="@string/MyAccount"
         android:background="@color/mid_grey"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:padding="@dimen/operation_padding"/>
 
     <Button
         android:id="@+id/coursesButton"

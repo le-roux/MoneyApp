@@ -70,6 +70,12 @@ public class Home extends AppCompatActivity implements Updatable, AccountContain
         this.update();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.update();
+    }
+
     public void setAccount(Account account) {
         this.account = account;
         this.account.setTable(this);
