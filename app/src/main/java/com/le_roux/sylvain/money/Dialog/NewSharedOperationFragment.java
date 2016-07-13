@@ -11,7 +11,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.le_roux.sylvain.money.Data.Account;
+import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.R;
+
+import java.util.Collections;
 
 /**
  * Created by Sylvain LE ROUX on 13/07/2016.
@@ -26,13 +29,26 @@ public class NewSharedOperationFragment extends NewOperationFragment {
     }
 
     @Override
-    public void initCustomViews(ViewGroup layout) {
+    public void initCustomViews(ViewGroup layout, Bundle info) {
         Button newAccount = (Button)layout.findViewById(R.id.addAccount);
         this.accountSpinner = (Spinner)layout.findViewById(R.id.account);
 
         Account.retrieveAccounts(PreferenceManager.getDefaultSharedPreferences(getActivity()));
         ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getAccountsList());
         this.accountSpinner.setAdapter(accountAdapter);
+
+        String accountName = info.getString(Account.ACCOUNT);
+        int index = Account.getAccountsList().indexOf(accountName);
+        if (index == -1) {
+            if (accountName!= null && !accountName.equals("")) {
+                Account.getAccountsList().add(accountName);
+                Collections.sort(Account.getAccountsList());
+                Account.saveAccounts(PreferenceManager.getDefaultSharedPreferences(getActivity()));
+                accountAdapter.notifyDataSetChanged();
+                this.accountSpinner.setSelection(Account.getAccountsList().size() - 1);
+            }
+        } else
+            this.accountSpinner.setSelection(index);
 
         newAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,5 +76,10 @@ public class NewSharedOperationFragment extends NewOperationFragment {
         String accountName = Account.getAccountsList().get(accountIndex);
         info.putString(Account.ACCOUNT, accountName);
         return info;
+    }
+
+    @Override
+    public void editOperation(Operation operation) {
+        operation.setShared(true);
     }
 }

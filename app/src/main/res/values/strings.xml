@@ -27,6 +27,8 @@
 
     <string name="Delete">Supprimer</string>
 
+    <string name="Shared">Partagé</string>
+
     <string name="NewCategory">Nouvelle catégorie</string>
     <string name="CategoryName">Nom de la catégorie</string>
 </resources>

@@ -69,7 +69,6 @@ public abstract class NewOperationFragment extends DialogFragment implements Dat
         this.descriptionView = (EditText)layout.findViewById(R.id.description);
         this.addPayeeButton = (Button)layout.findViewById(R.id.addPayee);
         this.addCategoryButton = (Button)layout.findViewById(R.id.addCategory);
-        initCustomViews(layout);
 
         // Local variables
         String positiveButtonText;
@@ -140,6 +139,9 @@ public abstract class NewOperationFragment extends DialogFragment implements Dat
             positiveButtonText = getString(R.string.Create);
             id = 0;
         }
+
+
+        initCustomViews(layout, info);
 
         // Listeners
         this.dateView.setOnClickListener(new View.OnClickListener() {
@@ -229,6 +231,8 @@ public abstract class NewOperationFragment extends DialogFragment implements Dat
                                 value = -value;
                             operation.setValue(value);
 
+                            editOperation(operation);
+
                             if (id == 0) // New operation
                                 ((AccountContainer)getActivity()).getAccount().addOperation(operation);
                             else {
@@ -269,9 +273,11 @@ public abstract class NewOperationFragment extends DialogFragment implements Dat
 
     public abstract ViewGroup getLayoutView(LayoutInflater inflater);
 
-    public abstract void initCustomViews(ViewGroup layout);
+    public abstract void initCustomViews(ViewGroup layout, Bundle info);
 
     public abstract NewOperationFragment getInstance();
 
     public abstract Bundle setSpecificInfo();
+
+    public abstract void editOperation(Operation operation);
 }
