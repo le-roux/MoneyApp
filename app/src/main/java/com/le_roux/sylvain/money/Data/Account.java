@@ -37,6 +37,7 @@ public class Account {
     public static final String CATEGORIES = "account.categories";
     public static final String PAYEES = "account.payees";
     public static final String ACCOUNTS = "account.accounts";
+    public static final String ACCOUNT = "account.account";
 
     /*
      *  Constructors

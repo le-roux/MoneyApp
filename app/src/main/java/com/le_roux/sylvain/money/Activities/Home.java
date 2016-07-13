@@ -46,6 +46,9 @@ public class Home extends AppCompatActivity implements Updatable, AccountContain
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (!sharedPreferences.contains(Account.CURRENT_ACCOUNT)) {
             DialogFragment fragment = new NewAccountFragment();
+            Bundle args = new Bundle();
+            args.putBoolean(NewAccountFragment.CURRENT, true);
+            fragment.setArguments(args);
             fragment.show(getSupportFragmentManager(), "New account");
         }
 
@@ -53,6 +56,14 @@ public class Home extends AppCompatActivity implements Updatable, AccountContain
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, ManageAccount.class);
+                startActivity(intent);
+            }
+        });
+
+        this.coursesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, SharedAccounts.class);
                 startActivity(intent);
             }
         });

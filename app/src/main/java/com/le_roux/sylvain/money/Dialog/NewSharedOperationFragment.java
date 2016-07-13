@@ -17,6 +17,9 @@ import com.le_roux.sylvain.money.R;
  * Created by Sylvain LE ROUX on 13/07/2016.
  */
 public class NewSharedOperationFragment extends NewOperationFragment {
+
+    private Spinner accountSpinner;
+
     @Override
     public ViewGroup getLayoutView(LayoutInflater inflater) {
         return (ViewGroup)inflater.inflate(R.layout.new_shared_operation_fragment, null);
@@ -25,11 +28,11 @@ public class NewSharedOperationFragment extends NewOperationFragment {
     @Override
     public void initCustomViews(ViewGroup layout) {
         Button newAccount = (Button)layout.findViewById(R.id.addAccount);
-        Spinner accountSpinner = (Spinner)layout.findViewById(R.id.account);
+        this.accountSpinner = (Spinner)layout.findViewById(R.id.account);
 
         Account.retrieveAccounts(PreferenceManager.getDefaultSharedPreferences(getActivity()));
-        ArrayAdapter<String> accountAdapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getAccountsList());
-        accountSpinner.setAdapter(accountAdapter);
+        ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getAccountsList());
+        this.accountSpinner.setAdapter(accountAdapter);
 
         newAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +54,11 @@ public class NewSharedOperationFragment extends NewOperationFragment {
 
     @Override
     public Bundle setSpecificInfo() {
-        return null;
+        Bundle info = new Bundle();
+        int accountIndex = this.accountSpinner.getSelectedItemPosition();
+        Account.retrieveAccounts(PreferenceManager.getDefaultSharedPreferences(getActivity()));
+        String accountName = Account.getAccountsList().get(accountIndex);
+        info.putString(Account.ACCOUNT, accountName);
+        return info;
     }
 }

@@ -18,6 +18,7 @@ import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
+import com.le_roux.sylvain.money.Utils.Logger;
 
 /**
  * Created by Sylvain LE ROUX on 07/07/2016.
@@ -44,11 +45,17 @@ public class NewAccountFragment extends DialogFragment {
                         //TODO check that this name doesn't already exists
                         Account account = new Account(accountName, PreferenceManager.getDefaultSharedPreferences(getActivity()), getActivity());
                         account.setTable(getActivity());
-                        ((AccountContainer)getActivity()).setAccount(account);
+                        for (int i = 0; i < getActivity().getClass().getInterfaces().length; i++) {
+                            if (getActivity().getClass().getInterfaces()[i].equals(AccountContainer.class)) {
+                                ((AccountContainer)getActivity()).setAccount(account);
+                                break;
+                            }
+                        }
+
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         Bundle args = getArguments();
-                        if (args.getBoolean(CURRENT))
+                        if (args!= null && args.getBoolean(CURRENT))
                             editor.putString(Account.CURRENT_ACCOUNT, account.getName());
                         editor.putString(accountName, account.toString());
                         editor.apply();
