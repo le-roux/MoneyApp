@@ -40,6 +40,7 @@ public class OperationAdapter extends CursorAdapter {
         TextView category = (TextView)view.findViewById(R.id.category);
         TextView valueView = (TextView)view.findViewById(R.id.value);
         TextView validated = (TextView)view.findViewById(R.id.validated);
+        TextView shared = (TextView)view.findViewById(R.id.shared);
 
         // Fill the views
         dateView.setDay(cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_DAY)));
@@ -60,5 +61,11 @@ public class OperationAdapter extends CursorAdapter {
             validated.setText("V");
         else
             validated.setText(" ");
+
+        int s = cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_SHARED));
+        if (s == 1)
+            shared.setText(R.string.S);
+        else
+            shared.setText(" ");
     }
 }

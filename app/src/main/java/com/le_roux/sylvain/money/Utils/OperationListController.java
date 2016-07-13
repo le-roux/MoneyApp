@@ -14,6 +14,7 @@ import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Dialog.NewOperationFragment;
 import com.le_roux.sylvain.money.Dialog.NewSimpleOperationFragment;
+import com.le_roux.sylvain.money.Interfaces.FragmentContainer;
 
 /**
  * Created by Sylvain LE ROUX on 12/07/2016.
@@ -40,7 +41,8 @@ public class OperationListController {
             OperationContract.Table.COLUMN_NAME_VALUE,
             OperationContract.Table.COLUMN_NAME_CATEGORY,
             OperationContract.Table.COLUMN_NAME_DESCRIPTION,
-            OperationContract.Table.COLUMN_NAME_VALIDATED};
+            OperationContract.Table.COLUMN_NAME_VALIDATED,
+            OperationContract.Table.COLUMN_NAME_SHARED};
 
     /*
      *  Constructors
@@ -55,7 +57,7 @@ public class OperationListController {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position != 0) {
-                    DialogFragment fragment = new NewSimpleOperationFragment();
+                    ((FragmentContainer)activity).setFragment(new NewSimpleOperationFragment());
                     cursor.moveToFirst();
                     cursor.move(position - 1);
                     Bundle info = new Bundle();
@@ -67,8 +69,8 @@ public class OperationListController {
                     info.putDouble(Operation.VALUE, cursor.getDouble(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE)));
                     info.putString(Operation.DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_DESCRIPTION)));
                     info.putInt(NewOperationFragment.STATUS, cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table._ID)));
-                    fragment.setArguments(info);
-                    fragment.show(activity.getSupportFragmentManager(), "New operation");
+                    ((FragmentContainer) activity).getFragment().setArguments(info);
+                    ((FragmentContainer) activity).getFragment().show(activity.getSupportFragmentManager(), "New operation");
                 }
             }
         });

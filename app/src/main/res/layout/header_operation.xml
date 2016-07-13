@@ -21,7 +21,7 @@
         android:paddingEnd="@dimen/operation_padding"
         android:paddingRight="@dimen/operation_padding"
         android:background="@drawable/operation_item_color_2"
-        android:layout_weight="25"
+        android:layout_weight="24"
         android:text="@string/Payee"/>
 
     <TextView
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:paddingEnd="@dimen/operation_padding"
         android:paddingRight="@dimen/operation_padding"
-        android:layout_weight="27"
+        android:layout_weight="25"
         android:text="@string/Category"/>
 
     <TextView
@@ -50,5 +50,12 @@
         android:layout_height="wrap_content"
         android:layout_weight="3"
         android:text="@string/V"/>
+
+    <TextView
+        android:id="@+id/shared"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:text="@string/S"/>
 
 </LinearLayout>

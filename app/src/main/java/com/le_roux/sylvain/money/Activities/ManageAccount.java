@@ -17,9 +17,12 @@ import com.le_roux.sylvain.money.Dialog.NewCategoryFragment;
 import com.le_roux.sylvain.money.Dialog.NewOperationFragment;
 import com.le_roux.sylvain.money.Dialog.NewSimpleOperationFragment;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
+import com.le_roux.sylvain.money.Interfaces.DateViewContainer;
+import com.le_roux.sylvain.money.Interfaces.FragmentContainer;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.DateView;
+import com.le_roux.sylvain.money.Utils.Logger;
 import com.le_roux.sylvain.money.Utils.OperationListController;
 
 import org.json.JSONException;
@@ -28,9 +31,10 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class ManageAccount extends AppCompatActivity implements AccountContainer, Updatable{
+public class ManageAccount extends AppCompatActivity implements AccountContainer, Updatable, DateViewContainer, FragmentContainer {
 
     private OperationListController controller;
+    private NewOperationFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +70,7 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
             addOperationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    NewOperationFragment fragment = new NewSimpleOperationFragment();
+                    fragment = new NewSimpleOperationFragment();
                     Bundle info = new Bundle();
                     Calendar c = GregorianCalendar.getInstance();
                     info.putInt(DateView.YEAR, c.get(Calendar.YEAR));
@@ -97,5 +101,20 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
     @Override
     public void update() {
         this.controller.displayOperationsForYear(GregorianCalendar.getInstance().get(Calendar.YEAR));
+    }
+
+    @Override
+    public DateView getDateView() {
+        return fragment.getDateView();
+    }
+
+    @Override
+    public NewOperationFragment getFragment() {
+        return this.fragment;
+    }
+
+    @Override
+    public void setFragment(NewOperationFragment fragment) {
+        this.fragment = fragment;
     }
 }
