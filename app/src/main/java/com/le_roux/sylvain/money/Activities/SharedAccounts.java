@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -44,30 +45,13 @@ public class SharedAccounts extends AppCompatActivity implements Updatable, Date
             });
         }
 
-        /*ListView operationsListView = (ListView)findViewById(R.id.operationsListView);
+        ListView operationsListView = (ListView)findViewById(R.id.operationsListView);
         OperationListController controller = new OperationListController(null, operationsListView, this);
-        ArrayList<Operation> operationsList = new ArrayList<>();
-        Account.retrieveAccounts(PreferenceManager.getDefaultSharedPreferences(this));
-        for (String accountName : Account.getAccountsList()) {
-            Account account = new Account(accountName, PreferenceManager.getDefaultSharedPreferences(this), this);
-            controller.setAccount(account);
-            Cursor cursor = controller.getOperationsForYear(GregorianCalendar.getInstance().get(Calendar.YEAR));
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                int shared = cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_SHARED));
-                if (shared == 1) {
-                    double value = cursor.getDouble(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE));
-                    String payee = cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_PAYEE));
-                    String category = cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_CATEGORY));
-                    String description = cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_DESCRIPTION));
-                    Operation operation = new Operation(value, payee, category, description);
-                    operation.setShared(true);
-                    operationsList.add(operation);
-                }
-            }
-        }
-        ArrayAdapter adapter = new ArrayAdapter(this, R.layout.item_shared_operation, operationsList);
-        operationsListView.setAdapter(adapter);*/
+        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+        View header = inflater.inflate(R.layout.header_shared_operation, null);
+        operationsListView.addHeaderView(header);
+        controller.displayOperationsForYear(GregorianCalendar.getInstance().get(Calendar.YEAR));
+
     }
 
     @Override

@@ -15,7 +15,7 @@ import com.le_roux.sylvain.money.Utils.OperationContract;
 /**
  * Created by Sylvain LE ROUX on 07/07/2016.
  */
-public class OperationAdapter extends CursorAdapter {
+public abstract class OperationAdapter extends CursorAdapter {
     public OperationAdapter(Context context, Cursor c, boolean autoRequery) {
         super(context, c, autoRequery);
     }
@@ -27,7 +27,7 @@ public class OperationAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ViewGroup layout = (ViewGroup)inflater.inflate(R.layout.item_operation, null);
+        ViewGroup layout = getLayout(inflater);
         bindView(layout, context, cursor);
         return layout;
     }
@@ -39,8 +39,6 @@ public class OperationAdapter extends CursorAdapter {
         TextView payee = (TextView)view.findViewById(R.id.payee);
         TextView category = (TextView)view.findViewById(R.id.category);
         TextView valueView = (TextView)view.findViewById(R.id.value);
-        TextView validated = (TextView)view.findViewById(R.id.validated);
-        TextView shared = (TextView)view.findViewById(R.id.shared);
 
         // Fill the views
         dateView.setDay(cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_DAY)));
@@ -56,16 +54,11 @@ public class OperationAdapter extends CursorAdapter {
         else
             valueView.setBackgroundResource(R.color.red);
 
-        int v = cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALIDATED));
-        if (v == 1)
-            validated.setText("V");
-        else
-            validated.setText(" ");
 
-        int s = cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_SHARED));
-        if (s == 1)
-            shared.setText(R.string.S);
-        else
-            shared.setText(" ");
+        bindCustomView(view, cursor);
     }
+
+    protected abstract ViewGroup getLayout(LayoutInflater inflater);
+
+    protected abstract void bindCustomView(View view, Cursor cursor);
 }
