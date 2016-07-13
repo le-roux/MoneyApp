@@ -9,7 +9,6 @@ public class OperationContract {
     public OperationContract() {}
 
     public static abstract class Table implements BaseColumns {
-        public static final String TABLE_NAME = "operation";
         public static final String COLUMN_NAME_PAYEE = "payee";
         public static final String COLUMN_NAME_VALUE = "value";
         public static final String COLUMN_NAME_CATEGORY = "category";
@@ -18,5 +17,6 @@ public class OperationContract {
         public static final String COLUMN_NAME_YEAR = "year";
         public static final String COLUMN_NAME_MONTH = "month";
         public static final String COLUMN_NAME_DAY = "day";
+        public static final String COLUMN_NAME_SHARED = "shared";
     }
 }

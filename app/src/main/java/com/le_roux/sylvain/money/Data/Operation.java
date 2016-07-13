@@ -27,6 +27,7 @@ public class Operation {
     private String category;
     private Calendar date;
     private boolean validated;
+    private boolean shared;
     private long id;
 
     // Keys used for storage
@@ -40,6 +41,7 @@ public class Operation {
     public static final String MINUTE = "operation.date.hour";
     public static final String DESCRIPTION = "operation.description";
     public static final String VALIDATED = "operation.validated";
+    public static final String SHARED = "operation.shared";
 
     /*
      *  Constructors
@@ -59,6 +61,7 @@ public class Operation {
         this.category = "";
         this.date = GregorianCalendar.getInstance();
         this.validated = false;
+        this.shared = false;
         this.id = -1;
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -72,6 +75,7 @@ public class Operation {
             this.date.set(Calendar.HOUR_OF_DAY, jsonObject.getInt(HOUR));
             this.date.set(Calendar.MINUTE, jsonObject.getInt(MINUTE));
             this.validated = jsonObject.getBoolean(VALIDATED);
+            this.shared = jsonObject.getBoolean(SHARED);
         } catch (JSONException e) {
             Logger.d("Error when reading an operation string version");
         }
@@ -84,6 +88,7 @@ public class Operation {
         this.category = "";
         this.date = GregorianCalendar.getInstance();
         this.validated = false;
+        this.shared = false;
         this.id = -1;
         try {
             this.value = jsonObject.getDouble(VALUE);
@@ -96,6 +101,7 @@ public class Operation {
             this.date.set(Calendar.HOUR_OF_DAY, jsonObject.getInt(HOUR));
             this.date.set(Calendar.MINUTE, jsonObject.getInt(MINUTE));
             this.validated = jsonObject.getBoolean(VALIDATED);
+            this.shared = jsonObject.getBoolean(SHARED);
         } catch (JSONException e) {
             Logger.d("Error when reading an operation string version");
         }
@@ -108,6 +114,7 @@ public class Operation {
         this.description = description;
         this.date = GregorianCalendar.getInstance();
         this.validated = false;
+        this.shared = false;
         this.id = -1;
     }
 
@@ -158,6 +165,14 @@ public class Operation {
         this.validated = !this.validated;
     }
 
+    public void setShared(boolean shared) {
+        this.shared = shared;
+    }
+
+    public boolean isShared() {
+        return this.shared;
+    }
+
     /*
      *  Storage methods
      */
@@ -174,6 +189,7 @@ public class Operation {
             jsonObject.put(MINUTE, this.date.get(Calendar.MINUTE));
             jsonObject.put(DESCRIPTION, this.description);
             jsonObject.put(VALIDATED, this.validated);
+            jsonObject.put(SHARED, this.shared);
             return jsonObject;
         } catch(JSONException e) {
             Logger.d("Error when converting operation to string");
@@ -195,14 +211,7 @@ public class Operation {
      * @return true on success, false otherwise
      */
     public boolean save(SQLiteDatabase db, String tableName) {
-        ContentValues values = new ContentValues();
-        values.put(OperationContract.Table.COLUMN_NAME_PAYEE, this.payee);
-        values.put(OperationContract.Table.COLUMN_NAME_VALUE, this.value);
-        values.put(OperationContract.Table.COLUMN_NAME_DESCRIPTION, this.description);
-        values.put(OperationContract.Table.COLUMN_NAME_VALIDATED, this.validated);
-        values.put(OperationContract.Table.COLUMN_NAME_YEAR, this.date.get(Calendar.YEAR));
-        values.put(OperationContract.Table.COLUMN_NAME_MONTH, this.date.get(Calendar.MONTH));
-        values.put(OperationContract.Table.COLUMN_NAME_DAY, this.date.get(Calendar.DAY_OF_MONTH));
+        ContentValues values = this.getContentValues();
         this.id = db.insert(tableName, null, values);
         return this.id != -1;
     }
@@ -230,6 +239,7 @@ public class Operation {
         values.put(OperationContract.Table.COLUMN_NAME_CATEGORY, this.category);
         values.put(OperationContract.Table.COLUMN_NAME_DESCRIPTION, this.description);
         values.put(OperationContract.Table.COLUMN_NAME_VALIDATED, this.validated);
+        values.put(OperationContract.Table.COLUMN_NAME_SHARED, this.shared);
         values.put(OperationContract.Table.COLUMN_NAME_DAY, this.date.get(Calendar.DAY_OF_MONTH));
         values.put(OperationContract.Table.COLUMN_NAME_MONTH, this.date.get(Calendar.MONTH));
         values.put(OperationContract.Table.COLUMN_NAME_YEAR, this.date.get(Calendar.YEAR));

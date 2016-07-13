@@ -172,7 +172,7 @@ public class Account {
      * @param context
      */
     public void setTable(Context context) {
-        this.databaseHelper = new AccountOpenHelper(context, this.name);
+        this.databaseHelper = new AccountOpenHelper(context);
         this.databaseHelper.createTable(this.name);
     }
 

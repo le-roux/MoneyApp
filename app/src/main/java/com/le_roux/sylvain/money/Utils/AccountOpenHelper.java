@@ -18,27 +18,13 @@ public class AccountOpenHelper extends SQLiteOpenHelper {
     private static final String REAL_TYPE = " REAL";
     private static final String COMMA_SEP = ",";
 
-    private String name;
-
-    public AccountOpenHelper(Context context, String name) {
+    public AccountOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.name = name;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        /*String SQL_CREATE_TABLE =
-                "CREATE TABLE " + this.name + " ( " +
-                        "_id" + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        OperationContract.Table.COLUMN_NAME_PAYEE + TEXT_TYPE + COMMA_SEP +
-                        OperationContract.Table.COLUMN_NAME_VALUE + REAL_TYPE + COMMA_SEP +
-                        OperationContract.Table.COLUMN_NAME_CATEGORY + TEXT_TYPE + COMMA_SEP +
-                        OperationContract.Table.COLUMN_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
-                        OperationContract.Table.COLUMN_NAME_VALIDATED + INTEGER_TYPE + COMMA_SEP +
-                        OperationContract.Table.COLUMN_NAME_YEAR + INTEGER_TYPE + COMMA_SEP +
-                        OperationContract.Table.COLUMN_NAME_MONTH + INTEGER_TYPE + COMMA_SEP +
-                        OperationContract.Table.COLUMN_NAME_DAY + INTEGER_TYPE + ')';
-        db.execSQL(SQL_CREATE_TABLE);*/
+
     }
 
     @Override
@@ -57,7 +43,8 @@ public class AccountOpenHelper extends SQLiteOpenHelper {
                         OperationContract.Table.COLUMN_NAME_VALIDATED + INTEGER_TYPE + COMMA_SEP +
                         OperationContract.Table.COLUMN_NAME_YEAR + INTEGER_TYPE + COMMA_SEP +
                         OperationContract.Table.COLUMN_NAME_MONTH + INTEGER_TYPE + COMMA_SEP +
-                        OperationContract.Table.COLUMN_NAME_DAY + INTEGER_TYPE + ')';
+                        OperationContract.Table.COLUMN_NAME_DAY + INTEGER_TYPE + COMMA_SEP +
+                        OperationContract.Table.COLUMN_NAME_SHARED + INTEGER_TYPE +')';
         this.getWritableDatabase().execSQL(SQL_CREATE_TABLE);
     }
 }
