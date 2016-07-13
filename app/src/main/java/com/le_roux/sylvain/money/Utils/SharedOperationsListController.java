@@ -9,11 +9,9 @@ import android.widget.ListView;
 
 import com.le_roux.sylvain.money.Adapter.OperationAdapter;
 import com.le_roux.sylvain.money.Adapter.SharedOperationAdapter;
-import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Dialog.NewOperationFragment;
 import com.le_roux.sylvain.money.Dialog.NewSharedOperationFragment;
-import com.le_roux.sylvain.money.Dialog.NewSimpleOperationFragment;
 import com.le_roux.sylvain.money.Interfaces.FragmentContainer;
 
 /**

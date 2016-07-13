@@ -12,7 +12,12 @@ import android.widget.Spinner;
 
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Data.Operation;
+import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
+import com.le_roux.sylvain.money.Utils.Logger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Collections;
 
@@ -90,11 +95,20 @@ public class NewSharedOperationFragment extends NewOperationFragment {
     public void saveOperation(Operation operation, int id) {
         String accountName = (String)this.accountSpinner.getSelectedItem();
         if (accountName!= null && !accountName.equals("")) {
-            Account account = new Account(accountName, PreferenceManager.getDefaultSharedPreferences(getActivity()), getActivity());
+            String accountString = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(accountName, null);
+            JSONObject jsonAccount = null;
+            try {
+                jsonAccount = new JSONObject(accountString);
+            } catch (JSONException e) {
+                Logger.d("Error when creating account in NewSharedOperationFragment");
+            }
+
+            Account account = new Account(jsonAccount, PreferenceManager.getDefaultSharedPreferences(getActivity()), getActivity());
             if (id == -1) // New operation
                 account.addOperation(operation);
             else
                 account.updateOperation(id, operation);
+            ((Updatable)getActivity()).update();
         }
     }
 }

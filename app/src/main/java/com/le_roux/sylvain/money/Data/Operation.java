@@ -223,7 +223,6 @@ public class Operation {
 
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues();
-        Logger.d("operation account name : " + this.accountName);
         values.put(OperationContract.Table.COLUMN_NAME_ACCOUNT, this.accountName);
         values.put(OperationContract.Table.COLUMN_NAME_PAYEE, this.payee);
         values.put(OperationContract.Table.COLUMN_NAME_VALUE, this.value);

@@ -241,7 +241,6 @@ public class Account {
         Cursor cursor = this.databaseHelper.query(columns, where, args);
         cursor.moveToFirst();
         balance -= cursor.getDouble(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE));
-
         // Update the record
         int nbRows;
         nbRows = this.databaseHelper.update(operation.getContentValues(), where, args);
