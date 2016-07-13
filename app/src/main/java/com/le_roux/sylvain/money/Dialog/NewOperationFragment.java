@@ -4,12 +4,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Path;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +34,7 @@ import java.util.GregorianCalendar;
 /**
  * Created by Sylvain LE ROUX on 07/07/2016.
  */
-public class NewOperationFragment extends DialogFragment implements DateViewContainer {
+public abstract class NewOperationFragment extends DialogFragment implements DateViewContainer {
 
     private DateView dateView = null;
     private RadioGroup radioGroup;
@@ -57,7 +55,7 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final ViewGroup layout = (ViewGroup)inflater.inflate(R.layout.new_operation_fragment, null);
+        final ViewGroup layout = getLayoutView(inflater);
 
         // Get the views
         this.dateView = (DateView)layout.findViewById(R.id.date);
@@ -70,6 +68,7 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
         this.descriptionView = (EditText)layout.findViewById(R.id.description);
         this.addPayeeButton = (Button)layout.findViewById(R.id.addPayee);
         this.addCategoryButton = (Button)layout.findViewById(R.id.addCategory);
+        initCustomViews();
 
         // Local variables
         String positiveButtonText;
@@ -83,48 +82,61 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
 
         // Set initial values
         Bundle info = getArguments();
-        if (info == null)
-            return null;
-        this.dateView.setYear(info.getInt(DateView.YEAR));
-        this.dateView.setMonth(info.getInt(DateView.MONTH));
-        this.dateView.setDay(info.getInt(DateView.DAY));
+        if (info != null) {
+            // Set the date
+            this.dateView.setYear(info.getInt(DateView.YEAR));
+            this.dateView.setMonth(info.getInt(DateView.MONTH));
+            this.dateView.setDay(info.getInt(DateView.DAY));
 
-        String payeeName = info.getString(Operation.PAYEE);
-        int payeeIndex = Account.getPayeesList().indexOf(payeeName);
-        if (payeeIndex != -1)
-            this.payeeView.setSelection(payeeIndex);
-        else if (payeeName != "") {
-            Account.getPayeesList().add(payeeName);
-            Collections.sort(Account.getPayeesList());
-            Account.savePayees(PreferenceManager.getDefaultSharedPreferences(getActivity()));
-            this.payeeView.setSelection(Account.getPayeesList().size() - 1);
-            payeeAdapter.notifyDataSetChanged();
-        }
+            // Set the payee name and add it to the list of payees if not already present
+            String payeeName = info.getString(Operation.PAYEE);
+            int payeeIndex = Account.getPayeesList().indexOf(payeeName);
+            if (payeeIndex != -1) // Element present in the list
+                this.payeeView.setSelection(payeeIndex);
+            else if (payeeName != null && !payeeName.equals("")) {
+                Account.getPayeesList().add(payeeName);
+                Collections.sort(Account.getPayeesList());
+                Account.savePayees(PreferenceManager.getDefaultSharedPreferences(getActivity()));
+                this.payeeView.setSelection(Account.getPayeesList().size() - 1);
+                payeeAdapter.notifyDataSetChanged();
+            }
 
-        String categoryName = info.getString(Operation.CATEGORY);
-        int categoryIndex = Account.getCategoriesList().indexOf(categoryName);
-        if (categoryIndex != -1)
-            this.categoryView.setSelection(categoryIndex);
-        else if (categoryName != "") {
-            Account.getCategoriesList().add(categoryName);
-            Collections.sort(Account.getCategoriesList());
-            Account.saveCategories(PreferenceManager.getDefaultSharedPreferences(getActivity()));
-            this.categoryView.setSelection(Account.getCategoriesList().size() - 1);
-            categoryAdapter.notifyDataSetChanged();
-        }
+            // Set the category and add it to the list of categories if not already present
+            String categoryName = info.getString(Operation.CATEGORY);
+            int categoryIndex = Account.getCategoriesList().indexOf(categoryName);
+            if (categoryIndex != -1) // Element present in the list
+                this.categoryView.setSelection(categoryIndex);
+            else if (categoryName != null && !categoryName.equals("")) {
+                Account.getCategoriesList().add(categoryName);
+                Collections.sort(Account.getCategoriesList());
+                Account.saveCategories(PreferenceManager.getDefaultSharedPreferences(getActivity()));
+                this.categoryView.setSelection(Account.getCategoriesList().size() - 1);
+                categoryAdapter.notifyDataSetChanged();
+            }
 
-        double value = info.getDouble(Operation.VALUE);
-        if (value > 0)
-            this.creditButton.setChecked(true);
-        else
-            this.debitButton.setChecked(true);
-        if (value != 0)
-            this.valueView.setText(String.valueOf(value));
-        this.descriptionView.setText(info.getString(Operation.DESCRIPTION));
-        if ((id = info.getInt(STATUS)) == 0)
+            // Set the type (debit/credit)
+            double value = info.getDouble(Operation.VALUE);
+            if (value > 0)
+                this.creditButton.setChecked(true);
+            else
+                this.debitButton.setChecked(true);
+
+            // Set the value
+            if (value != 0)
+                this.valueView.setText(String.valueOf(value));
+
+            // Set the description
+            this.descriptionView.setText(info.getString(Operation.DESCRIPTION));
+
+            // Select the text of the positive button
+            if ((id = info.getInt(STATUS)) == 0) // Operation not yet saved -> new one
+                positiveButtonText = getString(R.string.Create);
+            else
+                positiveButtonText = getString(R.string.Update);
+        } else {
             positiveButtonText = getString(R.string.Create);
-        else
-            positiveButtonText = getString(R.string.Update);
+            id = 0;
+        }
 
         // Listeners
         this.dateView.setOnClickListener(new View.OnClickListener() {
@@ -159,12 +171,7 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
         // Create the dialog
         builder.setView(layout)
                 .setCancelable(false)
-                .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
+                .setNegativeButton(R.string.Cancel, null)
                 .setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -219,15 +226,15 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
                                 value = -value;
                             operation.setValue(value);
 
-                            if (id == 0)
+                            if (id == 0) // New operation
                                 ((AccountContainer)getActivity()).getAccount().addOperation(operation);
                             else {
                                 ((AccountContainer)getActivity()).getAccount().updateOperation(id, operation);
                             }
                             ((Updatable)getActivity()).update();
                         } else {
-                            DialogFragment fragment = new NewOperationFragment();
-                            Bundle info = new Bundle();
+                            DialogFragment fragment = getInstance();
+                            Bundle info = setSpecificInfo();
                             info.putInt(DateView.YEAR, dateView.getYear());
                             info.putInt(DateView.MONTH, dateView.getMonth() - 1);
                             info.putInt(DateView.DAY, dateView.getDay());
@@ -240,6 +247,14 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
                         }
                     }
                 });
+        if (id != 0) { // Existing operation
+            builder.setNeutralButton(R.string.Delete, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // TODO delete operation
+                }
+            });
+        }
         return builder.create();
     }
 
@@ -247,4 +262,12 @@ public class NewOperationFragment extends DialogFragment implements DateViewCont
     public DateView getDateView() {
         return this.dateView;
     }
+
+    public abstract ViewGroup getLayoutView(LayoutInflater inflater);
+
+    public abstract void initCustomViews();
+
+    public abstract NewOperationFragment getInstance();
+
+    public abstract Bundle setSpecificInfo();
 }

@@ -24,6 +24,8 @@
 
     <string name="MyAccount">Mon Compte</string>
 
+    <string name="Delete">Supprimer</string>
+
     <string name="NewCategory">Nouvelle catégorie</string>
     <string name="CategoryName">Nom de la catégorie</string>
 </resources>
