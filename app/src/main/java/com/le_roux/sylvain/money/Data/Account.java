@@ -227,6 +227,18 @@ public class Account {
     }
 
     public void deleteOperation(int id) {
-        // TODO
+        String where = OperationContract.Table._ID + " LIKE ? ";
+        String[] args = {String.valueOf(id)};
+
+        // Get previous value to update the account balance
+        String[] columns = {OperationContract.Table.COLUMN_NAME_VALUE};
+        SQLiteDatabase dbRead = this.databaseHelper.getReadableDatabase();
+        Cursor cursor = dbRead.query(this.name, columns, where, args, null, null, null);
+        cursor.moveToFirst();
+        balance -= cursor.getDouble(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE));
+
+        SQLiteDatabase dbWrite = getWritableDatabase();
+        dbWrite.delete(getName(), where, args);
+        this.save();
     }
 }

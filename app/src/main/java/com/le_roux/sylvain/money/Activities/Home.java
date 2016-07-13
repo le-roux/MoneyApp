@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.le_roux.sylvain.money.Adapter.OperationAdapter;
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Dialog.NewAccountFragment;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
@@ -45,15 +44,7 @@ public class Home extends AppCompatActivity implements Updatable, AccountContain
             this.balanceAccount.setName(getString(R.string.Solde));
 
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.contains(Account.CURRENT_ACCOUNT)) {
-            try {
-                String accountName = sharedPreferences.getString(Account.CURRENT_ACCOUNT, "");
-                this.setAccount(new Account(new JSONObject(sharedPreferences.getString(accountName, "")), this.sharedPreferences, this));
-            } catch (JSONException e) {
-                Logger.d("Error when recreating account JSON from string");
-            }
-        }
-        else {
+        if (!sharedPreferences.contains(Account.CURRENT_ACCOUNT)) {
             DialogFragment fragment = new NewAccountFragment();
             fragment.show(getSupportFragmentManager(), "New account");
         }
@@ -65,8 +56,7 @@ public class Home extends AppCompatActivity implements Updatable, AccountContain
                 startActivity(intent);
             }
         });
-        if (this.account != null)
-            this.accountNameView.setText(this.account.getName());
+
         this.update();
     }
 
@@ -89,6 +79,17 @@ public class Home extends AppCompatActivity implements Updatable, AccountContain
 
     @Override
     public void update() {
+
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sharedPreferences.contains(Account.CURRENT_ACCOUNT)) {
+            try {
+                String accountName = sharedPreferences.getString(Account.CURRENT_ACCOUNT, "");
+                this.setAccount(new Account(new JSONObject(sharedPreferences.getString(accountName, "")), this.sharedPreferences, this));
+            } catch (JSONException e) {
+                Logger.d("Error when recreating account JSON from string");
+            }
+        }
+
         if (this.balanceAccount != null) {
             if (this.account != null)
                 this.balanceAccount.setValue(this.account.getBalance());

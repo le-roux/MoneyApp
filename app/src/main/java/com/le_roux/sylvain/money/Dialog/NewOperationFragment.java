@@ -26,6 +26,7 @@ import com.le_roux.sylvain.money.Interfaces.DateViewContainer;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.DateView;
+import com.le_roux.sylvain.money.Utils.Logger;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -251,7 +252,8 @@ public abstract class NewOperationFragment extends DialogFragment implements Dat
             builder.setNeutralButton(R.string.Delete, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // TODO delete operation
+                    ((AccountContainer)getActivity()).getAccount().deleteOperation(id);
+                    ((Updatable)getActivity()).update();
                 }
             });
         }
