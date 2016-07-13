@@ -18,4 +18,11 @@
         android:layout_centerHorizontal="true"
         android:background="@color/mid_grey"/>
 
+    <ListView
+        android:id="@+id/operationsListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/addOperation"/>
+
 </RelativeLayout>

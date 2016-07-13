@@ -67,6 +67,7 @@ public class NewAccountFragment extends DialogFragment {
                         if (!initialBalanceString.equals("")) {
                             double initialBalance = Double.parseDouble(initialBalanceString);
                             Operation operation = new Operation();
+                            operation.setAccountName(accountName);
                             operation.setPayee(accountName);
                             operation.setValue(initialBalance);
                             operation.setCategory(getString(R.string.InitialValue));

@@ -21,6 +21,7 @@ import java.util.GregorianCalendar;
  * If it's a deposit, value > 0, otherwise value < 0;
  */
 public class Operation {
+    private String accountName;
     private double value;
     private String payee;
     private String description;
@@ -31,6 +32,7 @@ public class Operation {
     private long id;
 
     // Keys used for storage
+    public static final String ACCOUNT = "operation.account";
     public static final String PAYEE = "operation.payee";
     public static final String VALUE = "operation.value";
     public static final String CATEGORY = "operation.category";
@@ -47,14 +49,15 @@ public class Operation {
      *  Constructors
      */
     public Operation () {
-        this(0.0, "", "", "");
+        this(0.0, "", "", "", "");
     }
 
     public Operation(double value, String payee) {
-        this(value, payee, "", "");
+        this(value, payee, "", "", "");
     }
 
     public Operation(String jsonString) {
+        this.accountName = "";
         this.value = 0.0;
         this.payee = "";
         this.description = "";
@@ -65,6 +68,7 @@ public class Operation {
         this.id = -1;
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
+            this.accountName = jsonObject.getString(ACCOUNT);
             this.value = jsonObject.getDouble(VALUE);
             this.payee = jsonObject.getString(PAYEE);
             this.description = jsonObject.getString(DESCRIPTION);
@@ -82,6 +86,7 @@ public class Operation {
     }
 
     public Operation(JSONObject jsonObject) {
+        this.accountName = "";
         this.value = 0.0;
         this.payee = "";
         this.description = "";
@@ -91,6 +96,7 @@ public class Operation {
         this.shared = false;
         this.id = -1;
         try {
+            this.accountName = jsonObject.getString(ACCOUNT);
             this.value = jsonObject.getDouble(VALUE);
             this.payee = jsonObject.getString(PAYEE);
             this.description = jsonObject.getString(DESCRIPTION);
@@ -107,7 +113,7 @@ public class Operation {
         }
     }
 
-    public Operation(double value, String payee, String category, String description) {
+    public Operation(double value, String payee, String category, String description, String accountName) {
         this.value = value;
         this.payee = payee;
         this.category = category;
@@ -116,11 +122,21 @@ public class Operation {
         this.validated = false;
         this.shared = false;
         this.id = -1;
+        this.accountName = accountName;
     }
 
     /*
      *  Getters and Setters
      */
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public String getAccountName() {
+        return this.accountName;
+    }
+
     public void setValue(double value) {
         this.value = value;
     }
@@ -179,6 +195,7 @@ public class Operation {
     public JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
         try {
+            jsonObject.put(ACCOUNT, this.accountName);
             jsonObject.put(PAYEE, this.payee);
             jsonObject.put(VALUE, this.value);
             jsonObject.put(CATEGORY, this.category);
@@ -204,36 +221,10 @@ public class Operation {
         return jsonObject.toString();
     }
 
-    /**
-     * Save the operation in the specified table
-     * @param db the database containing the table
-     * @param tableName the name of the table where to save the operation
-     * @return true on success, false otherwise
-     */
-    public boolean save(SQLiteDatabase db, String tableName) {
-        ContentValues values = this.getContentValues();
-        this.id = db.insert(tableName, null, values);
-        return this.id != -1;
-    }
-
-    /**
-     * Delete the operation from the specified table
-     * @param db the database containing the table
-     * @param tableName the name of the table from where to delete the operation
-     * @return true on success, false otherwise.
-     */
-    public boolean delete(SQLiteDatabase db, String tableName) {
-        if (this.id == -1) // operation not saved in a table
-            return true;
-        String selection = OperationContract.Table._ID + " LIKE ?";
-        String[] selectionArg = {String.valueOf(this.id)};
-        int ret;
-        ret = db.delete(tableName, selection, selectionArg);
-        return ret != 0;
-    }
-
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues();
+        Logger.d("operation account name : " + this.accountName);
+        values.put(OperationContract.Table.COLUMN_NAME_ACCOUNT, this.accountName);
         values.put(OperationContract.Table.COLUMN_NAME_PAYEE, this.payee);
         values.put(OperationContract.Table.COLUMN_NAME_VALUE, this.value);
         values.put(OperationContract.Table.COLUMN_NAME_CATEGORY, this.category);

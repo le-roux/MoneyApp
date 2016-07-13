@@ -33,7 +33,9 @@ public class OperationListController {
     private OperationAdapter adapter;
     private AppCompatActivity activity;
 
-    private static String[] columns = {OperationContract.Table._ID,
+    private static String[] columns = {
+            OperationContract.Table._ID,
+            OperationContract.Table.COLUMN_NAME_ACCOUNT,
             OperationContract.Table.COLUMN_NAME_DAY,
             OperationContract.Table.COLUMN_NAME_MONTH,
             OperationContract.Table.COLUMN_NAME_YEAR,
@@ -102,13 +104,19 @@ public class OperationListController {
     public boolean displayOperationsForYear(int year) {
         if (this.account == null)
             return false;
-        SQLiteDatabase dbRead = this.account.getReadableDatabase();
-        String where = OperationContract.Table.COLUMN_NAME_YEAR + " LIKE ? ";
-        String[] args = {String.valueOf(year)};
-        this.cursor = dbRead.query(this.account.getName(), columns, where, args, null, null, null);
+        this.cursor = getOperationsForYear(year);
         this.adapter = new OperationAdapter(this.activity, this.cursor, 0);
         this.view.setAdapter(this.adapter);
         return true;
+    }
+
+    public Cursor getOperationsForYear(int year) {
+        AccountOpenHelper helper = this.account.getDatabaseHelper();
+        Logger.d("query account name : " + this.account.getName());
+        String where = OperationContract.Table.COLUMN_NAME_ACCOUNT + " LIKE ? AND " +
+                OperationContract.Table.COLUMN_NAME_YEAR + " LIKE ? ";
+        String[] args = {this.account.getName(), String.valueOf(year)};
+        return helper.query(columns, where, args);
     }
 
 

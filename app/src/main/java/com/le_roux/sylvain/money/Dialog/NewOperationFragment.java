@@ -53,7 +53,7 @@ public abstract class NewOperationFragment extends DialogFragment implements Dat
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final ViewGroup layout = getLayoutView(inflater);
@@ -232,13 +232,7 @@ public abstract class NewOperationFragment extends DialogFragment implements Dat
                             operation.setValue(value);
 
                             editOperation(operation);
-
-                            if (id == 0) // New operation
-                                ((AccountContainer)getActivity()).getAccount().addOperation(operation);
-                            else {
-                                ((AccountContainer)getActivity()).getAccount().updateOperation(id, operation);
-                            }
-                            ((Updatable)getActivity()).update();
+                            saveOperation(operation, id);
                         } else {
                             DialogFragment fragment = getInstance();
                             Bundle info = setSpecificInfo();
@@ -280,4 +274,6 @@ public abstract class NewOperationFragment extends DialogFragment implements Dat
     public abstract Bundle setSpecificInfo();
 
     public abstract void editOperation(Operation operation);
+
+    public abstract void saveOperation(Operation operation, int id);
 }

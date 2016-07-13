@@ -37,18 +37,20 @@ public class NewSharedOperationFragment extends NewOperationFragment {
         ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getAccountsList());
         this.accountSpinner.setAdapter(accountAdapter);
 
-        String accountName = info.getString(Account.ACCOUNT);
-        int index = Account.getAccountsList().indexOf(accountName);
-        if (index == -1) {
-            if (accountName!= null && !accountName.equals("")) {
-                Account.getAccountsList().add(accountName);
-                Collections.sort(Account.getAccountsList());
-                Account.saveAccounts(PreferenceManager.getDefaultSharedPreferences(getActivity()));
-                accountAdapter.notifyDataSetChanged();
-                this.accountSpinner.setSelection(Account.getAccountsList().size() - 1);
-            }
-        } else
-            this.accountSpinner.setSelection(index);
+        if (info != null) {
+            String accountName = info.getString(Account.ACCOUNT);
+            int index = Account.getAccountsList().indexOf(accountName);
+            if (index == -1) {
+                if (accountName != null && !accountName.equals("")) {
+                    Account.getAccountsList().add(accountName);
+                    Collections.sort(Account.getAccountsList());
+                    Account.saveAccounts(PreferenceManager.getDefaultSharedPreferences(getActivity()));
+                    accountAdapter.notifyDataSetChanged();
+                    this.accountSpinner.setSelection(Account.getAccountsList().size() - 1);
+                }
+            } else
+                this.accountSpinner.setSelection(index);
+        }
 
         newAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +82,19 @@ public class NewSharedOperationFragment extends NewOperationFragment {
 
     @Override
     public void editOperation(Operation operation) {
+        operation.setAccountName((String)this.accountSpinner.getSelectedItem());
         operation.setShared(true);
+    }
+
+    @Override
+    public void saveOperation(Operation operation, int id) {
+        String accountName = (String)this.accountSpinner.getSelectedItem();
+        if (accountName!= null && !accountName.equals("")) {
+            Account account = new Account(accountName, PreferenceManager.getDefaultSharedPreferences(getActivity()), getActivity());
+            if (id == -1) // New operation
+                account.addOperation(operation);
+            else
+                account.updateOperation(id, operation);
+        }
     }
 }

@@ -77,13 +77,10 @@ public class Account {
         return this.balance;
     }
 
-    public SQLiteDatabase getReadableDatabase() {
-        return this.databaseHelper.getReadableDatabase();
+    public AccountOpenHelper getDatabaseHelper() {
+        return this.databaseHelper;
     }
 
-    public SQLiteDatabase getWritableDatabase() {
-        return this.databaseHelper.getWritableDatabase();
-    }
     public static ArrayList<String> getCategoriesList() {
         return categoriesList;
     }
@@ -203,7 +200,7 @@ public class Account {
      */
     public void setTable(Context context) {
         this.databaseHelper = new AccountOpenHelper(context);
-        this.databaseHelper.createTable(this.name);
+        this.databaseHelper.createTable();
     }
 
     /**
@@ -214,7 +211,7 @@ public class Account {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         double balance = 0.0;
         String[] projection = {OperationContract.Table.COLUMN_NAME_VALUE};
-        Cursor c = db.query(false, this.name, projection, null, null, null, null, null, null);
+        Cursor c = db.query(false, AccountOpenHelper.TABLE_NAME, projection, null, null, null, null, null, null);
         c.moveToFirst();
         while (!c.isAfterLast()) {
             balance += c.getDouble(c.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE));
@@ -228,9 +225,8 @@ public class Account {
     }
 
     public boolean addOperation(Operation operation) {
-        SQLiteDatabase dbWrite = this.databaseHelper.getWritableDatabase();
         long rowId;
-        rowId = dbWrite.insert(this.name, null, operation.getContentValues());
+        rowId = this.databaseHelper.insert(null, operation.getContentValues());
         this.balance += operation.getValue();
         this.save();
         return rowId != -1;
@@ -242,15 +238,13 @@ public class Account {
 
         // Get previous value to update the account balance
         String[] columns = {OperationContract.Table.COLUMN_NAME_VALUE};
-        SQLiteDatabase dbRead = this.databaseHelper.getReadableDatabase();
-        Cursor cursor = dbRead.query(this.name, columns, where, args, null, null, null);
+        Cursor cursor = this.databaseHelper.query(columns, where, args);
         cursor.moveToFirst();
         balance -= cursor.getDouble(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE));
 
         // Update the record
-        SQLiteDatabase dbWrite = this.databaseHelper.getWritableDatabase();
         int nbRows;
-        nbRows = dbWrite.update(this.name, operation.getContentValues(), where, args);
+        nbRows = this.databaseHelper.update(operation.getContentValues(), where, args);
         balance += operation.getValue();
         this.save();
         return nbRows == 1;
@@ -262,13 +256,11 @@ public class Account {
 
         // Get previous value to update the account balance
         String[] columns = {OperationContract.Table.COLUMN_NAME_VALUE};
-        SQLiteDatabase dbRead = this.databaseHelper.getReadableDatabase();
-        Cursor cursor = dbRead.query(this.name, columns, where, args, null, null, null);
+        Cursor cursor = this.databaseHelper.query(columns, where, args);
         cursor.moveToFirst();
         balance -= cursor.getDouble(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE));
 
-        SQLiteDatabase dbWrite = getWritableDatabase();
-        dbWrite.delete(getName(), where, args);
+        this.databaseHelper.delete(where, args);
         this.save();
     }
 }
