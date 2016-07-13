@@ -6,6 +6,9 @@ import android.util.AttributeSet;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 /**
  * Created by Sylvain LE ROUX on 07/07/2016.
  */
@@ -34,25 +37,28 @@ public class DateView extends TextView implements DatePickerDialog.OnDateSetList
      */
     public DateView(Context context) {
         super(context);
-        this.day = 1;
-        this.month = 1;
-        this.year = 1970;
+        Calendar calendar = GregorianCalendar.getInstance();
+        this.day = calendar.get(Calendar.DAY_OF_MONTH);
+        this.month = calendar.get(Calendar.MONTH) + 1;
+        this.year = calendar.get(Calendar.YEAR);
         update();
     }
 
     public DateView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.day = 1;
-        this.month = 1;
-        this.year = 1970;
+        Calendar calendar = GregorianCalendar.getInstance();
+        this.day = calendar.get(Calendar.DAY_OF_MONTH);
+        this.month = calendar.get(Calendar.MONTH) + 1;
+        this.year = calendar.get(Calendar.YEAR);
         update();
     }
 
     public DateView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.day = 1;
-        this.month = 1;
-        this.year = 1970;
+        Calendar calendar = GregorianCalendar.getInstance();
+        this.day = calendar.get(Calendar.DAY_OF_MONTH);
+        this.month = calendar.get(Calendar.MONTH) + 1;
+        this.year = calendar.get(Calendar.YEAR);
         update();
     }
 

@@ -137,9 +137,9 @@ public abstract class NewOperationFragment extends DialogFragment implements Dat
                 positiveButtonText = getString(R.string.Update);
         } else {
             positiveButtonText = getString(R.string.Create);
-            id = 0;
+            id = -1;
+            this.debitButton.setChecked(true);
         }
-
 
         initCustomViews(layout, info);
 
