@@ -13,6 +13,7 @@ import com.le_roux.sylvain.money.Adapter.OperationAdapter;
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Dialog.NewOperationFragment;
+import com.le_roux.sylvain.money.Dialog.NewSimpleOperationFragment;
 
 /**
  * Created by Sylvain LE ROUX on 12/07/2016.
@@ -54,7 +55,7 @@ public class OperationListController {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position != 0) {
-                    DialogFragment fragment = new NewOperationFragment();
+                    DialogFragment fragment = new NewSimpleOperationFragment();
                     cursor.moveToFirst();
                     cursor.move(position - 1);
                     Bundle info = new Bundle();

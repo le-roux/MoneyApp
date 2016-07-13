@@ -15,6 +15,7 @@ import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Dialog.NewCategoryFragment;
 import com.le_roux.sylvain.money.Dialog.NewOperationFragment;
+import com.le_roux.sylvain.money.Dialog.NewSimpleOperationFragment;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
@@ -65,7 +66,7 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
             addOperationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    NewOperationFragment fragment = new NewOperationFragment();
+                    NewOperationFragment fragment = new NewSimpleOperationFragment();
                     Bundle info = new Bundle();
                     Calendar c = GregorianCalendar.getInstance();
                     info.putInt(DateView.YEAR, c.get(Calendar.YEAR));
