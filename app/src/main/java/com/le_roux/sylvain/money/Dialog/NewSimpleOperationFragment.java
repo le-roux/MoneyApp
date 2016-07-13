@@ -16,7 +16,7 @@ public class NewSimpleOperationFragment extends NewOperationFragment{
     }
 
     @Override
-    public void initCustomViews() {
+    public void initCustomViews(ViewGroup layout) {
         // Nothing to do
     }
 

@@ -69,15 +69,17 @@ public abstract class NewOperationFragment extends DialogFragment implements Dat
         this.descriptionView = (EditText)layout.findViewById(R.id.description);
         this.addPayeeButton = (Button)layout.findViewById(R.id.addPayee);
         this.addCategoryButton = (Button)layout.findViewById(R.id.addCategory);
-        initCustomViews();
+        initCustomViews(layout);
 
         // Local variables
         String positiveButtonText;
         final int id;
 
         // Initialization of the spinners
+        Account.retrieveCategories(PreferenceManager.getDefaultSharedPreferences(getActivity()));
         ArrayAdapter categoryAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getCategoriesList());
         this.categoryView.setAdapter(categoryAdapter);
+        Account.retrievePayees(PreferenceManager.getDefaultSharedPreferences(getActivity()));
         final ArrayAdapter payeeAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getPayeesList());
         this.payeeView.setAdapter(payeeAdapter);
 
@@ -267,7 +269,7 @@ public abstract class NewOperationFragment extends DialogFragment implements Dat
 
     public abstract ViewGroup getLayoutView(LayoutInflater inflater);
 
-    public abstract void initCustomViews();
+    public abstract void initCustomViews(ViewGroup layout);
 
     public abstract NewOperationFragment getInstance();
 

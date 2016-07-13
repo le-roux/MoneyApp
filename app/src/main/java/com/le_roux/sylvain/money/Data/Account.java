@@ -27,6 +27,7 @@ public class Account {
     private Context context;
     private static ArrayList<String> categoriesList = new ArrayList<>();
     private static ArrayList<String> payeesList = new ArrayList<>();
+    private static ArrayList<String> accountsList = new ArrayList<>();
 
     // Keys used for storage
     private static final String NAME = "account.name";
@@ -35,6 +36,7 @@ public class Account {
     public static final String CURRENT_ACCOUNT = "account.current";
     public static final String CATEGORIES = "account.categories";
     public static final String PAYEES = "account.payees";
+    public static final String ACCOUNTS = "account.accounts";
 
     /*
      *  Constructors
@@ -87,6 +89,10 @@ public class Account {
 
     public static ArrayList<String> getPayeesList() {
         return payeesList;
+    }
+
+    public static ArrayList<String> getAccountsList() {
+        return accountsList;
     }
 
     /*
@@ -159,7 +165,30 @@ public class Account {
                     payeesList.add(array.getString(i));
             }
         } catch (JSONException e) {
-            Logger.d("Impossible to read the categories list");
+            Logger.d("Impossible to read the payees list");
+        }
+    }
+
+    public static void saveAccounts(SharedPreferences sharedPreferences) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        JSONArray array = new JSONArray();
+        for (String category : accountsList) {
+            array.put(category);
+        }
+        editor.putString(ACCOUNTS, array.toString());
+        editor.apply();
+    }
+
+    public static void retrieveAccounts(SharedPreferences sharedPreferences) {
+        try {
+            if (sharedPreferences.contains(ACCOUNTS)) {
+                JSONArray array = new JSONArray(sharedPreferences.getString(ACCOUNTS, null));
+                accountsList.clear();
+                for (int i = 0; i < array.length(); i++)
+                    accountsList.add(array.getString(i));
+            }
+        } catch (JSONException e) {
+            Logger.d("Impossible to read the accounts list");
         }
     }
 

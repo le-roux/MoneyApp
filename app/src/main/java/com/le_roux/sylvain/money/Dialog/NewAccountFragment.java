@@ -23,6 +23,9 @@ import com.le_roux.sylvain.money.R;
  * Created by Sylvain LE ROUX on 07/07/2016.
  */
 public class NewAccountFragment extends DialogFragment {
+
+    public static final String CURRENT = "accountFragment.current";
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -44,9 +47,14 @@ public class NewAccountFragment extends DialogFragment {
                         ((AccountContainer)getActivity()).setAccount(account);
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString(Account.CURRENT_ACCOUNT, account.getName());
+                        Bundle args = getArguments();
+                        if (args.getBoolean(CURRENT))
+                            editor.putString(Account.CURRENT_ACCOUNT, account.getName());
                         editor.putString(accountName, account.toString());
                         editor.apply();
+                        Account.retrieveAccounts(sharedPreferences);
+                        Account.getAccountsList().add(accountName);
+                        Account.saveAccounts(sharedPreferences);
 
                         String initialBalanceString = initialBalanceField.getText().toString();
                         if (!initialBalanceString.equals("")) {
