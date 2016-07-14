@@ -57,10 +57,16 @@ public class PriceView extends TextView {
      *  Other methods
      */
     public void update() {
-        String text = this.name
-                + " : "
-                + String.valueOf(this.value)
-                + " €";
+        String text;
+        if(this.name != null) {
+            text = this.name
+                    + " : "
+                    + String.valueOf(this.value)
+                    + " €";
+        }  else {
+            text = String.valueOf(this.value)
+                    +" €";
+        }
         if (this.value < 0)
             this.setTextColor(getResources().getColor(R.color.red));
         setText(text);

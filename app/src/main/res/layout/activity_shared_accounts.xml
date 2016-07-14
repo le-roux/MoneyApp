@@ -9,20 +9,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.le_roux.sylvain.money.Activities.SharedAccounts">
 
-    <Button
-        android:id="@+id/addOperation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/New"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@color/mid_grey"/>
+    <TextView
+        android:id="@+id/center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"/>
 
-    <RelativeLayout
-        android:id="@+id/balancingLayout"
+    <ListView
+        android:id="@+id/operationsListView"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_above="@id/addOperation"/>
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/center"/>
 
     <TextView
         android:id="@+id/balancingTitle"
@@ -30,7 +28,8 @@
         android:layout_height="wrap_content"
         android:text="@string/BalancingTime"
         android:textSize="@dimen/formSize"
-        android:layout_above="@id/balancingLayout"/>
+        android:layout_below="@id/center"
+        android:layout_marginTop="@dimen/activity_vertical_margin"/>
 
     <RadioGroup
         android:id="@+id/TimeSpanGroup"
@@ -57,11 +56,31 @@
 
     </RadioGroup>
 
+    <RelativeLayout
+        android:id="@+id/balancingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/TimeSpanGroup"/>
+
     <ListView
-        android:id="@+id/operationsListView"
+        android:id="@+id/accountsDebt"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/balancingTitle"/>
+        android:layout_below="@id/balancingLayout"
+        android:layout_above="@id/addOperation"/>
+
+    <Button
+        android:id="@+id/addOperation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/New"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/mid_grey"/>
+
+
+
+
+
 
 </RelativeLayout>
