@@ -31,6 +31,12 @@ public class SimpleOperationAdapter extends OperationAdapter {
     protected void bindCustomView(View view, Cursor cursor) {
         TextView validated = (TextView)view.findViewById(R.id.validated);
         TextView shared = (TextView)view.findViewById(R.id.shared);
+        double value = cursor.getDouble(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE));
+        TextView valueView = (TextView)view.findViewById(R.id.value);
+        if (value >= 0)
+            valueView.setBackgroundResource(R.color.green);
+        else
+            valueView.setBackgroundResource(R.color.red);
 
         int v = cursor.getInt(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALIDATED));
         if (v == 1)

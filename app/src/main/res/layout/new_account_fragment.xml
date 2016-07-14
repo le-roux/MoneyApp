@@ -26,4 +26,29 @@
         android:hint="@string/InitialValue"
         android:inputType="numberDecimal"/>
 
+    <LinearLayout
+        android:id="@+id/colorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/color"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="80"/>
+
+        <ImageView
+            android:id="@+id/colorViewer"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/contentSize"
+            android:layout_weight="20"
+            android:layout_margin="@dimen/operation_padding"/>
+
+
+
+    </LinearLayout>
+
+
+
 </LinearLayout>

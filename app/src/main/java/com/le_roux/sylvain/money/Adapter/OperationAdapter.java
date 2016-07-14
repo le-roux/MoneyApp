@@ -49,10 +49,7 @@ public abstract class OperationAdapter extends CursorAdapter {
         category.setText(cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_CATEGORY)));
         double value = cursor.getDouble(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE));
         valueView.setText(String.valueOf(value));
-        if (value >= 0)
-            valueView.setBackgroundResource(R.color.green);
-        else
-            valueView.setBackgroundResource(R.color.red);
+
 
 
         bindCustomView(view, cursor);

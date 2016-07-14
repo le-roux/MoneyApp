@@ -31,4 +31,10 @@
 
     <string name="NewCategory">Nouvelle catégorie</string>
     <string name="CategoryName">Nom de la catégorie</string>
+
+    <string-array name="ColorsName">
+        <item name="Red">Rouge</item>
+        <item name="Blue">Bleu</item>
+    </string-array>
+
 </resources>

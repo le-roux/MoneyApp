@@ -14,4 +14,9 @@
     <color name="light_grey">#F5F5F5</color>
     <color name="alice_blue">#F0F8FF</color>
     <color name="aero">#7CB9E8</color>
+
+    <string-array name="ColorsValue">
+        <item name="Red">#FF0000</item>
+        <item name="Blue">#0000FF</item>
+    </string-array>
 </resources>
