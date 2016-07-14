@@ -18,11 +18,50 @@
         android:layout_centerHorizontal="true"
         android:background="@color/mid_grey"/>
 
+    <RelativeLayout
+        android:id="@+id/balancingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_above="@id/addOperation"/>
+
+    <TextView
+        android:id="@+id/balancingTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/BalancingTime"
+        android:textSize="@dimen/formSize"
+        android:layout_above="@id/balancingLayout"/>
+
+    <RadioGroup
+        android:id="@+id/TimeSpanGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/balancingTitle"
+        android:layout_toEndOf="@id/balancingTitle"
+        android:layout_toRightOf="@id/balancingTitle"
+        android:orientation="horizontal"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin">
+
+        <RadioButton
+            android:id="@+id/monthButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Month"/>
+
+        <RadioButton
+            android:id="@+id/yearButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Year"/>
+
+    </RadioGroup>
+
     <ListView
         android:id="@+id/operationsListView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_alignParentTop="true"
-        android:layout_above="@id/addOperation"/>
+        android:layout_above="@id/balancingTitle"/>
 
 </RelativeLayout>

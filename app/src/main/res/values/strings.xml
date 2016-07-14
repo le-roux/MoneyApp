@@ -31,10 +31,28 @@
 
     <string name="NewCategory">Nouvelle catégorie</string>
     <string name="CategoryName">Nom de la catégorie</string>
+    <string name="BalancingTime">Equilibrage pour</string>
+    <string name="Year">Année</string>
+    <string name="Month">Mois</string>
 
     <string-array name="ColorsName">
-        <item name="Red">Rouge</item>
-        <item name="Blue">Bleu</item>
+        <item>Rouge</item>
+        <item>Bleu</item>
+    </string-array>
+
+    <string-array name="Month">
+        <item>Janvier</item>
+        <item>Février</item>
+        <item>Mars</item>
+        <item>Avril</item>
+        <item>Mai</item>
+        <item>Juin</item>
+        <item>Juillet</item>
+        <item>Août</item>
+        <item>Septembre</item>
+        <item>Octobre</item>
+        <item>Novembre</item>
+        <item>Décembre</item>
     </string-array>
 
 </resources>

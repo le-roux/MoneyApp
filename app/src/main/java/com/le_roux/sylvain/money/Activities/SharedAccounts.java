@@ -1,19 +1,27 @@
 package com.le_roux.sylvain.money.Activities;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
 import com.le_roux.sylvain.money.Dialog.NewOperationFragment;
 import com.le_roux.sylvain.money.Dialog.NewSharedOperationFragment;
+import com.le_roux.sylvain.money.Fragment.MonthBalancingFragment;
+import com.le_roux.sylvain.money.Fragment.YearBalancingFragment;
 import com.le_roux.sylvain.money.Interfaces.DateViewContainer;
 import com.le_roux.sylvain.money.Interfaces.FragmentContainer;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.DateView;
+import com.le_roux.sylvain.money.Utils.Logger;
 import com.le_roux.sylvain.money.Utils.SharedOperationsListController;
 
 import java.util.Calendar;
@@ -47,6 +55,32 @@ public class SharedAccounts extends AppCompatActivity implements Updatable, Date
         operationsListView.addHeaderView(header);
         this.controller.displayOperationsForYear(GregorianCalendar.getInstance().get(Calendar.YEAR));
 
+        RadioGroup balancingTimeGroup = (RadioGroup)findViewById(R.id.TimeSpanGroup);
+        final FragmentManager manager = getFragmentManager();
+        if (balancingTimeGroup != null) {
+            balancingTimeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    if (checkedId == R.id.monthButton) {
+                        FragmentTransaction transaction = manager.beginTransaction();
+                        transaction.replace(R.id.balancingLayout, new MonthBalancingFragment());
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                    } else {
+                        FragmentTransaction transaction = manager.beginTransaction();
+                        transaction.replace(R.id.balancingLayout, new YearBalancingFragment());
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                    }
+                }
+            });
+        }
+        RadioButton monthButton = (RadioButton)findViewById(R.id.monthButton);
+        RadioButton yearButton = (RadioButton)findViewById(R.id.yearButton);
+
+        if (monthButton != null)
+            monthButton.setChecked(true);
+        RelativeLayout balancingLayout = (RelativeLayout)findViewById(R.id.balancingLayout);
     }
 
     @Override

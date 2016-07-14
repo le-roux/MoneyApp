@@ -16,7 +16,7 @@
     <color name="aero">#7CB9E8</color>
 
     <string-array name="ColorsValue">
-        <item name="Red">#FF0000</item>
-        <item name="Blue">#0000FF</item>
+        <item>#FF0000</item>
+        <item>#0000FF</item>
     </string-array>
 </resources>
