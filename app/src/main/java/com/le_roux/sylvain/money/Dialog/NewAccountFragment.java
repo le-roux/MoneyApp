@@ -36,6 +36,8 @@ public class NewAccountFragment extends DialogFragment {
 
     public static final String CURRENT = "accountFragment.current";
 
+    private int color;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -52,13 +54,13 @@ public class NewAccountFragment extends DialogFragment {
         colorsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int color = Color.parseColor(colors[position]);
-                colorsViewer.setBackgroundColor(color);
+                setColor(Color.parseColor(colors[position]));
+                colorsViewer.setBackgroundColor(getColor());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                
+
             }
         });
 
@@ -73,7 +75,8 @@ public class NewAccountFragment extends DialogFragment {
                         String accountName = accountNameField.getText().toString();
                         accountName = accountName.replaceAll(" ", "_");
                         //TODO check that this name doesn't already exists
-                        Account account = new Account(accountName, PreferenceManager.getDefaultSharedPreferences(getActivity()), getActivity());
+                        // TODO check the fields are valid
+                        Account account = new Account(accountName, getColor(), PreferenceManager.getDefaultSharedPreferences(getActivity()), getActivity());
                         account.setTable(getActivity());
                         for (int i = 0; i < getActivity().getClass().getInterfaces().length; i++) {
                             if (getActivity().getClass().getInterfaces()[i].equals(AccountContainer.class)) {
@@ -108,5 +111,13 @@ public class NewAccountFragment extends DialogFragment {
                     }
                 });
         return builder.create();
+    }
+
+    private int getColor() {
+        return this.color;
+    }
+
+    private void setColor(int color) {
+        this.color = color;
     }
 }

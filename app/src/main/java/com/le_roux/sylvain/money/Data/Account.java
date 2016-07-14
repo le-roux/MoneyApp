@@ -22,6 +22,7 @@ public class Account {
 
     private String name;
     private double balance;
+    private int color;
     private SharedPreferences sharedPreferences;
     private AccountOpenHelper databaseHelper;
     private Context context;
@@ -32,6 +33,7 @@ public class Account {
     // Keys used for storage
     private static final String NAME = "account.name";
     private static final String BALANCE = "account.balance";
+    private static final String COLOR = "account.color";
 
     public static final String CURRENT_ACCOUNT = "account.current";
     public static final String CATEGORIES = "account.categories";
@@ -42,9 +44,10 @@ public class Account {
     /*
      *  Constructors
      */
-    public Account(String name, SharedPreferences sharedPreferences, Context context) {
+    public Account(String name, int color, SharedPreferences sharedPreferences, Context context) {
         this.name = name;
         this.balance = 0;
+        this.color = color;
         this.sharedPreferences = sharedPreferences;
         this.context = context;
         this.setTable(this.context);
@@ -54,6 +57,7 @@ public class Account {
         try {
             this.name = jsonObject.getString(NAME);
             this.balance = jsonObject.getDouble(BALANCE);
+            this.color = jsonObject.getInt(COLOR);
         } catch (JSONException e) {
             Logger.d("Error when creating account from json string");
         }
@@ -75,6 +79,10 @@ public class Account {
 
     public double getBalance() {
         return this.balance;
+    }
+
+    public int getColor() {
+        return this.color;
     }
 
     public AccountOpenHelper getDatabaseHelper() {
@@ -101,6 +109,7 @@ public class Account {
         try {
             jsonObject.put(NAME, this.name);
             jsonObject.put(BALANCE, this.balance);
+            jsonObject.put(COLOR, this.color);
             return jsonObject;
         } catch (JSONException e) {
             Logger.d("Error when converting account to JSONObject");
