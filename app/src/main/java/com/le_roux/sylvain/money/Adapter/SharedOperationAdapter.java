@@ -42,7 +42,6 @@ public class SharedOperationAdapter extends OperationAdapter {
         TextView accountNameView = (TextView)view.findViewById(R.id.accountName);
         String accountName = cursor.getString(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_ACCOUNT));
         accountNameView.setText(accountName);
-
         try {
             JSONObject accountJSON = new JSONObject(PreferenceManager.getDefaultSharedPreferences(this.context).getString(accountName, null));
             Account account = new Account(accountJSON, null, this.context);
