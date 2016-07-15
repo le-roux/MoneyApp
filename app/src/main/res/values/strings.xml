@@ -55,4 +55,7 @@
         <item>Décembre</item>
     </string-array>
 
+    <string name="MustPay">doit payer</string>
+    <string name="MustReceive">doit recevoir</string>
+
 </resources>

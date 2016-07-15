@@ -12,25 +12,30 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
+import com.le_roux.sylvain.money.Adapter.AccountsDebtAdapter;
 import com.le_roux.sylvain.money.Dialog.NewOperationFragment;
 import com.le_roux.sylvain.money.Dialog.NewSharedOperationFragment;
 import com.le_roux.sylvain.money.Fragment.MonthBalancingFragment;
 import com.le_roux.sylvain.money.Fragment.YearBalancingFragment;
 import com.le_roux.sylvain.money.Interfaces.DateViewContainer;
+import com.le_roux.sylvain.money.Interfaces.DebtDisplayer;
 import com.le_roux.sylvain.money.Interfaces.FragmentContainer;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
+import com.le_roux.sylvain.money.Utils.Balancer;
 import com.le_roux.sylvain.money.Utils.DateView;
 import com.le_roux.sylvain.money.Utils.Logger;
 import com.le_roux.sylvain.money.Utils.SharedOperationsListController;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class SharedAccounts extends AppCompatActivity implements Updatable, DateViewContainer, FragmentContainer {
+public class SharedAccounts extends AppCompatActivity implements Updatable, DateViewContainer, FragmentContainer, DebtDisplayer {
 
     private NewOperationFragment fragment;
     private SharedOperationsListController controller;
+    private AccountsDebtAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,9 @@ public class SharedAccounts extends AppCompatActivity implements Updatable, Date
         if (monthButton != null)
             monthButton.setChecked(true);
         RelativeLayout balancingLayout = (RelativeLayout)findViewById(R.id.balancingLayout);
+
+        this.adapter = new AccountsDebtAdapter(this, null);
+
     }
 
     @Override
@@ -101,5 +109,19 @@ public class SharedAccounts extends AppCompatActivity implements Updatable, Date
     @Override
     public void setFragment(NewOperationFragment fragment) {
         this.fragment = fragment;
+    }
+
+    @Override
+    public void displayDebtsForMonth(int month, int year) {
+        ArrayList<Double> debtsList = Balancer.getDebtsForMonth(year, month, this);
+        this.adapter.setAccountsDebt(debtsList);
+        this.adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void displayDebtsForYear(int year) {
+        ArrayList<Double> debtsList = Balancer.getDebtsForYear(year, this);
+        this.adapter.setAccountsDebt(debtsList);
+        this.adapter.notifyDataSetChanged();
     }
 }
