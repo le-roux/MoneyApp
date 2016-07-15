@@ -88,7 +88,6 @@ public class Home extends AppCompatActivity implements Updatable, AccountContain
 
     public void setAccount(Account account) {
         this.account = account;
-        this.account.setTable(this);
         this.accountNameView.setText(this.account.getName());
         this.accountNameView.setTextColor(this.account.getColor());
     }

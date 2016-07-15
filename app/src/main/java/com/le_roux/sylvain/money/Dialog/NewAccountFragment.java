@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Data.Operation;
@@ -70,46 +71,67 @@ public class NewAccountFragment extends DialogFragment {
                 .setPositiveButton(R.string.Create, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // Get the views
                         EditText accountNameField = (EditText)layout.findViewById(R.id.name);
                         EditText initialBalanceField = (EditText)layout.findViewById(R.id.initialValue);
                         EditText passwordField = (EditText)layout.findViewById(R.id.password);
-                        String accountName = accountNameField.getText().toString();
-                        accountName = accountName.replaceAll(" ", "_");
-                        String password = passwordField.getText().toString();
-                        //TODO check that this name doesn't already exists
-                        // TODO check the fields are valid
-                        Account account = new Account(accountName, getColor(), password, PreferenceManager.getDefaultSharedPreferences(getActivity()), getActivity());
-                        account.setTable(getActivity());
-                        for (int i = 0; i < getActivity().getClass().getInterfaces().length; i++) {
-                            if (getActivity().getClass().getInterfaces()[i].equals(AccountContainer.class)) {
-                                ((AccountContainer)getActivity()).setAccount(account);
-                                break;
-                            }
-                        }
 
+                        // Prepare the local variables
+                        boolean valid = true;
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        Bundle args = getArguments();
-                        if (args!= null && args.getBoolean(CURRENT))
-                            editor.putString(Account.CURRENT_ACCOUNT, account.getName());
-                        editor.putString(accountName, account.toString());
-                        editor.apply();
+                        String accountName = accountNameField.getText().toString();
+                        // Check if this account already exists and is valid
                         Account.retrieveAccounts(sharedPreferences);
-                        Account.getAccountsList().add(accountName);
-                        Account.saveAccounts(sharedPreferences);
-
-                        String initialBalanceString = initialBalanceField.getText().toString();
-                        if (!initialBalanceString.equals("")) {
-                            double initialBalance = Double.parseDouble(initialBalanceString);
-                            Operation operation = new Operation();
-                            operation.setAccountName(accountName);
-                            operation.setPayee(accountName);
-                            operation.setValue(initialBalance);
-                            operation.setCategory(getString(R.string.InitialValue));
-                            operation.setDescription(getString(R.string.InitialValue));
-                            account.addOperation(operation);
+                        if (accountName.equals("") || Account.getAccountsList().contains(accountName)) {
+                            Toast.makeText(getActivity(), R.string.InvalidName, Toast.LENGTH_LONG).show();
+                            valid = false; // Invalid account name
                         }
-                        ((Updatable)getActivity()).update();
+                        String password = passwordField.getText().toString();
+                        if (password.equals("")) {
+                            Toast.makeText(getActivity(), R.string.InvalidPassword, Toast.LENGTH_LONG).show();
+                            valid = false;
+                        }
+                        String initialBalanceString = initialBalanceField.getText().toString();
+                        if (initialBalanceString.equals("")) {
+                            Toast.makeText(getActivity(), R.string.InvalidInitialValue, Toast.LENGTH_LONG).show();
+                            valid = false;
+                        }
+
+                        if (valid) {
+                            // Create the account
+                            Account account = new Account(accountName, getColor(), password, PreferenceManager.getDefaultSharedPreferences(getActivity()), getActivity());
+                            for (int i = 0; i < getActivity().getClass().getInterfaces().length; i++) {
+                                if (getActivity().getClass().getInterfaces()[i].equals(AccountContainer.class)) {
+                                    ((AccountContainer) getActivity()).setAccount(account);
+                                    break;
+                                }
+                            }
+
+                            // Save the account in Shared preferences
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            Bundle args = getArguments();
+                            if (args != null && args.getBoolean(CURRENT))
+                                editor.putString(Account.CURRENT_ACCOUNT, account.getName());
+                            editor.putString(accountName, account.toString());
+                            editor.apply();
+                            Account.getAccountsList().add(accountName);
+                            Account.saveAccounts(sharedPreferences);
+
+                            if (!initialBalanceString.equals("")) {
+                                double initialBalance = Double.parseDouble(initialBalanceString);
+                                Operation operation = new Operation();
+                                operation.setAccountName(accountName);
+                                operation.setPayee(accountName);
+                                operation.setValue(initialBalance);
+                                operation.setCategory(getString(R.string.InitialValue));
+                                operation.setDescription(getString(R.string.InitialValue));
+                                account.addOperation(operation);
+                            }
+                            ((Updatable) getActivity()).update();
+                        } else {
+                            DialogFragment fragment = new NewAccountFragment();
+                            fragment.show(getFragmentManager(), "New Account");
+                        }
                     }
                 });
         return builder.create();

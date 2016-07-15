@@ -63,5 +63,7 @@
 
     <string name="LogIn">Connexion</string>
     <string name="ChangeAccount">Changer de compte</string>
-    <string name="WrongPassword">Mot de passe incorrect</string>
+    <string name="InvalidPassword">Mot de passe incorrect</string>
+    <string name="InvalidName">Nom de compte invalide ou déjà utilisé</string>
+    <string name="InvalidInitialValue">Solde initial incorrect</string>
 </resources>

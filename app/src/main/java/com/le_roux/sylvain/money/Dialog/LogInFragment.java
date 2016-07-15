@@ -61,7 +61,7 @@ public class LogInFragment extends DialogFragment {
                             editor.apply();
                             ((Updatable) getActivity()).update();
                         } else {
-                            Toast.makeText(getActivity(), R.string.WrongPassword, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), R.string.InvalidPassword, Toast.LENGTH_SHORT).show();
                             DialogFragment fragment = new LogInFragment();
                             fragment.show(getFragmentManager(), "Change Account");
                         }

@@ -216,7 +216,7 @@ public class Account {
      * Open or create a table for this account
      * @param context
      */
-    public void setTable(Context context) {
+    private void setTable(Context context) {
         this.databaseHelper = new AccountOpenHelper(context);
         this.databaseHelper.createTable();
     }
