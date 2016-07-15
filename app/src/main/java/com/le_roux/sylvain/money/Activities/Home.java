@@ -7,11 +7,15 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.le_roux.sylvain.money.Data.Account;
+import com.le_roux.sylvain.money.Dialog.LogInFragment;
 import com.le_roux.sylvain.money.Dialog.NewAccountFragment;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
@@ -113,5 +117,24 @@ public class Home extends AppCompatActivity implements Updatable, AccountContain
             else
                 this.balanceAccount.setValue(0);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = new MenuInflater(this);
+        inflater.inflate(R.menu.default_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case (R.id.changeAccount) : {
+                DialogFragment fragment = new LogInFragment();
+                fragment.show(getSupportFragmentManager(), "Change account");
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

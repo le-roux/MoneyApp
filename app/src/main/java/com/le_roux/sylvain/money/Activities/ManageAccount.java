@@ -1,20 +1,17 @@
 package com.le_roux.sylvain.money.Activities;
 
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.le_roux.sylvain.money.Adapter.OperationAdapter;
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Data.Operation;
-import com.le_roux.sylvain.money.Dialog.NewCategoryFragment;
 import com.le_roux.sylvain.money.Dialog.NewOperationFragment;
 import com.le_roux.sylvain.money.Dialog.NewSimpleOperationFragment;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
@@ -23,7 +20,6 @@ import com.le_roux.sylvain.money.Interfaces.FragmentContainer;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.DateView;
-import com.le_roux.sylvain.money.Utils.Logger;
 import com.le_roux.sylvain.money.Utils.OperationListController;
 
 import org.json.JSONException;

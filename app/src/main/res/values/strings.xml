@@ -61,4 +61,6 @@
     <string name="MustPay">doit payer</string>
     <string name="MustReceive">doit recevoir</string>
 
+    <string name="LogIn">Connexion</string>
+    <string name="ChangeAccount">Changer de compte</string>
 </resources>

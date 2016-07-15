@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 
 import com.le_roux.sylvain.money.Adapter.AccountsDebtAdapter;
 import com.le_roux.sylvain.money.Dialog.NewOperationFragment;
@@ -25,7 +24,6 @@ import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.Balancer;
 import com.le_roux.sylvain.money.Utils.DateView;
-import com.le_roux.sylvain.money.Utils.Logger;
 import com.le_roux.sylvain.money.Utils.SharedOperationsListController;
 
 import java.util.ArrayList;
