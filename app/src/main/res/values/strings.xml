@@ -63,4 +63,5 @@
 
     <string name="LogIn">Connexion</string>
     <string name="ChangeAccount">Changer de compte</string>
+    <string name="WrongPassword">Mot de passe incorrect</string>
 </resources>

@@ -72,11 +72,13 @@ public class NewAccountFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         EditText accountNameField = (EditText)layout.findViewById(R.id.name);
                         EditText initialBalanceField = (EditText)layout.findViewById(R.id.initialValue);
+                        EditText passwordField = (EditText)layout.findViewById(R.id.password);
                         String accountName = accountNameField.getText().toString();
                         accountName = accountName.replaceAll(" ", "_");
+                        String password = passwordField.getText().toString();
                         //TODO check that this name doesn't already exists
                         // TODO check the fields are valid
-                        Account account = new Account(accountName, getColor(), PreferenceManager.getDefaultSharedPreferences(getActivity()), getActivity());
+                        Account account = new Account(accountName, getColor(), password, PreferenceManager.getDefaultSharedPreferences(getActivity()), getActivity());
                         account.setTable(getActivity());
                         for (int i = 0; i < getActivity().getClass().getInterfaces().length; i++) {
                             if (getActivity().getClass().getInterfaces()[i].equals(AccountContainer.class)) {

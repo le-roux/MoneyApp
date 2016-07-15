@@ -96,6 +96,7 @@ public class SharedAccounts extends AppCompatActivity implements Updatable, Date
 
     @Override
     public void update() {
+        // TODO update everything
         this.controller.displayOperationsForYear(GregorianCalendar.getInstance().get(Calendar.YEAR));
     }
 

@@ -23,6 +23,7 @@ public class Account {
     private String name;
     private double balance;
     private int color;
+    private String password;
     private SharedPreferences sharedPreferences;
     private AccountOpenHelper databaseHelper;
     private Context context;
@@ -34,6 +35,7 @@ public class Account {
     private static final String NAME = "account.name";
     private static final String BALANCE = "account.balance";
     private static final String COLOR = "account.color";
+    private static final String PASSWORD = "account.password";
 
     public static final String CURRENT_ACCOUNT = "account.current";
     public static final String CATEGORIES = "account.categories";
@@ -44,10 +46,11 @@ public class Account {
     /*
      *  Constructors
      */
-    public Account(String name, int color, SharedPreferences sharedPreferences, Context context) {
+    public Account(String name, int color, String password, SharedPreferences sharedPreferences, Context context) {
         this.name = name;
         this.balance = 0;
         this.color = color;
+        this.password = password;
         this.sharedPreferences = sharedPreferences;
         this.context = context;
         this.setTable(this.context);
@@ -58,6 +61,7 @@ public class Account {
             this.name = jsonObject.getString(NAME);
             this.balance = jsonObject.getDouble(BALANCE);
             this.color = jsonObject.getInt(COLOR);
+            this.password = jsonObject.getString(PASSWORD);
         } catch (JSONException e) {
             Logger.d("Error when creating account from json string");
         }
@@ -85,6 +89,10 @@ public class Account {
         return this.color;
     }
 
+    public String getPassword() {
+        return this.password;
+    }
+
     public AccountOpenHelper getDatabaseHelper() {
         return this.databaseHelper;
     }
@@ -110,6 +118,7 @@ public class Account {
             jsonObject.put(NAME, this.name);
             jsonObject.put(BALANCE, this.balance);
             jsonObject.put(COLOR, this.color);
+            jsonObject.put(PASSWORD, this.password);
             return jsonObject;
         } catch (JSONException e) {
             Logger.d("Error when converting account to JSONObject");
