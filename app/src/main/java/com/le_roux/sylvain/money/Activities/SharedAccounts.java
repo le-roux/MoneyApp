@@ -81,13 +81,13 @@ public class SharedAccounts extends AppCompatActivity implements Updatable, Date
             });
         }
         RadioButton monthButton = (RadioButton)findViewById(R.id.monthButton);
-        RadioButton yearButton = (RadioButton)findViewById(R.id.yearButton);
 
         if (monthButton != null)
             monthButton.setChecked(true);
-        RelativeLayout balancingLayout = (RelativeLayout)findViewById(R.id.balancingLayout);
 
         this.adapter = new AccountsDebtAdapter(this, null);
+        ListView debtsListView = (ListView)findViewById(R.id.accountsDebt);
+        debtsListView.setAdapter(this.adapter);
 
     }
 

@@ -7,9 +7,6 @@ import android.preference.PreferenceManager;
 
 import com.le_roux.sylvain.money.Data.Account;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.util.ArrayList;
 
 /**
@@ -23,14 +20,16 @@ public class Balancer {
         AccountOpenHelper helper = new AccountOpenHelper(parentActivity);
         ArrayList<Double> accountsPayments = new ArrayList<>();
         ArrayList<Double> accountsDebt = new ArrayList<>();
-        double totalSum = 0, average = 0;
+        double totalSum = 0, average;
         for (String name : Account.getAccountsList()) {
             String[] columns = {OperationContract.Table.COLUMN_NAME_VALUE};
             StringBuilder selection = new StringBuilder();
             selection.append(OperationContract.Table.COLUMN_NAME_ACCOUNT)
                     .append(" LIKE ? AND ")
                     .append(OperationContract.Table.COLUMN_NAME_YEAR)
-                    .append(" LIKE ?");
+                    .append(" LIKE ? AND ")
+                    .append(OperationContract.Table.COLUMN_NAME_SHARED)
+                    .append(" LIKE 1");
             if (month >= 0 && month < 12) {
                 selection.append(" AND ")
                         .append(OperationContract.Table.COLUMN_NAME_MONTH)
@@ -41,8 +40,10 @@ public class Balancer {
             Cursor cursor = helper.query(columns, selection.toString(), args);
             double sum = 0;
             cursor.moveToFirst();
-            while (!cursor.isAfterLast())
+            while (!cursor.isAfterLast()) {
                 sum += cursor.getDouble(cursor.getColumnIndexOrThrow(OperationContract.Table.COLUMN_NAME_VALUE));
+                cursor.moveToNext();
+            }
             accountsPayments.add(sum);
             totalSum += sum;
         }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.R;
+import com.le_roux.sylvain.money.Utils.Logger;
 import com.le_roux.sylvain.money.Utils.PriceView;
 
 import java.util.ArrayList;
@@ -32,12 +33,18 @@ public class AccountsDebtAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return accountsDebt.size();
+        if (this.accountsDebt != null)
+            return this.accountsDebt.size();
+        else
+            return 0;
     }
 
     @Override
     public Object getItem(int position) {
-        return accountsDebt.get(position);
+        if (this.accountsDebt != null && position < this.accountsDebt.size())
+            return this.accountsDebt.get(position);
+        else
+            return null;
     }
 
     @Override
