@@ -36,7 +36,10 @@
     <string name="Month">Mois</string>
 
     <string-array name="ColorsName">
+        <item>Améthyste</item>
         <item>Rouge</item>
+        <item>Jaune</item>
+        <item>Vert</item>
         <item>Bleu</item>
     </string-array>
 

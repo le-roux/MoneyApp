@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.le_roux.sylvain.money.Activities.SharedAccounts">
+
+    <TextView
+        android:id="@+id/center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"/>
+
+    <ListView
+        android:id="@+id/operationsListView"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toStartOf="@id/center"
+        android:layout_toLeftOf="@id/center"/>
+
+    <TextView
+        android:id="@+id/balancingTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/BalancingTime"
+        android:textSize="@dimen/formSize"
+        android:layout_toEndOf="@id/center"
+        android:layout_toRightOf="@id/center"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
+
+    <RadioGroup
+        android:id="@+id/TimeSpanGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/balancingTitle"
+        android:layout_toEndOf="@id/balancingTitle"
+        android:layout_toRightOf="@id/balancingTitle"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin">
+
+        <RadioButton
+            android:id="@+id/monthButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Month"/>
+
+        <RadioButton
+            android:id="@+id/yearButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Year"/>
+
+    </RadioGroup>
+
+    <RelativeLayout
+        android:id="@+id/balancingLayout"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_alignStart="@id/balancingTitle"
+        android:layout_alignLeft="@id/balancingTitle"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/TimeSpanGroup"/>
+
+    <ListView
+        android:id="@+id/accountsDebt"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignStart="@id/balancingTitle"
+        android:layout_alignLeft="@id/balancingTitle"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/balancingLayout"
+        android:layout_above="@id/addOperation"/>
+
+    <Button
+        android:id="@+id/addOperation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/New"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@id/balancingTitle"
+        android:layout_alignLeft="@id/balancingTitle"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/mid_grey"/>
+
+</RelativeLayout>
