@@ -23,6 +23,7 @@ import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.Interfaces.DateViewContainer;
+import com.le_roux.sylvain.money.Interfaces.SpinnerUpdater;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.DateView;
@@ -35,7 +36,7 @@ import java.util.GregorianCalendar;
 /**
  * Created by Sylvain LE ROUX on 07/07/2016.
  */
-public abstract class NewOperationFragment extends DialogFragment implements DateViewContainer {
+public abstract class NewOperationFragment extends DialogFragment implements DateViewContainer, SpinnerUpdater {
 
     private DateView dateView = null;
     private RadioGroup radioGroup;
@@ -48,8 +49,14 @@ public abstract class NewOperationFragment extends DialogFragment implements Dat
     private Button addPayeeButton;
     private Button addCategoryButton;
 
+    private ArrayAdapter categoryAdapter;
+    private ArrayAdapter payeeAdapter;
+
     public static final String STATUS = "operation.fragment.status";
     public static final int NEW = 0;
+    public static final int CATEGORY_SPINNER = 0;
+    public static final int PAYEE_SPINNER = 1;
+    public static final int ACCOUNT_SPINNER = 2;
 
     @NonNull
     @Override
@@ -76,10 +83,10 @@ public abstract class NewOperationFragment extends DialogFragment implements Dat
 
         // Initialization of the spinners
         Account.retrieveCategories(PreferenceManager.getDefaultSharedPreferences(getActivity()));
-        ArrayAdapter categoryAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getCategoriesList());
-        this.categoryView.setAdapter(categoryAdapter);
+        this.categoryAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getCategoriesList());
+        this.categoryView.setAdapter(this.categoryAdapter);
         Account.retrievePayees(PreferenceManager.getDefaultSharedPreferences(getActivity()));
-        final ArrayAdapter payeeAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getPayeesList());
+        this.payeeAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getPayeesList());
         this.payeeView.setAdapter(payeeAdapter);
 
         // Set initial values
@@ -276,4 +283,23 @@ public abstract class NewOperationFragment extends DialogFragment implements Dat
     public abstract void editOperation(Operation operation);
 
     public abstract void saveOperation(Operation operation, int id);
+
+    @Override
+    public boolean updateSpinner(int spinnerId, Object newItem) {
+        switch (spinnerId) {
+            case (CATEGORY_SPINNER): {
+                int position = this.categoryAdapter.getPosition(newItem);
+                this.categoryAdapter.notifyDataSetChanged();
+                this.categoryView.setSelection(position);
+                return true;
+            }
+            case (PAYEE_SPINNER) : {
+                int position = this.payeeAdapter.getPosition(newItem);
+                this.payeeAdapter.notifyDataSetChanged();
+                this.payeeView.setSelection(position);
+                return true;
+            }
+            default : return false;
+        }
+    }
 }

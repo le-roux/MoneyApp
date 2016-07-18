@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.le_roux.sylvain.money.Data.Account;
+import com.le_roux.sylvain.money.Interfaces.FragmentContainer;
 import com.le_roux.sylvain.money.R;
+import com.le_roux.sylvain.money.Utils.Logger;
 
 import java.util.Collections;
 
@@ -39,7 +41,7 @@ public class NewPayeeFragment extends DialogFragment {
                             Account.getPayeesList().add(newPayee);
                             Collections.sort(Account.getPayeesList());
                             Account.savePayees(PreferenceManager.getDefaultSharedPreferences(getActivity()));
-                            // TODO auto select the newly created payee
+                            ((FragmentContainer)getActivity()).getFragment().updateSpinner(NewOperationFragment.PAYEE_SPINNER, newPayee);
                         }
                     }
                 });

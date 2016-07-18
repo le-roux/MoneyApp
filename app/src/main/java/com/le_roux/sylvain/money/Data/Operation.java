@@ -119,7 +119,6 @@ public class Operation {
         this.category = category;
         this.description = description;
         this.date = GregorianCalendar.getInstance();
-        Logger.d("operation month : " + this.date.get(Calendar.MONTH));
         this.validated = false;
         this.shared = false;
         this.id = -1;

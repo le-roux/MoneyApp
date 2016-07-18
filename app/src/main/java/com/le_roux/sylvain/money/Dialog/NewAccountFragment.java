@@ -24,6 +24,8 @@ import android.widget.Toast;
 import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
+import com.le_roux.sylvain.money.Interfaces.FragmentContainer;
+import com.le_roux.sylvain.money.Interfaces.SpinnerUpdater;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.Logger;
@@ -100,12 +102,6 @@ public class NewAccountFragment extends DialogFragment {
                         if (valid) {
                             // Create the account
                             Account account = new Account(accountName, getColor(), password, PreferenceManager.getDefaultSharedPreferences(getActivity()), getActivity());
-                            for (int i = 0; i < getActivity().getClass().getInterfaces().length; i++) {
-                                if (getActivity().getClass().getInterfaces()[i].equals(AccountContainer.class)) {
-                                    ((AccountContainer) getActivity()).setAccount(account);
-                                    break;
-                                }
-                            }
 
                             // Save the account in Shared preferences
                             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -116,6 +112,18 @@ public class NewAccountFragment extends DialogFragment {
                             editor.apply();
                             Account.getAccountsList().add(accountName);
                             Account.saveAccounts(sharedPreferences);
+
+
+                            for (int i = 0; i < getActivity().getClass().getInterfaces().length; i++) {
+                                if (getActivity().getClass().getInterfaces()[i].equals(AccountContainer.class)) {
+                                    ((AccountContainer) getActivity()).setAccount(account);
+                                    break;
+                                } else if (getActivity().getClass().getInterfaces()[i].equals(FragmentContainer.class)) {
+                                    if (((FragmentContainer)getActivity()).getFragment() != null) {
+                                        ((FragmentContainer) getActivity()).getFragment().updateSpinner(NewOperationFragment.ACCOUNT_SPINNER, account.getName());
+                                    }
+                                }
+                            }
 
                             if (!initialBalanceString.equals("")) {
                                 double initialBalance = Double.parseDouble(initialBalanceString);

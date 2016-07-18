@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.le_roux.sylvain.money.Data.Account;
+import com.le_roux.sylvain.money.Interfaces.FragmentContainer;
 import com.le_roux.sylvain.money.R;
+import com.le_roux.sylvain.money.Utils.Logger;
 
 import java.util.Collections;
 
@@ -39,7 +41,7 @@ public class NewCategoryFragment extends DialogFragment{
                             Account.getCategoriesList().add(category);
                             Collections.sort(Account.getCategoriesList());
                             Account.saveCategories(PreferenceManager.getDefaultSharedPreferences(getActivity()));
-                            // TODO auto select the newly created category
+                            ((FragmentContainer)getActivity()).getFragment().updateSpinner(NewOperationFragment.CATEGORY_SPINNER, category);
                         }
                     }
                 });

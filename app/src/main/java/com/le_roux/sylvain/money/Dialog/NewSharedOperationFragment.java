@@ -27,6 +27,7 @@ import java.util.Collections;
 public class NewSharedOperationFragment extends NewOperationFragment {
 
     private Spinner accountSpinner;
+    private ArrayAdapter<String> accountAdapter;
 
     @Override
     public ViewGroup getLayoutView(LayoutInflater inflater) {
@@ -39,8 +40,8 @@ public class NewSharedOperationFragment extends NewOperationFragment {
         this.accountSpinner = (Spinner)layout.findViewById(R.id.account);
 
         Account.retrieveAccounts(PreferenceManager.getDefaultSharedPreferences(getActivity()));
-        ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getAccountsList());
-        this.accountSpinner.setAdapter(accountAdapter);
+        this.accountAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, Account.getAccountsList());
+        this.accountSpinner.setAdapter(this.accountAdapter);
 
         if (info != null) {
             String accountName = info.getString(Account.ACCOUNT);
@@ -50,7 +51,7 @@ public class NewSharedOperationFragment extends NewOperationFragment {
                     Account.getAccountsList().add(accountName);
                     Collections.sort(Account.getAccountsList());
                     Account.saveAccounts(PreferenceManager.getDefaultSharedPreferences(getActivity()));
-                    accountAdapter.notifyDataSetChanged();
+                    this.accountAdapter.notifyDataSetChanged();
                     this.accountSpinner.setSelection(Account.getAccountsList().size() - 1);
                 }
             } else
@@ -110,5 +111,19 @@ public class NewSharedOperationFragment extends NewOperationFragment {
                 account.updateOperation(id, operation);
             ((Updatable)getActivity()).update();
         }
+    }
+
+    @Override
+    public boolean updateSpinner(int spinnerId, Object newItem) {
+        if (!super.updateSpinner(spinnerId, newItem)) {
+            if (spinnerId == ACCOUNT_SPINNER) {
+                int position = Account.getAccountsList().indexOf(newItem);
+                this.accountAdapter.notifyDataSetChanged();
+                this.accountSpinner.setSelection(position);
+                return true;
+            }
+            return false;
+        }
+        return true;
     }
 }
