@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.le_roux.sylvain.money.Data.Account;
@@ -17,11 +18,14 @@ import com.le_roux.sylvain.money.R;
 import com.le_roux.sylvain.money.Utils.DateView;
 import com.le_roux.sylvain.money.Utils.SpendingsController;
 
+import java.util.GregorianCalendar;
+
 public class AnalyzeSpendings extends AppCompatActivity implements DateViewContainer {
 
     private static final int START_DATE_VIEW = 0;
     private static final int END_DATE_VIEW = 1;
     private DateView dateViews[] = new DateView[2];
+    private SpendingsController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +41,9 @@ public class AnalyzeSpendings extends AppCompatActivity implements DateViewConta
 
         // Get the views
         ListView spendings = (ListView)findViewById(R.id.spendings);
-        dateViews[START_DATE_VIEW] = (DateView)findViewById(R.id.startDate);
-        dateViews[END_DATE_VIEW] = (DateView)findViewById(R.id.endDate);
+        this.dateViews[START_DATE_VIEW] = (DateView)findViewById(R.id.startDate);
+        this.dateViews[END_DATE_VIEW] = (DateView)findViewById(R.id.endDate);
+        Button updateButton = (Button)findViewById(R.id.update);
 
         // Add listeners to select the dates
         dateViews[START_DATE_VIEW].setOnClickListener(new View.OnClickListener() {
@@ -69,13 +74,27 @@ public class AnalyzeSpendings extends AppCompatActivity implements DateViewConta
             }
         });
 
+        // Add the update listener
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                update();
+            }
+        });
+
         // Fill the list
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         spendings.addHeaderView(inflater.inflate(R.layout.header_spendings, null));
-        SpendingsController controller = new SpendingsController(this, account, spendings);
-        controller.displaySpendingsForYear(2016);
+        this.controller = new SpendingsController(this, account, spendings);
+
+        this.update();
     }
 
+    public void update() {
+        GregorianCalendar startDate = new GregorianCalendar(dateViews[START_DATE_VIEW].getYear(), dateViews[START_DATE_VIEW].getMonth(), dateViews[START_DATE_VIEW].getDay());
+        GregorianCalendar endDate = new GregorianCalendar(dateViews[END_DATE_VIEW].getYear(), dateViews[END_DATE_VIEW].getMonth(), dateViews[END_DATE_VIEW].getDay());
+        this.controller.displaySpendingsForPeriod(startDate, endDate);
+    }
 
     @Override
     public DateView getDateView() {

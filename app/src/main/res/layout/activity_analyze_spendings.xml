@@ -60,6 +60,15 @@
             android:background="@color/aero"/>
     </LinearLayout>
 
+    <Button
+        android:id="@+id/update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Update"
+        android:background="@color/mid_grey"
+        android:layout_gravity="center_horizontal"
+        android:padding="@dimen/operation_padding"/>
+
     <ListView
         android:id="@+id/spendings"
         android:layout_width="match_parent"

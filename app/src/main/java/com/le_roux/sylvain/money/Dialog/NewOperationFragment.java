@@ -141,7 +141,7 @@ public abstract class NewOperationFragment extends DialogFragment implements Dat
             if ((id = info.getInt(STATUS)) == 0) // Operation not yet saved -> new one
                 positiveButtonText = getString(R.string.Create);
             else
-                positiveButtonText = getString(R.string.Update);
+                positiveButtonText = getString(R.string.Save);
         } else {
             positiveButtonText = getString(R.string.Create);
             id = -1;
