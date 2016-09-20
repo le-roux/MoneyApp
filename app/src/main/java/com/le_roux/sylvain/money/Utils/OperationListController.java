@@ -22,7 +22,7 @@ import com.le_roux.sylvain.money.Interfaces.FragmentContainer;
  */
 
 /**
- * This class is responsible for controlling the link between the acount and the related view (OperationsListView).
+ * This class is responsible for controlling the link between the account and the related view (OperationsListView).
  * In the MVC pattern, it plays the role of the controller.
  * It's also here that are the different query methods for different display (by year, by category, by payee, ...).
  */
