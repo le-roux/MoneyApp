@@ -58,6 +58,9 @@
         <item>Décembre</item>
     </string-array>
 
+    <string name="Analyse">Analyser</string>
+    <string name="MarketShare">Parts</string>
+
     <string name="MustPay">doit payer</string>
     <string name="MustReceive">doit recevoir</string>
 

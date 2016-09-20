@@ -32,6 +32,14 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"/>
 
+        <Button
+            android:id="@+id/analyseSpending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/mid_grey"
+            android:text="@string/Analyse"
+            android:layout_alignParentBottom="true"/>
+
         <ListView
             android:id="@+id/operationsListView"
             android:layout_width="match_parent"

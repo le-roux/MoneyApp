@@ -1,5 +1,6 @@
 package com.le_roux.sylvain.money.Activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -44,9 +45,10 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
 
         // Get the views
         ListView operationsListView = (ListView)findViewById(R.id.operationsListView);
-        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+        final LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         operationsListView.addHeaderView(inflater.inflate(R.layout.header_operation, null));
         Button addOperationButton = (Button)findViewById(R.id.addOperation);
+        Button analyseSpendingsButton=  (Button)findViewById(R.id.analyseSpending);
 
         // Create the account
         Account account = null;
@@ -67,6 +69,7 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
         this.controller = new OperationListController(account, operationsListView, this);
         this.update();
 
+        // Add listeners on buttons
         if (addOperationButton != null) {
             addOperationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -84,6 +87,16 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
                     info.putInt(NewOperationFragment.STATUS, NewOperationFragment.NEW);
                     fragment.setArguments(info);
                     fragment.show(getSupportFragmentManager(), "New operation");
+                }
+            });
+        }
+
+        if (analyseSpendingsButton != null) {
+            analyseSpendingsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ManageAccount.this, AnalyzeSpendings.class);
+                    startActivity(intent);
                 }
             });
         }

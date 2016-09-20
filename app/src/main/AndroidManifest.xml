@@ -16,7 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.ManageAccount" />
-        <activity android:name=".Activities.SharedAccounts"></activity>
+        <activity android:name=".Activities.SharedAccounts" />
+        <activity android:name=".Activities.AnalyzeSpendings"></activity>
     </application>
 
 </manifest>
