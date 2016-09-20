@@ -114,6 +114,11 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
     }
 
     @Override
+    public DateView getDateView(int id) {
+        return getDateView();
+    }
+
+    @Override
     public NewOperationFragment getFragment() {
         return this.fragment;
     }

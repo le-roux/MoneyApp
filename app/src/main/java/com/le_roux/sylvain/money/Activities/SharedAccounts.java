@@ -106,6 +106,11 @@ public class SharedAccounts extends AppCompatActivity implements Updatable, Date
     }
 
     @Override
+    public DateView getDateView(int id) {
+        return getDateView();
+    }
+
+    @Override
     public NewOperationFragment getFragment() {
         return this.fragment;
     }

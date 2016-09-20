@@ -14,6 +14,7 @@ import com.le_roux.sylvain.money.Data.Account;
 import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
+import com.le_roux.sylvain.money.Utils.DateView;
 import com.le_roux.sylvain.money.Utils.Logger;
 
 import org.json.JSONException;
@@ -125,5 +126,10 @@ public class NewSharedOperationFragment extends NewOperationFragment {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public DateView getDateView(int id) {
+        return getDateView();
     }
 }

@@ -11,6 +11,7 @@ import com.le_roux.sylvain.money.Data.Operation;
 import com.le_roux.sylvain.money.Interfaces.AccountContainer;
 import com.le_roux.sylvain.money.Interfaces.Updatable;
 import com.le_roux.sylvain.money.R;
+import com.le_roux.sylvain.money.Utils.DateView;
 
 /**
  * Created by Sylvain LE ROUX on 13/07/2016.
@@ -59,5 +60,10 @@ public class NewSimpleOperationFragment extends NewOperationFragment{
             ((AccountContainer)getActivity()).getAccount().updateOperation(id, operation);
         }
         ((Updatable)getActivity()).update();
+    }
+
+    @Override
+    public DateView getDateView(int id) {
+        return getDateView();
     }
 }

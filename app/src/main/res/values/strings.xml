@@ -60,6 +60,8 @@
 
     <string name="Analyse">Analyser</string>
     <string name="MarketShare">Parts</string>
+    <string name="Between">Entre</string>
+    <string name="And">Et</string>
 
     <string name="MustPay">doit payer</string>
     <string name="MustReceive">doit recevoir</string>

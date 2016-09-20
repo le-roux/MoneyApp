@@ -7,4 +7,5 @@ import com.le_roux.sylvain.money.Utils.DateView;
  */
 public interface DateViewContainer {
     DateView getDateView();
+    DateView getDateView(int id);
 }

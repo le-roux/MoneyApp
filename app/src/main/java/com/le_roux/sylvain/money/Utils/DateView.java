@@ -24,6 +24,7 @@ public class DateView extends TextView implements DatePickerDialog.OnDateSetList
     private int day;
     private int month;
     private int year;
+    private int id;
 
     /*
      *  Keys related with date
@@ -31,6 +32,7 @@ public class DateView extends TextView implements DatePickerDialog.OnDateSetList
     public static final String DAY = "date.day";
     public static final String MONTH = "date.month";
     public static final String YEAR = "date.year";
+    public static final String ID = "date.id";
 
     /*
      *  Constructors
@@ -41,6 +43,7 @@ public class DateView extends TextView implements DatePickerDialog.OnDateSetList
         this.day = calendar.get(Calendar.DAY_OF_MONTH);
         this.month = calendar.get(Calendar.MONTH) + 1;
         this.year = calendar.get(Calendar.YEAR);
+        this.id = 0;
         update();
     }
 
@@ -50,6 +53,7 @@ public class DateView extends TextView implements DatePickerDialog.OnDateSetList
         this.day = calendar.get(Calendar.DAY_OF_MONTH);
         this.month = calendar.get(Calendar.MONTH) + 1;
         this.year = calendar.get(Calendar.YEAR);
+        this.id = 0;
         update();
     }
 
@@ -59,6 +63,7 @@ public class DateView extends TextView implements DatePickerDialog.OnDateSetList
         this.day = calendar.get(Calendar.DAY_OF_MONTH);
         this.month = calendar.get(Calendar.MONTH) + 1;
         this.year = calendar.get(Calendar.YEAR);
+        this.id = 0;
         update();
     }
 
@@ -90,6 +95,14 @@ public class DateView extends TextView implements DatePickerDialog.OnDateSetList
 
     public int getYear() {
         return this.year;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     /*
