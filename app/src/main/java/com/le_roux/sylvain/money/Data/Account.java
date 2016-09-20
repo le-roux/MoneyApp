@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 
 import com.le_roux.sylvain.money.Utils.AccountOpenHelper;
 import com.le_roux.sylvain.money.Utils.Logger;
@@ -206,6 +207,19 @@ public class Account {
         } catch (JSONException e) {
             Logger.d("Impossible to read the accounts list");
         }
+    }
+
+    public static Account getCurrentAccount(SharedPreferences sharedPreferences, Context context) {
+        if (sharedPreferences.contains(Account.CURRENT_ACCOUNT)) {
+            JSONObject accountJSON;
+            try {
+                accountJSON = new JSONObject(sharedPreferences.getString(sharedPreferences.getString(Account.CURRENT_ACCOUNT, null), null));
+            } catch (JSONException e) {
+                accountJSON = null;
+            }
+            return new Account(accountJSON, sharedPreferences, context);
+        }
+        return null;
     }
 
     /*

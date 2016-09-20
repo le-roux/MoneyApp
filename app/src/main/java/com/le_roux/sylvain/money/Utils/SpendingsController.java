@@ -44,14 +44,15 @@ public class SpendingsController {
         while (!cursor.isAfterLast()) {
             category = cursor.getString(cursor.getColumnIndex(OperationContract.Table.COLUMN_NAME_CATEGORY));
             value = cursor.getDouble(cursor.getColumnIndex(OperationContract.Table.COLUMN_NAME_VALUE));
-            if (spendings.containsKey(category)) {
-                spendings.put(category, spendings.get(category) + value);
-            } else {
-                spendings.put(category, value);
+            if (value < 0) {
+                if (spendings.containsKey(category)) {
+                    spendings.put(category, spendings.get(category) - value);
+                } else {
+                    spendings.put(category, -value);
+                }
             }
             cursor.moveToNext();
         }
-
         this.adapter = new SpendingsAdapter(this.context, Account.getCategoriesList(), spendings);
         this.spendingsView.setAdapter(this.adapter);
     }

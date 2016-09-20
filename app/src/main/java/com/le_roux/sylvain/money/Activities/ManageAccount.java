@@ -51,17 +51,8 @@ public class ManageAccount extends AppCompatActivity implements AccountContainer
         Button analyseSpendingsButton=  (Button)findViewById(R.id.analyseSpending);
 
         // Create the account
-        Account account = null;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.contains(Account.CURRENT_ACCOUNT)) {
-            JSONObject accountJSON;
-            try {
-                accountJSON = new JSONObject(sharedPreferences.getString(sharedPreferences.getString(Account.CURRENT_ACCOUNT, null), null));
-            } catch (JSONException e) {
-                accountJSON = null;
-            }
-            account = new Account(accountJSON, sharedPreferences, this);
-        }
+        Account account = Account.getCurrentAccount(sharedPreferences, this);
 
         Account.retrieveCategories(sharedPreferences);
         Account.retrievePayees(sharedPreferences);

@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.le_roux.sylvain.money.R;
+import com.le_roux.sylvain.money.Utils.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,8 +26,14 @@ public class SpendingsAdapter extends BaseAdapter{
 
     public SpendingsAdapter(Context context, ArrayList<String> categories, HashMap<String, Double> spendings) {
         this.context = context;
-        this.categories = categories;
-        this.spendings = spendings;
+        this.categories = new ArrayList<String>();
+        this.spendings = new HashMap<String, Double>();
+        for (String category : categories) {
+            if (spendings.containsKey(category) && spendings.get(category) != 0) {
+                this.categories.add(category);
+                this.spendings.put(category, spendings.get(category));
+            }
+        }
         totalSpending = 0;
     }
 
@@ -65,7 +72,7 @@ public class SpendingsAdapter extends BaseAdapter{
         categoryField.setText(categoryName);
         double value = this.spendings.get(categoryName);
         valueField.setText(String.valueOf(value) + '€');
-        shareField.setText(String.valueOf(value / totalSpending) + '%');
-        return null;
+        shareField.setText(String.valueOf((value / totalSpending) * 100) + '%');
+        return convertView;
     }
 }
