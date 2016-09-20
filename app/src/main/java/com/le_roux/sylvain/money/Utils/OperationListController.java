@@ -116,12 +116,15 @@ public class OperationListController {
         String where = OperationContract.Table.COLUMN_NAME_ACCOUNT + " LIKE ? AND " +
                 OperationContract.Table.COLUMN_NAME_YEAR + " LIKE ? ";
         String[] args = {"", ""};
+        String order = OperationContract.Table.COLUMN_NAME_YEAR + ", "
+                + OperationContract.Table.COLUMN_NAME_MONTH + ", "
+                + OperationContract.Table.COLUMN_NAME_DAY;
         if (this.account != null)
             args[0] = this.account.getName();
         else
             args[0] = "*";
         args[1] = String.valueOf(year);
-        return helper.query(columns, where, args);
+        return helper.queryOrdered(columns, where, args, order);
     }
 
 

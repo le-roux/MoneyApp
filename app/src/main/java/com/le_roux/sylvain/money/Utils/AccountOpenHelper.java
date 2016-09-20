@@ -56,6 +56,11 @@ public class AccountOpenHelper extends SQLiteOpenHelper {
         return dbRead.query(TABLE_NAME, columns, selection, selectionArgs, null, null, null);
     }
 
+    public Cursor queryOrdered(String[] columns, String selection, String[] selectionArgs, String order) {
+        SQLiteDatabase dbRead = this.getReadableDatabase();
+        return dbRead.query(TABLE_NAME, columns, selection, selectionArgs, null, null, order);
+    }
+
     public long insert(String nullColumn, ContentValues values) {
         SQLiteDatabase dbWrite = this.getWritableDatabase();
         return dbWrite.insert(TABLE_NAME, nullColumn, values);

@@ -13,6 +13,8 @@ import com.le_roux.sylvain.money.Utils.Logger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static java.lang.Math.round;
+
 /**
  * Created by Sylvain LE ROUX on 20/09/2016.
  */
@@ -72,7 +74,7 @@ public class SpendingsAdapter extends BaseAdapter{
         categoryField.setText(categoryName);
         double value = this.spendings.get(categoryName);
         valueField.setText(String.valueOf(value) + '€');
-        shareField.setText(String.valueOf((value / totalSpending) * 100) + '%');
+        shareField.setText(String.valueOf(round((value / totalSpending) * 100)) + '%');
         return convertView;
     }
 }
